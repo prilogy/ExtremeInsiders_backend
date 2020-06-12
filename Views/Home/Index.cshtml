@@ -1,0 +1,75 @@
+﻿@using GoogleAuth.Helpers
+@using Microsoft.Extensions.Options
+@inject IOptions<AppSettings> AppSettings;
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/ru_RU/sdk.js#xfbml=1&version=v7.0&appId=274265787259664&autoLogAppEvents=1" nonce="BW6dqYfk"></script>
+
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://vk.com/js/api/openapi.js?168" type="text/javascript"></script>
+<meta name="google-signin-client_id" content="@AppSettings.Value.GoogleClientId">
+
+
+<div class="text-center">
+    <h1 class="display-4">Sign in with Google or Facebook:</h1>
+  <div class="g-signin2" data-onsuccess="onSignIn"></div>
+  <div id="vk_api_transport"></div>
+  <button onclick="vkLogin()">Login with vk</button>
+  <div  data-use-continue-as="true" onlogin="fbLogin" class="fb-login-button" data-size="large" data-button-type="continue_with" data-layout="default" data-auto-logout-link="false" data-use-continue-as="false" data-width=""></div>
+    <a href="#" onclick="signOut();">Sign out</a>
+</div>
+
+<script>
+  async function onSignIn(googleUser) {
+    const id_token = googleUser.getAuthResponse().id_token;
+    console.log(id_token);
+    
+    try {
+    let data = await axios.post('/api/auth/login/google', {
+        token: id_token
+      })
+      data = data.data
+      console.log(data)
+    }
+    catch (e) {
+      console.log("Неправльный логин или пароль")
+    }
+
+  }
+    
+  function signOut() {
+    const auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+      console.log('User signed out.');
+    });
+  }
+  
+ async function fbLogin(r) {
+      console.log(r)
+      try {
+          let data = await axios.post('/api/auth/login/facebook', {
+              token: r.authResponse.accessToken
+            })
+            data = data.data
+            console.log(data)
+          }
+          catch (e) {
+            console.log("Неправльный логин или пароль")
+          }
+  }   
+  
+   VK.init({
+      apiId: 	"7504132"
+    });
+  
+  async function vkLogin() {
+    VK.Auth.login((r)=> {
+        console.log(r)
+    })
+  }
+  
+</script>
