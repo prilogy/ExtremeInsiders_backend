@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace GoogleAuth.Models
+namespace ExtremeInsiders.Models
 {
   public class AuthenticationModels
   {

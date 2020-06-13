@@ -2,15 +2,15 @@
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using ExtremeInsiders.Entities;
+using ExtremeInsiders.Helpers;
 using Google.Apis.Auth;
-using GoogleAuth.Entities;
-using GoogleAuth.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using ApplicationContext = GoogleAuth.Data.ApplicationContext;
+using ApplicationContext = ExtremeInsiders.Data.ApplicationContext;
 
-namespace GoogleAuth.Services
+namespace ExtremeInsiders.Services
 {
   public class SocialAuthIdentity
   {
@@ -23,10 +23,10 @@ namespace GoogleAuth.Services
   {
     public abstract string ProviderName { get; }
 
-    protected readonly ApplicationContext _db;
+    protected readonly Data.ApplicationContext _db;
     protected readonly AppSettings _appSettings;
 
-    protected SocialAuthService(ApplicationContext db, IOptions<AppSettings> appSettings)
+    protected SocialAuthService(Data.ApplicationContext db, IOptions<AppSettings> appSettings)
     {
       _db = db;
       _appSettings = appSettings.Value;
@@ -77,7 +77,7 @@ namespace GoogleAuth.Services
   {
     public override string ProviderName => SocialAccountProvider.Providers.Facebook;
 
-    public FacebookSocialAuthService(ApplicationContext db, IOptions<AppSettings> appSettings) : base(db, appSettings)
+    public FacebookSocialAuthService(Data.ApplicationContext db, IOptions<AppSettings> appSettings) : base(db, appSettings)
     {
     }
 
@@ -103,7 +103,7 @@ namespace GoogleAuth.Services
   {
     public override string ProviderName => SocialAccountProvider.Providers.Google;
 
-    public GoogleSocialAuthService(ApplicationContext db, IOptions<AppSettings> appSettings) : base(db, appSettings)
+    public GoogleSocialAuthService(Data.ApplicationContext db, IOptions<AppSettings> appSettings) : base(db, appSettings)
     {
     }
 
@@ -134,7 +134,7 @@ namespace GoogleAuth.Services
   {
     public override string ProviderName => SocialAccountProvider.Providers.Vk;
 
-    public VkSocialAuthService(ApplicationContext db, IOptions<AppSettings> appSettings) : base(db, appSettings)
+    public VkSocialAuthService(Data.ApplicationContext db, IOptions<AppSettings> appSettings) : base(db, appSettings)
     {
     }
 

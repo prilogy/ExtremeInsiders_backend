@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Linq;
 using System.Security.Cryptography;
-using GoogleAuth.Entities;
-using GoogleAuth.Helpers;
+using ExtremeInsiders.Entities;
+using ExtremeInsiders.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace GoogleAuth.Services
+namespace ExtremeInsiders.Services
 {
   public sealed class PasswordHasherService : IPasswordHasher<User>
   {

@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ExtremeInsiders.Data;
+using ExtremeInsiders.Entities;
+using ExtremeInsiders.Models;
+using ExtremeInsiders.Services;
 using Google.Apis.Auth;
-using GoogleAuth.Data;
-using GoogleAuth.Entities;
-using GoogleAuth.Helpers;
-using GoogleAuth.Models;
-using GoogleAuth.Services;
+using ExtremeInsiders.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 
-namespace GoogleAuth.Controllers
+namespace ExtremeInsiders.Controllers
 {
   [ApiController]
   [Route("api/[controller]")]

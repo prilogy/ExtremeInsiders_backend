@@ -6,17 +6,17 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using GoogleAuth.Data;
-using GoogleAuth.Entities;
-using GoogleAuth.Helpers;
-using GoogleAuth.Models;
+using ExtremeInsiders.Data;
+using ExtremeInsiders.Entities;
+using ExtremeInsiders.Helpers;
+using ExtremeInsiders.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-namespace GoogleAuth.Services
+namespace ExtremeInsiders.Services
 {
   public interface IUserService
   {

@@ -4,10 +4,10 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using GoogleAuth.Controllers;
-using GoogleAuth.Entities;
-using GoogleAuth.Helpers;
-using GoogleAuth.Services;
+using ExtremeInsiders.Entities;
+using ExtremeInsiders.Services;
+using ExtremeInsiders.Controllers;
+using ExtremeInsiders.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -20,7 +20,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 
-namespace GoogleAuth
+namespace ExtremeInsiders
 {
   public class Startup
   {

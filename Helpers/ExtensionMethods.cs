@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using GoogleAuth.Entities;
+using ExtremeInsiders.Entities;
 
-namespace GoogleAuth.Helpers
+namespace ExtremeInsiders.Helpers
 {
   public static class UserExtensions
   {

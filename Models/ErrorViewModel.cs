@@ -1,6 +1,6 @@
 using System;
 
-namespace GoogleAuth.Models
+namespace ExtremeInsiders.Models
 {
   public class ErrorViewModel
   {

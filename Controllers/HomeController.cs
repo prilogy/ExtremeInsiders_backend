@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using GoogleAuth.Entities;
+using ExtremeInsiders.Models;
+using ExtremeInsiders.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using GoogleAuth.Models;
 using Microsoft.AspNetCore.Authorization;
 
-namespace GoogleAuth.Controllers
+namespace ExtremeInsiders.Controllers
 {
   public class HomeController : Controller
   {

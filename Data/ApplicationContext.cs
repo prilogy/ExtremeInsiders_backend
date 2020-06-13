@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using GoogleAuth.Entities;
+using ExtremeInsiders.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace GoogleAuth.Data
+namespace ExtremeInsiders.Data
 {
   public class ApplicationContext : DbContext
   {

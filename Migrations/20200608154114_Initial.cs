@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace GoogleAuth.Migrations
+namespace ExtremeInsiders.Migrations
 {
     public partial class Initial : Migration
     {

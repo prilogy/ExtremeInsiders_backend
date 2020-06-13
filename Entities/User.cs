@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
-namespace GoogleAuth.Entities
+namespace ExtremeInsiders.Entities
 {
   public class User
   {

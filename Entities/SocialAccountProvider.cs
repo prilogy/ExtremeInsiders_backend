@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace GoogleAuth.Entities
+namespace ExtremeInsiders.Entities
 {
   public class SocialAccountProvider
   {

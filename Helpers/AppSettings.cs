@@ -3,7 +3,7 @@ using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace GoogleAuth.Helpers
+namespace ExtremeInsiders.Helpers
 {
   public class AppSettings
   {

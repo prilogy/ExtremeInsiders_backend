@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using GoogleAuth.Data;
-using GoogleAuth.Helpers;
-using GoogleAuth.Models;
-using GoogleAuth.Services;
+using ExtremeInsiders.Data;
+using ExtremeInsiders.Models;
+using ExtremeInsiders.Services;
+using ExtremeInsiders.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GoogleAuth.Controllers
+namespace ExtremeInsiders.Controllers
 {
   [Authorize]
   [ApiController]
