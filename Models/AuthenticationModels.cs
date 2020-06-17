@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
 namespace ExtremeInsiders.Models
 {
@@ -15,13 +16,22 @@ namespace ExtremeInsiders.Models
       [MinLength(6, ErrorMessage = "Минимальная длина пароля - 6 символов")]
       public string Password { get; set; }
       
+      [Required]
+      public string PhoneNumber { get; set; }
+      [Required]
+      public string BirthDate { get; set; }
+      public IFormFile Avatar { get; set; }
+      
       public static explicit operator SignUp(SocialSignUp a)  // explicit byte to digit conversion operator
       {
         return new SignUp
         {
           Email = a.Email,
           Name = a.Name,
-          Password = a.Password
+          Password = a.Password,
+          BirthDate = a.BirthDate,
+          Avatar = a.Avatar,
+          PhoneNumber = a.PhoneNumber
         };
       }
     }
@@ -36,6 +46,13 @@ namespace ExtremeInsiders.Models
       [Required]
       [MinLength(6, ErrorMessage = "Минимальная длина пароля - 6 символов")]
       public string Password { get; set; }
+      
+      [Required]
+      public string PhoneNumber { get; set; }
+      [Required]
+      public string BirthDate { get; set; }
+      public IFormFile Avatar { get; set; }
+      
       [Required]
       public int SocialAccountId { get; set; }
       [Required]

@@ -23,6 +23,8 @@ namespace ExtremeInsiders.Helpers
           user.Id,
           user.Email,
           user.Name,
+          user.BirthDate,
+          user.PhoneNumber,
           user.SocialAccounts,
           user.Token
         }
@@ -31,6 +33,8 @@ namespace ExtremeInsiders.Helpers
           user.Id,
           user.Email,
           user.Name,
+          user.BirthDate,
+          user.PhoneNumber,
           user.SocialAccounts
         };
     }

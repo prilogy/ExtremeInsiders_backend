@@ -81,13 +81,22 @@ namespace ExtremeInsiders.Services
       if (await _db.Users.AnyAsync(u => u.Email == model.Email))
         return null;
       
+      
+      
       var user = new User
       {
         Email = model.Email,
         Name = model.Name, 
         Password = model.Password, 
-        Role = await _db.Roles.SingleAsync(r => r.Name == Role.User)
+        Role = await _db.Roles.SingleAsync(r => r.Name == Role.User),
+        PhoneNumber = model.PhoneNumber,
+        BirthDate = DateTime.ParseExact(model.BirthDate, "dd.MM.yyyy", null),
       };
+
+      if (model.Avatar != null)
+      {
+        // TODO: handle Image and add to DB , create Image service
+      }
 
       user.Password = _passwordHasherService.HashPassword(user, user.Password);
       

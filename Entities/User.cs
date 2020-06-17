@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
@@ -14,8 +15,11 @@ namespace ExtremeInsiders.Entities
     public string Password { get; set; }
     
     [JsonIgnore]
-    public int? ImageId { get; set; }
-    public virtual Image Image { get; set; }
+    public int? AvatarId { get; set; }
+    public virtual Image Avatar { get; set; }
+    
+    public DateTime BirthDate { get; set; }
+    public string PhoneNumber { get; set; }
     
     [JsonIgnore]
     public int RoleId { get; set; }
