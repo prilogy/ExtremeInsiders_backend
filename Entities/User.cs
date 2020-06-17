@@ -14,6 +14,10 @@ namespace ExtremeInsiders.Entities
     public string Password { get; set; }
     
     [JsonIgnore]
+    public int? ImageId { get; set; }
+    public virtual Image Image { get; set; }
+    
+    [JsonIgnore]
     public int RoleId { get; set; }
     [JsonIgnore]
     public virtual Role Role { get; set; }
