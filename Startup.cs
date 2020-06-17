@@ -8,6 +8,7 @@ using ExtremeInsiders.Entities;
 using ExtremeInsiders.Services;
 using ExtremeInsiders.Controllers;
 using ExtremeInsiders.Helpers;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -39,7 +40,7 @@ namespace ExtremeInsiders
     {
       services.AddCors();
       services.AddHttpContextAccessor();
-      services.AddControllersWithViews();
+      services.AddRazorPages();
 
       services.AddDbContext<Data.ApplicationContext>(options =>
       {
@@ -99,6 +100,8 @@ namespace ExtremeInsiders
         endpoints.MapControllerRoute(
           name: "default",
           pattern: "{controller=Home}/{action=Index}/{id?}");
+
+        endpoints.MapRazorPages();
       });
     }
   }

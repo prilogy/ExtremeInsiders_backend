@@ -60,7 +60,6 @@ namespace ExtremeInsiders.Controllers
       if (toRemove != null)
       {
         user.SocialAccounts.Remove(toRemove);
-        //_db.SocialAccounts.Remove(toRemove);
         _db.SaveChanges();
         return Ok(user.WithoutSensitive());
       }
