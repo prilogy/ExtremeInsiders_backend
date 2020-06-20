@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ExtremeInsiders.Areas.Api.Models;
 using ExtremeInsiders.Data;
-using ExtremeInsiders.Models;
 using ExtremeInsiders.Services;
 using ExtremeInsiders.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ExtremeInsiders.Controllers
+namespace ExtremeInsiders.Areas.Api.Controllers
 {
   [Authorize]
   [ApiController]

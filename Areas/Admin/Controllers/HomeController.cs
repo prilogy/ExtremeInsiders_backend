@@ -1,16 +1,18 @@
 ﻿using ExtremeInsiders.Entities;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc;
 
-namespace ExtremeInsiders.Pages.Admin
+namespace ExtremeInsiders.Areas.Admin.Controllers
 {
+  [Area("Admin")]
+  [Route("/admin")]
   [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = Role.AdminRole)]
-  public class Index : PageModel
+  public class HomeController: Controller
   {
-    public void OnGet()
+    public IActionResult Index()
     {
-      
+      return View();
     }
   }
 }

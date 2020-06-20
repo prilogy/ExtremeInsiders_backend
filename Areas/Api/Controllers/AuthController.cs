@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using ExtremeInsiders.Areas.Api.Models;
 using ExtremeInsiders.Data;
 using ExtremeInsiders.Entities;
-using ExtremeInsiders.Models;
 using ExtremeInsiders.Services;
 using Google.Apis.Auth;
 using ExtremeInsiders.Helpers;
@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 
-namespace ExtremeInsiders.Controllers
+namespace ExtremeInsiders.Areas.Api.Controllers
 {
   [ApiController]
   [Route("api/[controller]")]

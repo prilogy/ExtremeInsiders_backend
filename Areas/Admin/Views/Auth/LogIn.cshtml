@@ -1,0 +1,27 @@
+﻿@model ExtremeInsiders.Areas.Admin.Models.AuthenticationModels.LogIn
+
+<a asp-area="Admin" asp-action="SignUp" asp-controller="Auth">Регистрация</a>
+
+<form asp-area="Admin" asp-action="LogIn" asp-controller="Auth" asp-anti-forgery="true">
+    @Html.ValidationSummary(false, "", new {@class = "text-danger"})
+    <div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Email</span>
+            </div>
+            <input asp-for="Email" type="text" class="form-control" placeholder="example@gmail.com" aria-label="Username">
+            <span asp-validation-for="Email"/>
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Пароль</span>
+            </div>
+            <input  asp-for="Password" type="password" class="form-control" placeholder="Пароль">
+            <span asp-validation-for="Password"/>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Войти" class="btn btn-outline-dark"/>
+        </div>
+    </div>
+</form>

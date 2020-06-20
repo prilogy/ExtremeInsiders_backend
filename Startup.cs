@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ExtremeInsiders.Entities;
 using ExtremeInsiders.Services;
-using ExtremeInsiders.Controllers;
+using ExtremeInsiders.Areas;
 using ExtremeInsiders.Helpers;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -41,7 +41,7 @@ namespace ExtremeInsiders
     {
       services.AddCors();
       services.AddHttpContextAccessor();
-      services.AddRazorPages();
+      services.AddControllersWithViews();
 
       services.AddDbContext<Data.ApplicationContext>(options =>
       {
@@ -65,7 +65,11 @@ namespace ExtremeInsiders
             ValidateAudience = false
           };
         })
-        .AddCookie(x => { x.LoginPath = new PathString("/admin/login"); });
+        .AddCookie(x =>
+        {
+          x.LoginPath = new PathString("/admin/auth/login");
+          // x.LogoutPath = new PathString("/admin/auth/logout");
+        });
 
       services.AddSingleton<IPasswordHasher<User>, PasswordHasherService>();
       services.AddTransient<ImageService>();
@@ -93,19 +97,25 @@ namespace ExtremeInsiders
       //app.UseHttpsRedirection();
       app.UseStaticFiles();
 
+      
+      app.UseAuthentication();
       app.UseRouting();
       app.UseCors(c => c.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
-      app.UseAuthentication();
       app.UseAuthorization();
-
+      
       app.UseEndpoints(endpoints =>
       {
-        endpoints.MapControllerRoute(
-          name: "default",
-          pattern: "{controller=Home}/{action=Index}/{id?}");
+        endpoints.MapControllers();
 
-        endpoints.MapRazorPages();
+        endpoints.MapControllerRoute(
+          name: "Admin",
+          pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+        
+        // endpoints.MapAreaControllerRoute(
+        //   name: "AdminArea",
+        //   areaName: "Admin",
+        //   pattern: "{area:exists}/{controller=Index}/{action=Index}/{id?}");
       });
     }
   }

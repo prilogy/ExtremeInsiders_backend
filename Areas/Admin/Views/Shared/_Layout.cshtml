@@ -10,7 +10,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>@ViewData["Title"] ExtremeInsiders @user.Name</title>
+    <title>@ViewData["Title"] ExtremeInsiders</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/css/site.css"/>
 </head>
@@ -35,7 +35,7 @@
                     @if (User.Identity.IsAuthenticated)
                     {
                         <li class="nav-item">
-                            <a class="nav-link text-primary" asp-page="/admin/login/logout">Выход</a>
+                            <a asp-area="Admin" asp-controller="Auth" asp-action="LogOut" class="nav-link text-primary">Выход</a>
                         </li>
                     }
                 </ul>

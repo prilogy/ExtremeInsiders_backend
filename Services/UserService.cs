@@ -6,10 +6,10 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using ExtremeInsiders.Areas.Api.Models;
 using ExtremeInsiders.Data;
 using ExtremeInsiders.Entities;
 using ExtremeInsiders.Helpers;
-using ExtremeInsiders.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
@@ -72,7 +72,7 @@ namespace ExtremeInsiders.Services
       return user.WithoutPassword();
     }
 
-    public async Task<User> AuthenticateCookies(string email, string password)
+    public async Task<User> AuthenticateCookies(string email, string password, bool adminOnly)
     {
       var user = await VerifyUser(email, password);
       if (user == null) return null;
@@ -84,6 +84,9 @@ namespace ExtremeInsiders.Services
         ExpiresUtc = DateTimeOffset.Now.AddDays(7),
       };
 
+      if (user.Role.Name != Role.AdminRole || adminOnly != true)
+        return null;
+      
       await _httpContextAccessor.HttpContext.SignInAsync(
         CookieAuthenticationDefaults.AuthenticationScheme,
         new ClaimsPrincipal(claimsIdentity),

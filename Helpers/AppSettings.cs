@@ -12,6 +12,7 @@ namespace ExtremeInsiders.Helpers
     public string VkClientId { get; set; }
     public string VkSecret { get; set; }
     public string VkRedirect { get; set; }
+    public string SignUpSecret { get; set; }
   }
   
   public static class AppSettingsExtensions {

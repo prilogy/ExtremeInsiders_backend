@@ -20,10 +20,22 @@
       <_ContentIncludedByDefault Remove="Views\Shared\_ValidationScriptsPartial.cshtml" />
       <_ContentIncludedByDefault Remove="Views\_ViewImports.cshtml" />
       <_ContentIncludedByDefault Remove="Views\_ViewStart.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Admin\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Admin\Login.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Admin\SignUp.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Error.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Privacy.cshtml" />
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Areas\Api" />
       <Folder Include="wwwroot\static" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <UpToDateCheckInput Remove="Views\Shared\_Layout.cshtml" />
+      <UpToDateCheckInput Remove="Views\Shared\_ValidationScriptsPartial.cshtml" />
     </ItemGroup>
 
 </Project>

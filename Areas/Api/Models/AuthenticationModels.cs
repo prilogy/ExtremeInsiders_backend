@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
 
-namespace ExtremeInsiders.Models
+namespace ExtremeInsiders.Areas.Api.Models
 {
   public static class AuthenticationModels
   {
