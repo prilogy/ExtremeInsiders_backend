@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using ExtremeInsiders.Data;
@@ -21,10 +22,10 @@ namespace ExtremeInsiders.Controllers
   public class AuthController : Controller
   {
     private readonly ApplicationContext _db;
-    private readonly IUserService _userService;
+    private readonly UserService _userService;
     private readonly IEnumerable<SocialAuthService> _authServices;
 
-    public AuthController(ApplicationContext db, IUserService userService, IEnumerable<SocialAuthService> authServices)
+    public AuthController(ApplicationContext db, UserService userService, IEnumerable<SocialAuthService> authServices)
     {
       _db = db;
       _userService = userService;
@@ -107,7 +108,8 @@ namespace ExtremeInsiders.Controllers
       ModelState.AddModelError("Auth", "Неправильный логин или пароль");
       return NotFound(ModelState);
     }
-
+    
+    [Authorize(Roles = Role.AdminRole)]
     [HttpPost("logIn/{type}")]
     public async Task<IActionResult> LogIn(string type, AuthenticationModels.SocialLogIn model)
     {
@@ -134,7 +136,7 @@ namespace ExtremeInsiders.Controllers
       {
         return null;
       }
-
+      
       if (model.Avatar != null && user.Avatar == null)
       {
         ModelState.AddModelError("Auth", "Неправильный файл для аватара");

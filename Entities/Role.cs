@@ -11,13 +11,19 @@ namespace ExtremeInsiders.Entities
     public int Id { get; set; }
     public string Name { get; set; }
 
-    public static readonly List<Role> AllRoles = new List<Role>
+    public static Role User = new Role
     {
-      new Role {Id = 1, Name = Role.User},
-      new Role {Id = 2, Name = Role.Admin}
+      Id = 1,
+      Name = UserRole
+    };
+
+    public static Role Admin = new Role
+    {
+      Id = 2,
+      Name = AdminRole
     };
     
-    public const string Admin = "admin";
-    public const string User = "user";
+    public const string AdminRole = "admin";
+    public const string UserRole = "user";
   }
 }

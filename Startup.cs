@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Rewrite;
@@ -28,13 +29,13 @@ namespace ExtremeInsiders
     public Startup(IConfiguration configuration)
     {
       var builder = new ConfigurationBuilder().AddJsonFile("config.json").AddConfiguration(configuration);
-      
+
       Configuration = builder.Build();
     }
 
     private IConfiguration Configuration { get; }
-    
-    
+
+
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
@@ -50,7 +51,7 @@ namespace ExtremeInsiders
       });
 
       var key = services.ConfigureJwt(Configuration);
-      
+
       services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer(x =>
         {
@@ -63,13 +64,14 @@ namespace ExtremeInsiders
             ValidateIssuer = false,
             ValidateAudience = false
           };
-        });
+        })
+        .AddCookie(x => { x.LoginPath = new PathString("/admin/login"); });
 
       services.AddSingleton<IPasswordHasher<User>, PasswordHasherService>();
       services.AddTransient<ImageService>();
-      
-      services.AddScoped<IUserService, UserService>();
-      
+
+      services.AddScoped<UserService>();
+
       services.AddScoped<SocialAuthService, FacebookSocialAuthService>();
       services.AddScoped<SocialAuthService, GoogleSocialAuthService>();
       services.AddScoped<SocialAuthService, VkSocialAuthService>();

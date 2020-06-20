@@ -10,6 +10,8 @@ using ExtremeInsiders.Data;
 using ExtremeInsiders.Entities;
 using ExtremeInsiders.Helpers;
 using ExtremeInsiders.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -49,14 +51,8 @@ namespace ExtremeInsiders.Services
 
     public async Task<User> Authenticate(string email, string password)
     {
-      email = email.ToLower();
-      
-      var user = await _db.Users.SingleOrDefaultAsync(u => u.Email == email);
+      var user = await VerifyUser(email, password);
       if (user == null) return null;
-      
-      var passwordVerify = _passwordHasherService.VerifyHashedPassword(user, user.Password, password);
-      if (passwordVerify == PasswordVerificationResult.Failed)
-        return null;
       
       var tokenHandler = new JwtSecurityTokenHandler();
       var tokenDescriptor = GenerateTokenDescriptor(user);
@@ -76,6 +72,26 @@ namespace ExtremeInsiders.Services
       return user.WithoutPassword();
     }
 
+    public async Task<User> AuthenticateCookies(string email, string password)
+    {
+      var user = await VerifyUser(email, password);
+      if (user == null) return null;
+      
+      var claimsIdentity = GenerateClaimsIdentity(user);
+      var authProperties = new AuthenticationProperties
+      {
+        AllowRefresh = true,
+        ExpiresUtc = DateTimeOffset.Now.AddDays(7),
+      };
+
+      await _httpContextAccessor.HttpContext.SignInAsync(
+        CookieAuthenticationDefaults.AuthenticationScheme,
+        new ClaimsPrincipal(claimsIdentity),
+        authProperties);
+
+      return user;
+    }
+
     public async Task<User> Create(AuthenticationModels.SignUp model)
     {
       model.Email = model.Email.ToLower();
@@ -88,7 +104,7 @@ namespace ExtremeInsiders.Services
         Email = model.Email,
         Name = model.Name, 
         Password = model.Password, 
-        Role = await _db.Roles.SingleAsync(r => r.Name == Role.User),
+        Role = await _db.Roles.SingleAsync(r => r.Name == Role.UserRole),
         PhoneNumber = model.PhoneNumber,
         BirthDate = DateTime.ParseExact(model.BirthDate, "dd.MM.yyyy", null),
       };
@@ -102,21 +118,37 @@ namespace ExtremeInsiders.Services
       
       return user;
     }
+    
+    private async Task<User> VerifyUser(string email, string password)
+    {
+      email = email.ToLower();
+
+      var user = await _db.Users.SingleOrDefaultAsync(u => u.Email == email);
+      if (user == null) return null;
+
+      var passwordVerify = _passwordHasherService.VerifyHashedPassword(user, user.Password, password);
+      return passwordVerify == PasswordVerificationResult.Failed ? null : user;
+    }
 
     private SecurityTokenDescriptor GenerateTokenDescriptor(User user)
     {
       var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
       var tokenDescriptor = new SecurityTokenDescriptor
       {
-        Subject = new ClaimsIdentity(new Claim[]
-        {
-          new Claim(ClaimTypes.Name, user.Id.ToString()),
-          new Claim(ClaimTypes.Role, user.Role.Name), 
-        }),
+        Subject = GenerateClaimsIdentity(user),
         Expires = DateTime.Now.AddDays(7),
         SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
       };
       return tokenDescriptor;
+    }
+
+    private ClaimsIdentity GenerateClaimsIdentity(User user)
+    {
+      return new ClaimsIdentity(new Claim[]
+      {
+        new Claim(ClaimTypes.Name, user.Id.ToString()),
+        new Claim(ClaimTypes.Role, user.Role.Name),
+      }, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
     }
   }
 }
