@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using ExtremeInsiders.Entities;
 
@@ -25,6 +26,7 @@ namespace ExtremeInsiders.Helpers
           user.Name,
           user.BirthDate,
           user.PhoneNumber,
+          user.Avatar,
           user.SocialAccounts,
           user.Token
         }
@@ -35,6 +37,7 @@ namespace ExtremeInsiders.Helpers
           user.Name,
           user.BirthDate,
           user.PhoneNumber,
+          user.Avatar,
           user.SocialAccounts
         };
     }

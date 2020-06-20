@@ -36,13 +36,15 @@ namespace ExtremeInsiders.Services
     private readonly ApplicationContext _db;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IPasswordHasher<User> _passwordHasherService;
-
-    public UserService(IOptions<AppSettings> appSettings, ApplicationContext db, IHttpContextAccessor httpContextAccessor, IPasswordHasher<User> passwordHasherService)
+    private readonly ImageService _imageService;
+    
+    public UserService(IOptions<AppSettings> appSettings, ApplicationContext db, IHttpContextAccessor httpContextAccessor, IPasswordHasher<User> passwordHasherService, ImageService imageService)
     {
       _appSettings = appSettings.Value;
       _db = db;
       _httpContextAccessor = httpContextAccessor;
       _passwordHasherService = passwordHasherService;
+      _imageService = imageService;
     }
 
     public async Task<User> Authenticate(string email, string password)
@@ -80,9 +82,7 @@ namespace ExtremeInsiders.Services
       
       if (await _db.Users.AnyAsync(u => u.Email == model.Email))
         return null;
-      
-      
-      
+
       var user = new User
       {
         Email = model.Email,
@@ -95,7 +95,7 @@ namespace ExtremeInsiders.Services
 
       if (model.Avatar != null)
       {
-        // TODO: handle Image and add to DB , create Image service
+        user.Avatar = await _imageService.AddImage(model.Avatar);
       }
 
       user.Password = _passwordHasherService.HashPassword(user, user.Password);

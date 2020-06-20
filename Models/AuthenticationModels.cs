@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace ExtremeInsiders.Models
 {
-  public class AuthenticationModels
+  public static class AuthenticationModels
   {
     public class SignUp
     {

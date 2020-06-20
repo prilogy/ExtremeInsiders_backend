@@ -26,11 +26,9 @@ namespace ExtremeInsiders.Controllers
       _authServices = authServices;
     }
     
-    [HttpPost("{type}")]
+    [HttpPut("{type}")]
     public async Task<IActionResult> SocialAccount(string type, AuthenticationModels.SocialLogIn model)
     {
-
-      _db.Users.Where(u => u.Name.Contains("lo")).Page(2, 30);
       var handler = _authServices.FirstOrDefault(s => s.ProviderName == type);
       if (handler != null)
       {

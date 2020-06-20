@@ -32,7 +32,7 @@ namespace ExtremeInsiders.Controllers
     }
 
     [HttpPut("signUp")]
-    public async Task<IActionResult> SignUp(AuthenticationModels.SignUp model)
+    public async Task<IActionResult> SignUp([FromForm]AuthenticationModels.SignUp model)
     {
       var user = await SignUpInternal(model);
       if (user != null) return Ok();
@@ -73,7 +73,7 @@ namespace ExtremeInsiders.Controllers
     }
 
     [HttpPut("signUp/{type}")]
-    public async Task<IActionResult> SignUp(string type, AuthenticationModels.SocialSignUp model)
+    public async Task<IActionResult> SignUp(string type, [FromForm]AuthenticationModels.SocialSignUp model)
     {
       var user = await SignUpInternal((AuthenticationModels.SignUp) model);
       if (user != null)
@@ -132,6 +132,12 @@ namespace ExtremeInsiders.Controllers
       var user = await _userService.Create(model);
       if (user == null)
       {
+        return null;
+      }
+
+      if (model.Avatar != null && user.Avatar == null)
+      {
+        ModelState.AddModelError("Auth", "Неправильный файл для аватара");
         return null;
       }
 

@@ -16,9 +16,6 @@ namespace ExtremeInsiders.Data
     {
       modelBuilder.Entity<SocialAccountProvider>().HasData(SocialAccountProvider.AllProviders);
       modelBuilder.Entity<Role>().HasData(Role.AllRoles);
-      
-      //modelBuilder.Entity<UserSocialAccount>()
-       // .HasKey(x => new {x.UserId, x.SocialAccountId});
     }
 
     public ApplicationContext(DbContextOptions options) : base(options)

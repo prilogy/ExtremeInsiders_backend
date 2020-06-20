@@ -66,6 +66,8 @@ namespace ExtremeInsiders
         });
 
       services.AddSingleton<IPasswordHasher<User>, PasswordHasherService>();
+      services.AddTransient<ImageService>();
+      
       services.AddScoped<IUserService, UserService>();
       
       services.AddScoped<SocialAuthService, FacebookSocialAuthService>();
