@@ -13,8 +13,19 @@ namespace ExtremeInsiders.Data
     public DbSet<Image> Images { get; set; }
     public DbSet<Culture> Cultures { get; set; }
     
+    /* Sports */
     public DbSet<Sport> Sports { get; set; }
     public DbSet<SportTranslation> SportsTranslations { get; set; }
+    
+    /* Playlists */
+    public DbSet<Playlist> Playlists { get; set; }
+    public DbSet<PlaylistTranslation> PlaylistsTranslations { get; set; }
+    
+    /* Videos and Movies */
+    public DbSet<Video> Videos { get; set; }
+    public DbSet<Movie> Movies { get; set; }
+    public DbSet<VideoTranslation> VideoTranslations { get; set; }
+
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
