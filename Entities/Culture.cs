@@ -28,20 +28,4 @@ namespace ExtremeInsiders.Entities
       English
     }; 
   }
-
-  // interface ITranslatable<T,TR> where T: class
-  // {
-  //   public List<TR> Translations { get; set; }
-  //   public TR Content { get; set; }
-  //   public T OfCulture(Culture culture);
-  //   public T OfCulture(string culture);
-  // }
-
-  public static class TranslatableExtensions
-  {
-    // public static List<TranslatableEntity<T>> OfCulture<T>(this IEnumerable<TranslatableEntity<T>> sports, Culture culture) where T : ITranslatableEntityTranslation
-    // {
-    //   return sports.Select(s => s.OfCulture(culture)).ToList();
-    // }
-  }
 }
