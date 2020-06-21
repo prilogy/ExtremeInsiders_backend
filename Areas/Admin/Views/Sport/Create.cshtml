@@ -10,12 +10,13 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="ImageId" class="control-label"></label>
-                <select asp-for="ImageId" class ="form-control" asp-items="ViewBag.ImageId"></select>
+                <label asp-for="Image" class="control-label">Image</label>
+                <input accept="image/x-png,image/gif,image/jpeg"  type="file" name="imageSrc"/>
             </div>
+            
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

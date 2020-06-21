@@ -17,10 +17,10 @@ namespace ExtremeInsiders.Areas.Api.Controllers
   public class UserController: Controller
   {
     private readonly ApplicationContext _db;
-    private readonly IUserService _userService;
+    private readonly UserService _userService;
     private readonly IEnumerable<SocialAuthService> _authServices;
 
-    public UserController(ApplicationContext db, IUserService userService, IEnumerable<SocialAuthService> authServices)
+    public UserController(ApplicationContext db, UserService userService, IEnumerable<SocialAuthService> authServices)
     {
       _db = db;
       _userService = userService;

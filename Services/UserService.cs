@@ -33,6 +33,7 @@ namespace ExtremeInsiders.Services
     private User _user { get; set; } = null;
 
     public User User => _user ??= _db.Users.SingleOrDefault(u => u.Id == int.Parse(_httpContextAccessor.HttpContext.User.Identity.Name));
+    public Culture Culture => Culture.AllCultures.FirstOrDefault(x => x.Key == _httpContextAccessor.HttpContext.User.Claims.First( c => c.Type == ClaimTypes.Locality).Value);
 
     private readonly AppSettings _appSettings;
     private readonly ApplicationContext _db;
@@ -55,8 +56,7 @@ namespace ExtremeInsiders.Services
       if (user == null) return null;
       
       var tokenHandler = new JwtSecurityTokenHandler();
-      var tokenDescriptor = GenerateTokenDescriptor(user);
-      
+      var tokenDescriptor = GenerateTokenDescriptor(user, GetCultureHeader());
       var token = tokenHandler.CreateToken(tokenDescriptor);
       user.Token = tokenHandler.WriteToken(token);
       return user.WithoutPassword();
@@ -65,8 +65,7 @@ namespace ExtremeInsiders.Services
     public User Authenticate(User user)
     {
       var tokenHandler = new JwtSecurityTokenHandler();
-      var tokenDescriptor = GenerateTokenDescriptor(user);
-      
+      var tokenDescriptor = GenerateTokenDescriptor(user, GetCultureHeader());
       var token = tokenHandler.CreateToken(tokenDescriptor);
       user.Token = tokenHandler.WriteToken(token);
       return user.WithoutPassword();
@@ -77,7 +76,7 @@ namespace ExtremeInsiders.Services
       var user = await VerifyUser(email, password);
       if (user == null) return null;
       
-      var claimsIdentity = GenerateClaimsIdentity(user);
+      var claimsIdentity = GenerateClaimsIdentity(user, null);
       var authProperties = new AuthenticationProperties
       {
         AllowRefresh = true,
@@ -133,25 +132,37 @@ namespace ExtremeInsiders.Services
       return passwordVerify == PasswordVerificationResult.Failed ? null : user;
     }
 
-    private SecurityTokenDescriptor GenerateTokenDescriptor(User user)
+    private SecurityTokenDescriptor GenerateTokenDescriptor(User user, Culture culture)
     {
       var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
       var tokenDescriptor = new SecurityTokenDescriptor
       {
-        Subject = GenerateClaimsIdentity(user),
+        Subject = GenerateClaimsIdentity(user,culture),
         Expires = DateTime.Now.AddDays(7),
         SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
       };
       return tokenDescriptor;
     }
 
-    private ClaimsIdentity GenerateClaimsIdentity(User user)
+    private ClaimsIdentity GenerateClaimsIdentity(User user, Culture culture)
     {
-      return new ClaimsIdentity(new Claim[]
+      var claims = new ClaimsIdentity(new Claim[]
       {
         new Claim(ClaimTypes.Name, user.Id.ToString()),
-        new Claim(ClaimTypes.Role, user.Role.Name),
+        new Claim(ClaimTypes.Role, user.Role.Name)
       }, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
+      
+      if(culture != null)
+        claims.AddClaim(new Claim(ClaimTypes.Locality,culture.Key));
+      return claims;
+    }
+    
+    private Culture GetCultureHeader()
+    {
+      var cultureHeader = (string)_httpContextAccessor.HttpContext.Request.Headers["Culture"];
+      var culture = Culture.AllCultures.FirstOrDefault(c => c.Key == cultureHeader);
+
+      return culture ?? Culture.Russian;
     }
   }
 }

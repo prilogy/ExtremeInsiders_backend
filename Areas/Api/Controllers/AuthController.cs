@@ -109,7 +109,13 @@ namespace ExtremeInsiders.Areas.Api.Controllers
       return NotFound(ModelState);
     }
     
-    [Authorize(Roles = Role.AdminRole)]
+    [Authorize]
+    [HttpGet("refresh")]
+    public IActionResult Refresh()
+    {
+      return Ok(_userService.Authenticate(_userService.User).WithoutSensitive(token: true));
+    }
+    
     [HttpPost("logIn/{type}")]
     public async Task<IActionResult> LogIn(string type, AuthenticationModels.SocialLogIn model)
     {

@@ -34,7 +34,7 @@ namespace ExtremeInsiders.Services
           10,
           HashAlgorithmName.SHA512);
         
-        var hash = Regex.Replace(Convert.ToBase64String(algorithm.GetBytes(5)), @"(\s|\\.)+", "");
+        var hash = Regex.Replace(Convert.ToBase64String(algorithm.GetBytes(5)), @"(\s|\\.|\/|\\)+", "");
         
         var path = "/static/" + hash + file.FileName;
         await using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))

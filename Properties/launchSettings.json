@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "GoogleAuth": {
+    "ExtremeInsiders": {
       "commandName": "Project",
       "launchBrowser": true,
       "applicationUrl": "http://localhost:8000",
