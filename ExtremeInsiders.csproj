@@ -33,6 +33,11 @@
       <_ContentIncludedByDefault Remove="Areas\Admin\Views\SportTranslation\Details.cshtml" />
       <_ContentIncludedByDefault Remove="Areas\Admin\Views\SportTranslation\Edit.cshtml" />
       <_ContentIncludedByDefault Remove="Areas\Admin\Views\SportTranslation\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Sport\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Sport\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Sport\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Sport\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Sport\Index.cshtml" />
     </ItemGroup>
 
     <ItemGroup>

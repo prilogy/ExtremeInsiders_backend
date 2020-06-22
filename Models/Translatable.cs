@@ -49,7 +49,9 @@ namespace ExtremeInsiders.Models
     [JsonIgnore]
     public int Id { get; set; }
     
+    [JsonIgnore]
     public int BaseEntityId { get; set; }
+    [JsonIgnore]
     public virtual T BaseEntity { get; set; }
     
     [JsonIgnore]

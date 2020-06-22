@@ -11,9 +11,6 @@ namespace ExtremeInsiders.Entities
 {
   public class Sport : TranslatableEntity<Sport, SportTranslation>
   {
-    [JsonIgnore] public int? ImageId { get; set; }
-    public virtual Image Image { get; set; }
-    
     public virtual List<Playlist> Playlists { get; set; }
   }
 
