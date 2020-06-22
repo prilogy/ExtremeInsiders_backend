@@ -4,5 +4,5 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace ExtremeInsiders.Entities
 {
-
+  // TODO: implement
 }

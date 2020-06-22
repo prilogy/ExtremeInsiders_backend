@@ -29,7 +29,7 @@ namespace ExtremeInsiders.Services
       try
       {
         using var algorithm = new Rfc2898DeriveBytes(
-          DateTime.Now.ToString(),
+          DateTime.UtcNow.ToString(),
           8,
           10,
           HashAlgorithmName.SHA512);

@@ -138,7 +138,7 @@ namespace ExtremeInsiders.Services
       var tokenDescriptor = new SecurityTokenDescriptor
       {
         Subject = GenerateClaimsIdentity(user,culture),
-        Expires = DateTime.Now.AddDays(7),
+        Expires = DateTime.UtcNow.AddDays(7),
         SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
       };
       return tokenDescriptor;

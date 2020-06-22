@@ -11,9 +11,13 @@ namespace ExtremeInsiders.Entities
     public virtual Playlist Playlist { get; set; }
   }
 
-  public class VideoTranslation : TranslatableEntityTranslation
+  public class VideoTranslation : TranslatableEntityTranslation<Video>
   {
     public string Name { get; set; }
     public string Description { get; set; }
+    
+    [JsonIgnore]
+    public int? ImageId { get; set; }
+    public virtual Image Image { get; set; }
   }
 }

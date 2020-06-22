@@ -63,7 +63,7 @@ namespace ExtremeInsiders.Helpers
   {
     public static List<T> OfCulture<T, TR>(this IEnumerable<TranslatableEntity<T, TR>> sports, Culture culture) 
       where T : TranslatableEntity<T, TR>
-      where TR: TranslatableEntityTranslation
+      where TR: TranslatableEntityTranslation<T>
     {
       return sports.Select(s => s.OfCulture(culture)).ToList();
     }

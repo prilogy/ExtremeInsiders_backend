@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using ExtremeInsiders.Data;
 using ExtremeInsiders.Entities;
 using ExtremeInsiders.Helpers;
-using ExtremeInsiders.Migrations;
 using ExtremeInsiders.Services;
 using Microsoft.AspNetCore.Authorization;
 

@@ -17,13 +17,13 @@ namespace ExtremeInsiders.Entities
     public virtual List<Playlist> Playlists { get; set; }
   }
 
-  public class SportTranslation : TranslatableEntityTranslation
+  public class SportTranslation : TranslatableEntityTranslation<Sport>
   {
     public string Name { get; set; }
-
-    [JsonIgnore] 
-    public int SportId { get; set; }
+    public string Description { get; set; }
+    
     [JsonIgnore]
-    public virtual Sport Sport { get; set; }
+    public int? ImageId { get; set; }
+    public virtual Image Image { get; set; }
   }
 }
