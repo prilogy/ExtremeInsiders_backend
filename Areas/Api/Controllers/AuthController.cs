@@ -111,9 +111,9 @@ namespace ExtremeInsiders.Areas.Api.Controllers
     
     [Authorize]
     [HttpGet("refresh")]
-    public IActionResult Refresh()
+    public User Refresh()
     {
-      return Ok(_userService.Authenticate(_userService.User).WithoutSensitive(token: true));
+      return _userService.Authenticate(_userService.User).WithoutSensitive(true);
     }
     
     [HttpPost("logIn/{type}")]

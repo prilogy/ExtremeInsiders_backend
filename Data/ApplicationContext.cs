@@ -25,6 +25,8 @@ namespace ExtremeInsiders.Data
     public DbSet<Video> Videos { get; set; }
     public DbSet<Movie> Movies { get; set; }
     public DbSet<VideoTranslation> VideoTranslations { get; set; }
+    
+    public DbSet<Like> Likes { get; set; }
 
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -32,6 +34,9 @@ namespace ExtremeInsiders.Data
       modelBuilder.Entity<SocialAccountProvider>().HasData(SocialAccountProvider.AllProviders);
       modelBuilder.Entity<Role>().HasData(Role.User, Role.Admin);
       modelBuilder.Entity<Culture>().HasData(Culture.Russian, Culture.English);
+
+      // unuique pair of props
+      modelBuilder.Entity<Like>().HasIndex(p => new {p.UserId, p.VideoId}).IsUnique();
     }
 
     public ApplicationContext(DbContextOptions options) : base(options)

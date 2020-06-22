@@ -39,7 +39,7 @@ namespace ExtremeInsiders.Areas.Api.Controllers
         {
           user.SocialAccounts.Add(account);
           _db.SaveChanges();
-          return Ok(user.WithoutSensitive());
+          return Ok(user.WithoutSensitive(false));
         }
 
         ModelState.AddModelError("Auth", $"Не удалось привязать {type} аккаунт.");
@@ -60,7 +60,7 @@ namespace ExtremeInsiders.Areas.Api.Controllers
       {
         user.SocialAccounts.Remove(toRemove);
         _db.SaveChanges();
-        return Ok(user.WithoutSensitive());
+        return Ok(user.WithoutSensitive(false));
       }
 
       ModelState.AddModelError("Auth", $"Неправильный тип социальной сети или аккаунт не найден.");

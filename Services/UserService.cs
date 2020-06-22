@@ -59,7 +59,7 @@ namespace ExtremeInsiders.Services
       var tokenDescriptor = GenerateTokenDescriptor(user, GetCultureHeader());
       var token = tokenHandler.CreateToken(tokenDescriptor);
       user.Token = tokenHandler.WriteToken(token);
-      return user.WithoutPassword();
+      return user.WithoutSensitive(true);
     }
     
     public User Authenticate(User user)
@@ -68,7 +68,7 @@ namespace ExtremeInsiders.Services
       var tokenDescriptor = GenerateTokenDescriptor(user, GetCultureHeader());
       var token = tokenHandler.CreateToken(tokenDescriptor);
       user.Token = tokenHandler.WriteToken(token);
-      return user.WithoutPassword();
+      return user.WithoutSensitive(true);
     }
 
     public async Task<User> AuthenticateCookies(string email, string password, bool adminOnly)
@@ -108,7 +108,7 @@ namespace ExtremeInsiders.Services
         Password = model.Password, 
         Role = await _db.Roles.SingleAsync(r => r.Name == Role.UserRole),
         PhoneNumber = model.PhoneNumber,
-        BirthDate = DateTime.ParseExact(model.BirthDate, "dd.MM.yyyy", null),
+        DateBirthday = DateTime.ParseExact(model.DateBirthday, "dd.MM.yyyy", null),
       };
 
       if (model.Avatar != null)

@@ -1,6 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using ExtremeInsiders.Models;
-using Newtonsoft.Json;
 
 namespace ExtremeInsiders.Entities
 {
@@ -8,7 +9,13 @@ namespace ExtremeInsiders.Entities
   {
     [JsonIgnore]
     public int PlaylistId { get; set; }
+    [JsonIgnore]
     public virtual Playlist Playlist { get; set; }
+    
+    [JsonIgnore]
+    public virtual List<Like> Likes { get; set; }
+
+    public int LikesAmount => Likes.Count;
   }
 
   public class VideoTranslation : TranslatableEntityTranslation<Video>

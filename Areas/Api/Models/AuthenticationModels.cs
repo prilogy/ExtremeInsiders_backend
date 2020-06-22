@@ -19,7 +19,7 @@ namespace ExtremeInsiders.Areas.Api.Models
       [Required]
       public string PhoneNumber { get; set; }
       [Required]
-      public string BirthDate { get; set; }
+      public string DateBirthday { get; set; }
       public IFormFile Avatar { get; set; }
       
       public static explicit operator SignUp(SocialSignUp a)  // explicit byte to digit conversion operator
@@ -29,7 +29,7 @@ namespace ExtremeInsiders.Areas.Api.Models
           Email = a.Email,
           Name = a.Name,
           Password = a.Password,
-          BirthDate = a.BirthDate,
+          DateBirthday = a.BirthDate,
           Avatar = a.Avatar,
           PhoneNumber = a.PhoneNumber
         };

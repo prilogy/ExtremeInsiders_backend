@@ -7,43 +7,6 @@ using ExtremeInsiders.Models;
 
 namespace ExtremeInsiders.Helpers
 {
-  public static class UserExtensions
-  {
-    public static User WithoutPassword(this User user)
-    {
-      if (user == null) return null;
-
-      user.Password = null;
-      return user;
-    }
-
-    public static object WithoutSensitive(this User user, bool token = false)
-    {
-      return token
-        ? (object) new
-        {
-          user.Id,
-          user.Email,
-          user.Name,
-          user.BirthDate,
-          user.PhoneNumber,
-          user.Avatar,
-          user.SocialAccounts,
-          user.Token
-        }
-        : new
-        {
-          user.Id,
-          user.Email,
-          user.Name,
-          user.BirthDate,
-          user.PhoneNumber,
-          user.Avatar,
-          user.SocialAccounts
-        };
-    }
-  }
-
   public static class PagingExtensions
   {
     //used by LINQ to SQL
