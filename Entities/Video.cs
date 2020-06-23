@@ -13,7 +13,7 @@ namespace ExtremeInsiders.Entities
     public virtual Playlist Playlist { get; set; }
     
     [JsonIgnore]
-    public virtual List<Like> Likes { get; set; }
+    public virtual List<LikeVideo> Likes { get; set; }
 
     public int LikesAmount => Likes.Count;
   }

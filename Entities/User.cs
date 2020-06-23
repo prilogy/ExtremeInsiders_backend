@@ -29,8 +29,12 @@ namespace ExtremeInsiders.Entities
 
     [NotMapped] public string Token { get; set; }
     public virtual List<SocialAccount> SocialAccounts { get; set; }
-    [JsonIgnore] public virtual List<Like> Likes { get; set; }
+    [JsonIgnore]
+    public virtual List<LikeVideo> LikesVideos { get; set; }
+    [JsonIgnore]
+    public virtual List<LikeMovie> LikesMovies { get; set; }
 
+    
     [NotMapped]
     public object LikesIds { get; set; }
 
@@ -40,7 +44,7 @@ namespace ExtremeInsiders.Entities
       DateSignUp = DateTime.UtcNow;
     }
     
-    public User WithoutSensitive(bool token, bool useLikeIds = false)
+    public User WithoutSensitive(bool token = false, bool useLikeIds = false)
     {
       Password = null;
       Token = token ? Token : null;
@@ -49,9 +53,9 @@ namespace ExtremeInsiders.Entities
       {
         LikesIds = new
         {
-          Videos = Likes.Select(x => x.Id)
+          Videos = LikesVideos.Select(x => x.EntityId),
+          Movies = LikesMovies.Select(x => x.EntityId)
         };
-        Likes = null;
       }
 
       return this;

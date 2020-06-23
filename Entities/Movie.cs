@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using ExtremeInsiders.Models;
 
 namespace ExtremeInsiders.Entities
@@ -7,7 +8,13 @@ namespace ExtremeInsiders.Entities
   {
     [JsonIgnore]
     public int SportId { get; set; }
+    [JsonIgnore]
     public virtual Sport Sport { get; set; }
+    
+    [JsonIgnore]
+    public virtual List<LikeMovie> Likes { get; set; }
+
+    public int LikesAmount => Likes.Count;
   }
   
   public class MovieTranslation : TranslatableEntityTranslation<Movie>

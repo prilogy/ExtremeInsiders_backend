@@ -26,17 +26,32 @@ namespace ExtremeInsiders.Data
     public DbSet<Movie> Movies { get; set; }
     public DbSet<VideoTranslation> VideoTranslations { get; set; }
     
-    public DbSet<Like> Likes { get; set; }
-
+    public DbSet<LikeVideo> LikesVideos { get; set; }
+    public DbSet<LikeMovie> LikesMovies { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
       modelBuilder.Entity<SocialAccountProvider>().HasData(SocialAccountProvider.AllProviders);
       modelBuilder.Entity<Role>().HasData(Role.User, Role.Admin);
       modelBuilder.Entity<Culture>().HasData(Culture.Russian, Culture.English);
+      
+      var sport = new Sport {Id = 1 };
+      var playlist = new Playlist { Id = 1, SportId = sport.Id };
+      var video = new Video { Id = 1, PlaylistId = playlist.Id};
+      var movie = new Movie { Id = 1, SportId = sport.Id};
+      
+      modelBuilder.Entity<Sport>().HasData(sport);
+      modelBuilder.Entity<Playlist>().HasData(playlist);
+      modelBuilder.Entity<Video>().HasData(video);
+      modelBuilder.Entity<Movie>().HasData(movie);
+      
+      modelBuilder.Entity<LikeVideo>().HasIndex(x => new {x.UserId, x.EntityId});
+      modelBuilder.Entity<LikeMovie>().HasIndex(x => new {x.UserId, x.EntityId});
+      
+      modelBuilder.Entity<LikeVideo>().Property(x => x.EntityId).HasColumnName("EntityId");
+      modelBuilder.Entity<LikeMovie>().Property(x => x.EntityId).HasColumnName("EntityId");
 
-      // unuique pair of props
-      modelBuilder.Entity<Like>().HasIndex(p => new {p.UserId, p.VideoId}).IsUnique();
+      //modelBuilder.Entity<LikeVideo>().HasOne<User>(x => x.User).WithMany(x => x.LikesVideos);
     }
 
     public ApplicationContext(DbContextOptions options) : base(options)

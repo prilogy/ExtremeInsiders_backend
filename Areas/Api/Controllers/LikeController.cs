@@ -10,7 +10,7 @@ namespace ExtremeInsiders.Areas.Api.Controllers
 {
   [Authorize]
   [ApiController]
-  [Route("api/[controller]/[action]")]
+  [Route("api/[controller]")]
   public class LikeController : Controller
   {
     private readonly ApplicationContext _db;
@@ -23,17 +23,19 @@ namespace ExtremeInsiders.Areas.Api.Controllers
     }
 
     // TODO: refactor
-    public IActionResult Like()
+    [HttpGet("{type}/{id}")]
+    public IActionResult Get(string type, int id)
     {
-      var videoId = _db.Videos.First().Id;
+      Console.WriteLine(type + id);
+      var idd = _db.Movies.First().Id;
       var userId = _userService.User.Id;
-      var like = _db.Likes.FirstOrDefault(l => l.VideoId == videoId && l.UserId == userId);
+      var like = _db.LikesMovies.FirstOrDefault(l => l.EntityId == idd && l.UserId == userId);
       if (like == null)
       {
         Console.WriteLine("add");
-        _db.Likes.Add(new Like
+        _db.LikesMovies.Add(new LikeMovie
         {
-          VideoId = videoId,
+          EntityId = idd,
           UserId = userId
         });
         
@@ -45,7 +47,11 @@ namespace ExtremeInsiders.Areas.Api.Controllers
       }
 
       _db.SaveChanges();
-      return Ok(_db.Videos.First().Likes);
+      return Ok(new
+      {
+        movie = _db.Movies.FirstOrDefault(),
+        user = _userService.User.WithoutSensitive(useLikeIds:true)
+      });
 
       // var like = new Like
       // {
