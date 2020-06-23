@@ -56,6 +56,8 @@ namespace ExtremeInsiders.Entities
           Videos = LikesVideos.Select(x => x.EntityId),
           Movies = LikesMovies.Select(x => x.EntityId)
         };
+        LikesVideos = null;
+        LikesMovies = null;
       }
 
       return this;

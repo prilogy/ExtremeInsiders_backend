@@ -5,6 +5,7 @@ using ExtremeInsiders.Entities;
 using ExtremeInsiders.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ExtremeInsiders.Areas.Api.Controllers
 {
@@ -23,47 +24,54 @@ namespace ExtremeInsiders.Areas.Api.Controllers
     }
 
     // TODO: refactor
-    [HttpGet("{type}/{id}")]
-    public IActionResult Get(string type, int id)
+    [HttpGet("video/{id}")]
+    public IActionResult LikeVideo(int id)
     {
-      Console.WriteLine(type + id);
-      var idd = _db.Movies.First().Id;
-      var userId = _userService.User.Id;
-      var like = _db.LikesMovies.FirstOrDefault(l => l.EntityId == idd && l.UserId == userId);
+      var like = _db.LikesVideos.FirstOrDefault(l => l.EntityId == id && l.UserId == _userService.UserId);
       if (like == null)
       {
-        Console.WriteLine("add");
-        _db.LikesMovies.Add(new LikeMovie
+        var video = _db.Videos.FirstOrDefault(x => x.Id == id);
+        if (video == null) return NotFound();
+
+        like = new LikeVideo
         {
-          EntityId = idd,
-          UserId = userId
-        });
-        
+          EntityId = video.Id,
+          UserId = _userService.UserId,
+        };
+        _db.LikesVideos.Add(like);
       }
       else
       {
-        Console.WriteLine("delete");
         _db.Remove(like);
       }
 
       _db.SaveChanges();
-      return Ok(new
-      {
-        movie = _db.Movies.FirstOrDefault(),
-        user = _userService.User.WithoutSensitive(useLikeIds:true)
-      });
+      return Ok(_userService.User.WithoutSensitive(useLikeIds: true));
+    }
 
-      // var like = new Like
-      // {
-      //   VideoId = videoId,
-      //   User = _userService.User
-      // };
-      // _db.Likes.Add(like);
-      // _db.SaveChanges();
-      //
-      // return Ok(like);
-      //
-      // return BadRequest();
+    [HttpGet("movie/{id}")]
+    public IActionResult LikeMovie(int id)
+    {
+      var like = _db.LikesMovies.FirstOrDefault(l => l.EntityId == id && l.UserId == _userService.UserId);
+      if (like == null)
+      {
+        var movie = _db.Videos.FirstOrDefault(x => x.Id == id);
+        if (movie == null) return NotFound();
+
+        like = new LikeMovie()
+        {
+          EntityId = movie.Id,
+          UserId = _userService.UserId,
+        };
+        _db.LikesMovies.Add(like);
+      }
+      else
+      {
+        _db.Remove(like);
+      }
+
+      _db.SaveChanges();
+      return Ok(_userService.User.WithoutSensitive(useLikeIds: true));
     }
   }
 }
