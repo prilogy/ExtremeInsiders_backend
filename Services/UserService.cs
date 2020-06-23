@@ -59,7 +59,7 @@ namespace ExtremeInsiders.Services
       var tokenDescriptor = GenerateTokenDescriptor(user, GetCultureHeader());
       var token = tokenHandler.CreateToken(tokenDescriptor);
       user.Token = tokenHandler.WriteToken(token);
-      return user.WithoutSensitive(true);
+      return user;
     }
     
     public User Authenticate(User user)
@@ -68,7 +68,7 @@ namespace ExtremeInsiders.Services
       var tokenDescriptor = GenerateTokenDescriptor(user, GetCultureHeader());
       var token = tokenHandler.CreateToken(tokenDescriptor);
       user.Token = tokenHandler.WriteToken(token);
-      return user.WithoutSensitive(true);
+      return user;
     }
 
     public async Task<User> AuthenticateCookies(string email, string password, bool adminOnly)

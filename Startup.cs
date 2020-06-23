@@ -41,7 +41,8 @@ namespace ExtremeInsiders
     {
       services.AddCors();
       services.AddHttpContextAccessor();
-      services.AddControllersWithViews().AddJsonOptions(options =>
+      services.AddControllersWithViews()
+        .AddJsonOptions(options =>
         {
           options.JsonSerializerOptions.IgnoreNullValues = true;
         });

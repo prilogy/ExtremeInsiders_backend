@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using ExtremeInsiders.Areas.Api.Models;
 using ExtremeInsiders.Data;
@@ -108,14 +109,7 @@ namespace ExtremeInsiders.Areas.Api.Controllers
       ModelState.AddModelError("Auth", "Неправильный логин или пароль");
       return NotFound(ModelState);
     }
-    
-    [Authorize]
-    [HttpGet("refresh")]
-    public User Refresh()
-    {
-      return _userService.Authenticate(_userService.User).WithoutSensitive(true);
-    }
-    
+
     [HttpPost("logIn/{type}")]
     public async Task<IActionResult> LogIn(string type, AuthenticationModels.SocialLogIn model)
     {
@@ -133,6 +127,14 @@ namespace ExtremeInsiders.Areas.Api.Controllers
 
       ModelState.AddModelError("Auth", $"Неправильный тип социальной сети.");
       return NotFound(ModelState);
+    }
+    
+        
+    [Authorize]
+    [HttpGet("refresh")]
+    public IActionResult Refresh()
+    {
+      return Ok(_userService.Authenticate(_userService.User).WithoutSensitive(token: true, useLikeIds: true));
     }
 
     private async Task<User> SignUpInternal(AuthenticationModels.SignUp model)
