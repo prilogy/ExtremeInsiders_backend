@@ -7,20 +7,13 @@ using ExtremeInsiders.Entities;
 
 namespace ExtremeInsiders.Entities
 {
-  public enum LikeForEntityType
+  public enum LikeEntityType
   {
     Video,
     Movie
   }
 
-  // TODO: refactor to generic
-  public interface ILikeFor<T> where T: class
-  {
-    
-    LikeForEntityType EntityType { get; }
-    int EntityId { get; set; }
-    T Entity { get; set; }
-  }
+  // TODO: refactor
   
   public class Like
   {
@@ -29,20 +22,10 @@ namespace ExtremeInsiders.Entities
     public int UserId { get; set; }
     [JsonIgnore]
     public virtual User User { get; set; }
+    
+    public int EntityId { get; set; }
+    public LikeEntityType EntityType { get; set; }
   }
 
-  public class LikeVideo : Like , ILikeFor<Video>
-  {
-    public LikeForEntityType EntityType => LikeForEntityType.Video;
-    public int EntityId { get; set; }
-    [JsonIgnore]
-    public virtual Video Entity { get; set; }
-  }
-
-  public class LikeMovie : Like, ILikeFor<Movie>
-  {
-    public LikeForEntityType EntityType => LikeForEntityType.Movie;
-    public int EntityId { get; set; }
-    public virtual Movie Entity { get; set; }
-  }
+  
 }

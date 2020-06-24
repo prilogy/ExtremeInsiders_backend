@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using System.Text.Json.Serialization;
 using ExtremeInsiders.Models;
 
@@ -10,9 +12,12 @@ namespace ExtremeInsiders.Entities
     public int SportId { get; set; }
     [JsonIgnore]
     public virtual Sport Sport { get; set; }
-    
+
     [JsonIgnore]
-    public virtual List<LikeMovie> Likes { get; set; }
+    [NotMapped]
+    public virtual List<Like> Likes => this.AllLikes.Where(x => x.EntityType == LikeEntityType.Movie).ToList();
+    [JsonIgnore]
+    public virtual List<Like> AllLikes { get; set; }
 
     public int LikesAmount => Likes.Count;
   }

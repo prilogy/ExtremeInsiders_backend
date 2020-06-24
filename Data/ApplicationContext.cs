@@ -26,8 +26,7 @@ namespace ExtremeInsiders.Data
     public DbSet<Movie> Movies { get; set; }
     public DbSet<VideoTranslation> VideoTranslations { get; set; }
     
-    public DbSet<LikeVideo> LikesVideos { get; set; }
-    public DbSet<LikeMovie> LikesMovies { get; set; }
+    public DbSet<Like> Likes { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -44,12 +43,11 @@ namespace ExtremeInsiders.Data
       modelBuilder.Entity<Playlist>().HasData(playlist);
       modelBuilder.Entity<Video>().HasData(video);
       modelBuilder.Entity<Movie>().HasData(movie);
+
       
-      modelBuilder.Entity<LikeVideo>().HasIndex(x => new {x.UserId, x.EntityId});
-      modelBuilder.Entity<LikeMovie>().HasIndex(x => new {x.UserId, x.EntityId});
-      
-      modelBuilder.Entity<LikeVideo>().Property(x => x.EntityId).HasColumnName("EntityId");
-      modelBuilder.Entity<LikeMovie>().Property(x => x.EntityId).HasColumnName("EntityId");
+      modelBuilder.Entity<Like>().HasKey(x => new {x.UserId, x.EntityId, x.EntityType});
+      modelBuilder.Entity<Like>().Property<int>("VideoId");
+      modelBuilder.Entity<Like>().HasOne<Video>().WithMany(x => x.Likes).HasForeignKey("EntityId");
 
       //modelBuilder.Entity<LikeVideo>().HasOne<User>(x => x.User).WithMany(x => x.LikesVideos);
     }
