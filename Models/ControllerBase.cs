@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ExtremeInsiders.Data;
@@ -21,6 +22,8 @@ namespace ExtremeInsiders.Models
     private readonly ApplicationContext _db;
     private readonly UserService _userService;
 
+    private readonly int PAGE_SIZE = 10;
+    
     public ControllerBase(ApplicationContext db, UserService userService)
     {
       _db = db;
@@ -28,9 +31,10 @@ namespace ExtremeInsiders.Models
     }
     
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<T>>> GetAll()
+    public async Task<ActionResult<IEnumerable<T>>> GetAll([FromQuery]int page, [FromQuery]int pageSize)
     {
-      return (await _db.Set<T>().ToListAsync()).OfCulture(_userService.Culture);
+      var list = _db.Set<T>();
+      return (page == 0 ? await list.ToListAsync() : await list.Page(page, pageSize == 0 ? PAGE_SIZE: pageSize).ToListAsync()).OfCulture(_userService.Culture);
     }
 
     [HttpPost]

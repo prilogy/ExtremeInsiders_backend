@@ -9,7 +9,6 @@ namespace ExtremeInsiders.Entities
   [MetadataType(typeof(ITranslatableEntity<Video, VideoTranslation>))]
   public class Video : EntityLikeable, ITranslatableEntity<Video, VideoTranslation>
   {
-    [JsonIgnore]
     public int PlaylistId { get; set; }
     [JsonIgnore]
     public virtual Playlist Playlist { get; set; }

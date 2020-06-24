@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using ExtremeInsiders.Models;
 using Newtonsoft.Json;
 
@@ -7,11 +8,14 @@ namespace ExtremeInsiders.Entities
 {
   public class Playlist : EntityBase, ITranslatableEntity<Playlist, PlaylistTranslation>
   {
-    [JsonIgnore]
     public int SportId { get; set; }
+    [JsonIgnore]
     public virtual Sport Sport { get; set; }
     
+    [JsonIgnore]
     public virtual List<Video> Videos { get; set; }
+
+    public List<int> VideosIds => Videos.Select(x => x.Id).ToList();
 
     [JsonIgnore]
     [ForeignKey("BaseEntityId")]

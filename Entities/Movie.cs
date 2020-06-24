@@ -9,7 +9,6 @@ namespace ExtremeInsiders.Entities
   [MetadataType(typeof(ITranslatableEntity<Movie, MovieTranslation>))]
   public class Movie : EntityLikeable, ITranslatableEntity<Movie, MovieTranslation>
   {
-    [JsonIgnore]
     public int SportId { get; set; }
     [JsonIgnore]
     public virtual Sport Sport { get; set; }
