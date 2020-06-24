@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,11 +13,10 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace ExtremeInsiders.Areas.Api.Controllers
 {
-    public class SportController : ControllerBase<Sport, SportTranslation>
+  public class MovieController : ControllerBase<Movie, MovieTranslation>
+  {
+    public MovieController(ApplicationContext db, UserService userService) : base(db, userService)
     {
-        public SportController(ApplicationContext db, UserService userService) : base(db, userService)
-        {
-            
-        }
     }
+  }
 }

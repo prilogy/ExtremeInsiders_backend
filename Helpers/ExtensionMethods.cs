@@ -28,8 +28,13 @@ namespace ExtremeInsiders.Helpers
       where T : ITranslatableEntity<T, TR>
       where TR : TranslatableEntityTranslation<T>
     {
-      entity.Content = entity.Translations.FirstOrDefault(tr => tr.Culture.Key == culture.Key) ?? entity.Translations.First();
-      entity.Translations = null;
+      if (entity.Translations.Count > 0)
+      {
+        entity.Content = entity.Translations.FirstOrDefault(tr => tr.Culture.Key == culture.Key) ??
+                         entity.Translations.First();
+        entity.Translations = null;
+      }
+
       return (T)entity;
     }
     

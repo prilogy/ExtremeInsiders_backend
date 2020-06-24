@@ -25,6 +25,8 @@ namespace ExtremeInsiders.Entities
     {
       Russian,
       English
-    }; 
+    };
+
+    public static Culture Default => English;
   }
 }

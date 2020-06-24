@@ -8,7 +8,6 @@ namespace ExtremeInsiders.Entities
   public class Sport : EntityBase, ITranslatableEntity<Sport, SportTranslation>
   {
     
-    [JsonIgnore]
     public virtual List<Playlist> Playlists { get; set; }
     [JsonIgnore]
     public virtual List<Movie> Movies { get; set; }
