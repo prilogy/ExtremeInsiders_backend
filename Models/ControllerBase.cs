@@ -19,8 +19,8 @@ namespace ExtremeInsiders.Models
   where T: EntityBase, ITranslatableEntity<T, TR>
   where TR: TranslatableEntityTranslation<T>
   {
-    private readonly ApplicationContext _db;
-    private readonly UserService _userService;
+    protected readonly ApplicationContext _db;
+    protected readonly UserService _userService;
 
     private readonly int PAGE_SIZE = 10;
     
@@ -54,6 +54,12 @@ namespace ExtremeInsiders.Models
       }
 
       return entity.OfCulture(_userService.Culture);
+    }
+
+    [HttpPost("{id}/search")]
+    public virtual async Task<IActionResult> Search([FromBody] string query, [FromRoute]int id)
+    {
+      return await Task.Run(() => { return NotFound(); });
     }
   }
 }

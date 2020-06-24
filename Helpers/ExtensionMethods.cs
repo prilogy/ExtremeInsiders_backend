@@ -66,6 +66,14 @@ namespace ExtremeInsiders.Helpers
       return await set.Where(x => x.Translations.Any(y => y.Name.ToLower().Contains(query))).ToListAsync();
     }
     
+    public static List<T> SearchAtWithQueryAsync<T, TR>(this IEnumerable<T> set, string query)
+      where T : EntityBase, ITranslatableEntity<T, TR>
+      where TR : TranslatableEntityTranslation<T>, IDefaultTranslatableContent
+    {
+      query = query.ToLower();
+      return set.Where(x => x.Translations.Any(y => y.Name.ToLower().Contains(query))).ToList();
+    }
+    
     public static async Task<List<string>> PredictWithQueryAsync<T, TR>(this DbSet<T> set,string query, Culture culture)
       where T: EntityBase, ITranslatableEntity<T, TR>
       where TR: TranslatableEntityTranslation<T>, IDefaultTranslatableContent

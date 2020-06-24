@@ -10,14 +10,29 @@ using ExtremeInsiders.Helpers;
 using ExtremeInsiders.Models;
 using ExtremeInsiders.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace ExtremeInsiders.Areas.Api.Controllers
 {
-    public class SportController : ControllerBase<Sport, SportTranslation>
+  public class SportController : ControllerBase<Sport, SportTranslation>
+  {
+    public SportController(ApplicationContext db, UserService userService) : base(db, userService)
     {
-        public SportController(ApplicationContext db, UserService userService) : base(db, userService)
-        {
-            
-        }
     }
+
+    public override async Task<IActionResult> Search(string query, int id)
+    {
+      query = query.ToLower();
+      
+      var sport = await _db.Sports.FirstOrDefaultAsync(x => x.Id == id);
+      if (sport == null)
+        return NotFound();
+      
+      return Ok(new
+      {
+        Videos = sport.Playlists.SelectMany(x => x.Videos).SearchAtWithQueryAsync<Video, VideoTranslation>(query).OfCulture(_userService.Culture),
+        Playlists = sport.Playlists.SearchAtWithQueryAsync<Playlist, PlaylistTranslation>(query).OfCulture(_userService.Culture)
+      });
+    }
+  }
 }
