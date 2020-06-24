@@ -44,11 +44,10 @@ namespace ExtremeInsiders
       services.AddHttpContextAccessor();
       services.AddControllersWithViews()
         .AddNewtonsoftJson(options =>
-          {
-            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-            options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
-          })
-        .AddJsonOptions(options => { options.JsonSerializerOptions.IgnoreNullValues = true; });
+        {
+          options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+          options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+        });
 
       services.AddDbContext<Data.ApplicationContext>(options =>
       {
