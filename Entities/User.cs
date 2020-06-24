@@ -26,15 +26,19 @@ namespace ExtremeInsiders.Entities
 
     [JsonIgnore] public int RoleId { get; set; }
     [JsonIgnore] public virtual Role Role { get; set; }
-
-    [NotMapped] public string Token { get; set; }
     public virtual List<SocialAccount> SocialAccounts { get; set; }
     [JsonIgnore]
     public virtual List<Like> Likes { get; set; }
+    [JsonIgnore]
+    public virtual List<Favorite> Favorites { get; set; } 
 
 
     [NotMapped]
     public object LikesIds { get; set; }
+    [NotMapped] 
+    public object FavoriteIds { get; set; }
+    [NotMapped] 
+    public string Token { get; set; }
 
 
     public User()
@@ -42,7 +46,7 @@ namespace ExtremeInsiders.Entities
       DateSignUp = DateTime.UtcNow;
     }
     
-    public User WithoutSensitive(bool token = false, bool useLikeIds = false)
+    public User WithoutSensitive(bool token = false, bool useLikeIds = false, bool useFavoriteIds = false)
     {
       Password = null;
       Token = token ? Token : null;
@@ -53,6 +57,17 @@ namespace ExtremeInsiders.Entities
         {
           Videos = Likes.Where(x => x.Entity is Video).Select(x => x.EntityId),
           Movies = Likes.Where(x=> x.Entity is Movie).Select(x => x.EntityId)
+        };
+      }
+
+      if (useFavoriteIds)
+      {
+        FavoriteIds = new
+        {
+          Videos = Favorites.Where(x => x.Entity is Video).Select(x => x.EntityId),
+          Movies = Favorites.Where(x=> x.Entity is Movie).Select(x => x.EntityId),
+          Sports = Favorites.Where(x => x.Entity is Sport).Select(x => x.EntityId),
+          Playlists = Favorites.Where(x=> x.Entity is Playlist).Select(x => x.EntityId),
         };
         Likes = null;
       }

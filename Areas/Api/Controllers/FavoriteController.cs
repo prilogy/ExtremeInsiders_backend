@@ -12,12 +12,12 @@ namespace ExtremeInsiders.Areas.Api.Controllers
   [Authorize]
   [ApiController]
   [Route("api/[controller]")]
-  public class LikeController : Controller
+  public class FavoriteController : Controller
   {
     private readonly ApplicationContext _db;
     private readonly UserService _userService;
 
-    public LikeController(ApplicationContext db, UserService userService)
+    public FavoriteController(ApplicationContext db, UserService userService)
     {
       _db = db;
       _userService = userService;
@@ -26,26 +26,26 @@ namespace ExtremeInsiders.Areas.Api.Controllers
     [HttpGet("{id}")]
     public IActionResult Get(int id)
     {
-      var like = _db.Likes.FirstOrDefault(l => l.EntityId == id && l.UserId == _userService.UserId);
-      if (like == null)
+      var favorite = _db.Favorites.FirstOrDefault(l => l.EntityId == id && l.UserId == _userService.UserId);
+      if (favorite == null)
       {
-        var entity = _db.EntitiesLikeable.FirstOrDefault(x => x.Id == id);
+        var entity = _db.EntitiesBase.FirstOrDefault(x => x.Id == id);
         if (entity == null) return NotFound();
 
-        like = new Like
+        favorite = new Favorite
         {
           EntityId = entity.Id,
           UserId = _userService.UserId,
         };
-        _db.Likes.Add(like);
+        _db.Favorites.Add(favorite);
       }
       else
       {
-        _db.Remove(like);
+        _db.Remove(favorite);
       }
 
       _db.SaveChanges();
-      return Ok(_userService.User.WithoutSensitive(useLikeIds: true));
+      return Ok(_userService.User.WithoutSensitive(useLikeIds: true, useFavoriteIds: true));
     }
   }
 }

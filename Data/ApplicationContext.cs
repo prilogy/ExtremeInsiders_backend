@@ -14,6 +14,10 @@ namespace ExtremeInsiders.Data
     public DbSet<Image> Images { get; set; }
     public DbSet<Culture> Cultures { get; set; }
     
+    /* Entities */
+    public DbSet<EntityBase> EntitiesBase { get; set; }
+    public DbSet<EntityLikeable> EntitiesLikeable { get; set; }
+
     /* Sports */
     public DbSet<Sport> Sports { get; set; }
     public DbSet<SportTranslation> SportsTranslations { get; set; }
@@ -23,7 +27,6 @@ namespace ExtremeInsiders.Data
     public DbSet<PlaylistTranslation> PlaylistsTranslations { get; set; }
     
     /* Videos and Movies */
-    public DbSet<EntityLikeable> EntitiesLikeable { get; set; }
     public DbSet<Video> Videos { get; set; }
     public DbSet<VideoTranslation> VideoTranslations { get; set; }
     public DbSet<Movie> Movies { get; set; }
@@ -31,6 +34,7 @@ namespace ExtremeInsiders.Data
     
     
     public DbSet<Like> Likes { get; set; }
+    public DbSet<Favorite> Favorites { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -48,6 +52,7 @@ namespace ExtremeInsiders.Data
       modelBuilder.Entity<Video>().HasData(video);
       modelBuilder.Entity<Movie>().HasData(movie);
       
+      modelBuilder.Entity<Like>().HasKey(x => new {x.UserId, x.EntityId});
       modelBuilder.Entity<Like>().HasKey(x => new {x.UserId, x.EntityId});
     }
 
