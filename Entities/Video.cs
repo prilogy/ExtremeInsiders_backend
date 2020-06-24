@@ -20,7 +20,7 @@ namespace ExtremeInsiders.Entities
     public VideoTranslation Content { get; set; }
   }
 
-  public class VideoTranslation : TranslatableEntityTranslation<Video>
+  public class VideoTranslation : TranslatableEntityTranslation<Video>, IDefaultTranslatableContent
   {
     public string Name { get; set; }
     public string Description { get; set; }

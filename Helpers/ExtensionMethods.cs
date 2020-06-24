@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
+using System.Threading.Tasks;
 using ExtremeInsiders.Entities;
 using ExtremeInsiders.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ExtremeInsiders.Helpers
 {
@@ -50,6 +52,27 @@ namespace ExtremeInsiders.Helpers
       where TR: TranslatableEntityTranslation<T>
     {
       return list.Select(s => s.OfCulture(culture)).ToList();
+    }
+  }
+  
+  
+  public static class SearchExtensions
+  {
+    public static async Task<List<T>> SearchAtWithQueryAsync<T, TR>(this DbSet<T> set, string query)
+      where T : EntityBase, ITranslatableEntity<T, TR>
+      where TR : TranslatableEntityTranslation<T>, IDefaultTranslatableContent
+    {
+      query = query.ToLower();
+      return await set.Where(x => x.Translations.Any(y => y.Name.ToLower().Contains(query))).ToListAsync();
+    }
+    
+    public static async Task<List<string>> PredictWithQueryAsync<T, TR>(this DbSet<T> set,string query, Culture culture)
+      where T: EntityBase, ITranslatableEntity<T, TR>
+      where TR: TranslatableEntityTranslation<T>, IDefaultTranslatableContent
+    {
+      query = query.ToLower();
+      return (await set.Where(x => x.Translations.Any(y => y.Name.ToLower().Contains(query))).ToListAsync()).Select(x =>
+        x.Translations.FirstOrDefault(y => y.Culture.Key == culture.Key)?.Name).ToList();
     }
   }
 }

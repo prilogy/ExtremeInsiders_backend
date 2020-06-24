@@ -30,4 +30,10 @@ namespace ExtremeInsiders.Models
     public virtual Culture Culture { get; set; }
   }
 
+  public interface IDefaultTranslatableContent
+  {
+    string Name { get; set; }
+    string Description { get; set; }
+  }
+
 }

@@ -40,7 +40,7 @@ namespace ExtremeInsiders.Models
     [HttpPost]
     public async Task<ActionResult<IEnumerable<T>>> GetByIds(int[] ids)
     {
-      return Ok((await _db.Set<Sport>().Where(x => ids.Contains(x.Id)).ToListAsync()).OfCulture(_userService.Culture));
+      return Ok((await _db.Set<T>().Where(x => ids.Contains(x.Id)).ToListAsync()).OfCulture(_userService.Culture));
     }
         
     [HttpGet("{id}")]
