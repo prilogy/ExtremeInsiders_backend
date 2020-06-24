@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using ExtremeInsiders.Data;
 using ExtremeInsiders.Entities;
 using ExtremeInsiders.Helpers;
+using ExtremeInsiders.Models;
 using ExtremeInsiders.Services;
 using Microsoft.AspNetCore.Authorization;
 
@@ -33,16 +34,16 @@ namespace ExtremeInsiders.Areas.Api.Controllers
         }
         
         [HttpGet("{id}")]
-        public async Task<ActionResult<Sport>> GetSport(int id)
+        public async Task<IActionResult> GetSport(int id)
         {
-            var sport = (await _db.Sports.FindAsync(id))?.OfCulture(_userService.Culture);
+            var sport = await _db.Sports.FindAsync(id);
 
             if (sport == null)
             {
                 return NotFound();
             }
 
-            return sport;
+            return Ok(sport.OfCulture(_userService.Culture));
         }
     }
 }

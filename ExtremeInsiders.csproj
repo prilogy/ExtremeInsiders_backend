@@ -7,6 +7,7 @@
     <ItemGroup>
       <PackageReference Include="Google.Apis.Auth" Version="1.46.0" />
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.4" />
+      <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.5" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.4" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.1.4" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.5" />
@@ -49,10 +50,6 @@
     <ItemGroup>
       <UpToDateCheckInput Remove="Views\Shared\_Layout.cshtml" />
       <UpToDateCheckInput Remove="Views\Shared\_ValidationScriptsPartial.cshtml" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Content Include="Edit.cshtml.bak" />
     </ItemGroup>
 
 </Project>

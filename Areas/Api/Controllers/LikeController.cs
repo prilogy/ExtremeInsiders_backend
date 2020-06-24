@@ -24,21 +24,21 @@ namespace ExtremeInsiders.Areas.Api.Controllers
     }
 
     // TODO: refactor
-    [HttpGet("video/{id}")]
-    public IActionResult LikeVideo(int id)
+    [HttpGet("{id}")]
+    public IActionResult Get(int id)
     {
-      var like = _db.LikesVideos.FirstOrDefault(l => l.EntityId == id && l.UserId == _userService.UserId);
+      var like = _db.Likes.FirstOrDefault(l => l.EntityId == id && l.UserId == _userService.UserId);
       if (like == null)
       {
-        var video = _db.Videos.FirstOrDefault(x => x.Id == id);
-        if (video == null) return NotFound();
+        var entity = _db.EntitiesLikeable.FirstOrDefault(x => x.Id == id);
+        if (entity == null) return NotFound();
 
-        like = new LikeVideo
+        like = new Like
         {
-          EntityId = video.Id,
+          EntityId = entity.Id,
           UserId = _userService.UserId,
         };
-        _db.LikesVideos.Add(like);
+        _db.Likes.Add(like);
       }
       else
       {
@@ -49,29 +49,29 @@ namespace ExtremeInsiders.Areas.Api.Controllers
       return Ok(_userService.User.WithoutSensitive(useLikeIds: true));
     }
 
-    [HttpGet("movie/{id}")]
-    public IActionResult LikeMovie(int id)
-    {
-      var like = _db.LikesMovies.FirstOrDefault(l => l.EntityId == id && l.UserId == _userService.UserId);
-      if (like == null)
-      {
-        var movie = _db.Videos.FirstOrDefault(x => x.Id == id);
-        if (movie == null) return NotFound();
-
-        like = new LikeMovie()
-        {
-          EntityId = movie.Id,
-          UserId = _userService.UserId,
-        };
-        _db.LikesMovies.Add(like);
-      }
-      else
-      {
-        _db.Remove(like);
-      }
-
-      _db.SaveChanges();
-      return Ok(_userService.User.WithoutSensitive(useLikeIds: true));
-    }
+    // [HttpGet("movie/{id}")]
+    // public IActionResult LikeMovie(int id)
+    // {
+    //   var like = _db.LikesMovies.FirstOrDefault(l => l.EntityId == id && l.UserId == _userService.UserId);
+    //   if (like == null)
+    //   {
+    //     var movie = _db.Videos.FirstOrDefault(x => x.Id == id);
+    //     if (movie == null) return NotFound();
+    //
+    //     like = new LikeMovie()
+    //     {
+    //       EntityId = movie.Id,
+    //       UserId = _userService.UserId,
+    //     };
+    //     _db.LikesMovies.Add(like);
+    //   }
+    //   else
+    //   {
+    //     _db.Remove(like);
+    //   }
+    //
+    //   _db.SaveChanges();
+    //   return Ok(_userService.User.WithoutSensitive(useLikeIds: true));
+    // }
   }
 }

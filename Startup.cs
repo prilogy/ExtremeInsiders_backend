@@ -21,6 +21,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 
 namespace ExtremeInsiders
 {
@@ -42,10 +43,12 @@ namespace ExtremeInsiders
       services.AddCors();
       services.AddHttpContextAccessor();
       services.AddControllersWithViews()
-        .AddJsonOptions(options =>
-        {
-          options.JsonSerializerOptions.IgnoreNullValues = true;
-        });
+        .AddNewtonsoftJson(options =>
+          {
+            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+          })
+        .AddJsonOptions(options => { options.JsonSerializerOptions.IgnoreNullValues = true; });
 
       services.AddDbContext<Data.ApplicationContext>(options =>
       {

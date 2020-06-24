@@ -5,13 +5,19 @@ using Newtonsoft.Json;
 
 namespace ExtremeInsiders.Entities
 {
-  public class Playlist : TranslatableEntity<Playlist, PlaylistTranslation>
+  public class Playlist : EntityBase, ITranslatableEntity<Playlist, PlaylistTranslation>
   {
     [JsonIgnore]
     public int SportId { get; set; }
     public virtual Sport Sport { get; set; }
     
     public virtual List<Video> Videos { get; set; }
+
+    [JsonIgnore]
+    [ForeignKey("BaseEntityId")]
+    public virtual List<PlaylistTranslation> Translations { get; set; }
+    [NotMapped]
+    public PlaylistTranslation Content { get; set; }
   }
   
   public class PlaylistTranslation : TranslatableEntityTranslation<Playlist>

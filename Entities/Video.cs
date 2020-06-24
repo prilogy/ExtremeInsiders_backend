@@ -1,11 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Composition;
 using System.Text.Json.Serialization;
 using ExtremeInsiders.Models;
 
 namespace ExtremeInsiders.Entities
 {
-  public class Video : TranslatableEntity<Video, VideoTranslation>
+  [MetadataType(typeof(ITranslatableEntity<Video, VideoTranslation>))]
+  public class Video : EntityLikeable, ITranslatableEntity<Video, VideoTranslation>
   {
     [JsonIgnore]
     public int PlaylistId { get; set; }
@@ -13,9 +18,10 @@ namespace ExtremeInsiders.Entities
     public virtual Playlist Playlist { get; set; }
     
     [JsonIgnore]
-    public virtual List<LikeVideo> Likes { get; set; }
-
-    public int LikesAmount => Likes.Count;
+    [ForeignKey("BaseEntityId")]
+    public virtual List<VideoTranslation> Translations { get; set; }
+    [NotMapped]
+    public VideoTranslation Content { get; set; }
   }
 
   public class VideoTranslation : TranslatableEntityTranslation<Video>

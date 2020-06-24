@@ -30,11 +30,9 @@ namespace ExtremeInsiders.Entities
     [NotMapped] public string Token { get; set; }
     public virtual List<SocialAccount> SocialAccounts { get; set; }
     [JsonIgnore]
-    public virtual List<LikeVideo> LikesVideos { get; set; }
-    [JsonIgnore]
-    public virtual List<LikeMovie> LikesMovies { get; set; }
+    public virtual List<Like> Likes { get; set; }
 
-    
+
     [NotMapped]
     public object LikesIds { get; set; }
 
@@ -53,11 +51,10 @@ namespace ExtremeInsiders.Entities
       {
         LikesIds = new
         {
-          Videos = LikesVideos.Select(x => x.EntityId),
-          Movies = LikesMovies.Select(x => x.EntityId)
+          Videos = Likes.Where(x => x.Entity is Video).Select(x => x.EntityId),
+          Movies = Likes.Where(x=> x.Entity is Movie).Select(x => x.EntityId)
         };
-        LikesVideos = null;
-        LikesMovies = null;
+        Likes = null;
       }
 
       return this;

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using ExtremeInsiders.Entities;
+using ExtremeInsiders.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace ExtremeInsiders.Data
@@ -22,12 +23,14 @@ namespace ExtremeInsiders.Data
     public DbSet<PlaylistTranslation> PlaylistsTranslations { get; set; }
     
     /* Videos and Movies */
+    public DbSet<EntityLikeable> EntitiesLikeable { get; set; }
     public DbSet<Video> Videos { get; set; }
-    public DbSet<Movie> Movies { get; set; }
     public DbSet<VideoTranslation> VideoTranslations { get; set; }
+    public DbSet<Movie> Movies { get; set; }
+    public DbSet<MovieTranslation> MovieTranslations { get; set; }
     
-    public DbSet<LikeVideo> LikesVideos { get; set; }
-    public DbSet<LikeMovie> LikesMovies { get; set; }
+    
+    public DbSet<Like> Likes { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -36,22 +39,16 @@ namespace ExtremeInsiders.Data
       modelBuilder.Entity<Culture>().HasData(Culture.Russian, Culture.English);
       
       var sport = new Sport {Id = 1 };
-      var playlist = new Playlist { Id = 1, SportId = sport.Id };
-      var video = new Video { Id = 1, PlaylistId = playlist.Id};
-      var movie = new Movie { Id = 1, SportId = sport.Id};
+      var playlist = new Playlist { Id = 2, SportId = sport.Id };
+      var video = new Video { Id = 3, PlaylistId = playlist.Id};
+      var movie = new Movie { Id = 4, SportId = sport.Id};
       
       modelBuilder.Entity<Sport>().HasData(sport);
       modelBuilder.Entity<Playlist>().HasData(playlist);
       modelBuilder.Entity<Video>().HasData(video);
       modelBuilder.Entity<Movie>().HasData(movie);
       
-      modelBuilder.Entity<LikeVideo>().HasIndex(x => new {x.UserId, x.EntityId});
-      modelBuilder.Entity<LikeMovie>().HasIndex(x => new {x.UserId, x.EntityId});
-      
-      modelBuilder.Entity<LikeVideo>().Property(x => x.EntityId).HasColumnName("EntityId");
-      modelBuilder.Entity<LikeMovie>().Property(x => x.EntityId).HasColumnName("EntityId");
-
-      //modelBuilder.Entity<LikeVideo>().HasOne<User>(x => x.User).WithMany(x => x.LikesVideos);
+      modelBuilder.Entity<Like>().HasKey(x => new {x.UserId, x.EntityId});
     }
 
     public ApplicationContext(DbContextOptions options) : base(options)
