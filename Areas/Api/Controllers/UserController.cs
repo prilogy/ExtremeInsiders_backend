@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ExtremeInsiders.Areas.Api.Models;
 using ExtremeInsiders.Data;
+using ExtremeInsiders.Entities;
 using ExtremeInsiders.Services;
 using ExtremeInsiders.Helpers;
 using Microsoft.AspNetCore.Authorization;
@@ -67,5 +68,54 @@ namespace ExtremeInsiders.Areas.Api.Controllers
       return NotFound(ModelState);
     }
 
+    [HttpGet("{id}")]
+    public IActionResult Like(int id)
+    {
+      var like = _db.Likes.FirstOrDefault(l => l.EntityId == id && l.UserId == _userService.UserId);
+      if (like == null)
+      {
+        var entity = _db.EntitiesLikeable.FirstOrDefault(x => x.Id == id);
+        if (entity == null) return NotFound();
+
+        like = new Like
+        {
+          EntityId = entity.Id,
+          UserId = _userService.UserId,
+        };
+        _db.Likes.Add(like);
+      }
+      else
+      {
+        _db.Remove(like);
+      }
+
+      _db.SaveChanges();
+      return Ok();
+    }
+    
+    [HttpGet("{id}")]
+    public IActionResult Favorite(int id)
+    {
+      var favorite = _db.Favorites.FirstOrDefault(l => l.EntityId == id && l.UserId == _userService.UserId);
+      if (favorite == null)
+      {
+        var entity = _db.EntitiesBase.FirstOrDefault(x => x.Id == id);
+        if (entity == null) return NotFound();
+
+        favorite = new Favorite
+        {
+          EntityId = entity.Id,
+          UserId = _userService.UserId,
+        };
+        _db.Favorites.Add(favorite);
+      }
+      else
+      {
+        _db.Remove(favorite);
+      }
+
+      _db.SaveChanges();
+      return Ok();
+    }
   }
 }
