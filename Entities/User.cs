@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace ExtremeInsiders.Entities
 {
@@ -30,9 +31,14 @@ namespace ExtremeInsiders.Entities
     [JsonIgnore]
     public virtual List<Like> Likes { get; set; }
     [JsonIgnore]
-    public virtual List<Favorite> Favorites { get; set; } 
+    public virtual List<Favorite> Favorites { get; set; }
+    [JsonIgnore]
+    public virtual List<ConfirmationCode> ConfirmationCodes { get; set; }
 
 
+    [NotMapped]
+    public bool EmailVerified =>
+      ConfirmationCodes.Any(x => x.Type == ConfirmationCode.Types.EmailConfirmation && x.IsConfirmed == true);
     [NotMapped]
     public object LikesIds { get; set; }
     [NotMapped] 

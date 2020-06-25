@@ -117,5 +117,20 @@ namespace ExtremeInsiders.Areas.Api.Controllers
       _db.SaveChanges();
       return Ok();
     }
+
+    [HttpPost]
+    public async Task<IActionResult> VerifyEmail([FromBody] string code)
+    {
+      var confirmationCode = _userService.User.ConfirmationCodes.FirstOrDefault(x =>
+        x.Type == ConfirmationCode.Types.EmailConfirmation && x.Code == code && x.IsConfirmed == false);
+
+      if (confirmationCode == null)
+        return BadRequest();
+
+      confirmationCode.IsConfirmed = true;
+      await _db.SaveChangesAsync();
+
+      return Ok();
+    }
   }
 }

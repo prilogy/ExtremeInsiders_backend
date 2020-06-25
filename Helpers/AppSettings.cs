@@ -12,11 +12,15 @@ namespace ExtremeInsiders.Helpers
     public string VkClientId { get; set; }
     public string VkSecret { get; set; }
     public string VkRedirect { get; set; }
-    public string SignUpSecret { get; set; }
+    public string AdminSignUpSecret { get; set; }
+    
+    public string EmailSenderSmtp { get; set; }
+    public string EmailSenderLogin { get; set; }
+    public string EmailSenderPassword { get; set; }
   }
   
   public static class AppSettingsExtensions {
-    public static byte[] ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
+    public static byte[] ConfigureAppSettings(this IServiceCollection services, IConfiguration configuration)
     {
       var appSettingsSection = configuration.GetSection("AppSettings");
       services.Configure<AppSettings>(appSettingsSection);

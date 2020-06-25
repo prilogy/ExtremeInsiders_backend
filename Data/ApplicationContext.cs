@@ -36,6 +36,8 @@ namespace ExtremeInsiders.Data
     public DbSet<Like> Likes { get; set; }
     public DbSet<Favorite> Favorites { get; set; }
     
+    public DbSet<ConfirmationCode> ConfirmationCodes { get; set; }
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
       modelBuilder.Entity<SocialAccountProvider>().HasData(SocialAccountProvider.AllProviders);
@@ -54,6 +56,7 @@ namespace ExtremeInsiders.Data
       
       modelBuilder.Entity<Like>().HasKey(x => new {x.UserId, x.EntityId});
       modelBuilder.Entity<Like>().HasKey(x => new {x.UserId, x.EntityId});
+      modelBuilder.Entity<ConfirmationCode>().HasKey(x => new {x.UserId, x.Code});
     }
 
     public ApplicationContext(DbContextOptions options) : base(options)

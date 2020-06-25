@@ -25,19 +25,25 @@ namespace ExtremeInsiders.Areas.Api.Controllers
     private readonly ApplicationContext _db;
     private readonly UserService _userService;
     private readonly IEnumerable<SocialAuthService> _authServices;
+    private readonly ConfirmationService _confirmationService;
 
-    public AuthController(ApplicationContext db, UserService userService, IEnumerable<SocialAuthService> authServices)
+    public AuthController(ApplicationContext db, UserService userService, IEnumerable<SocialAuthService> authServices, ConfirmationService confirmationService)
     {
       _db = db;
       _userService = userService;
       _authServices = authServices;
+      _confirmationService = confirmationService;
     }
 
     [HttpPut("signUp")]
     public async Task<IActionResult> SignUp([FromForm]AuthenticationModels.SignUp model)
     {
       var user = await SignUpInternal(model);
-      if (user != null) return Ok();
+      if (user != null)
+      {
+        _confirmationService.SendEmailConfirmationAsync(user);
+        return Ok();
+      }
 
       ModelState.AddModelError("Auth", "Email уже зарегистрирован.");
       return BadRequest(ModelState);
@@ -104,7 +110,7 @@ namespace ExtremeInsiders.Areas.Api.Controllers
       var user = await _userService.Authenticate(model.Email, model.Password);
 
       if (user != null)
-        return Ok(user.WithoutSensitive(token: true));
+        return Ok(user.WithoutSensitive(token: true, useLikeIds: true, useFavoriteIds: true));
 
       ModelState.AddModelError("Auth", "Неправильный логин или пароль");
       return NotFound(ModelState);
@@ -119,7 +125,7 @@ namespace ExtremeInsiders.Areas.Api.Controllers
         var user = await handler.FindUser(model.Token);
 
         if (user != null)
-          return Ok(_userService.Authenticate(user).WithoutSensitive(token: true));
+          return Ok(user.WithoutSensitive(token: true, useLikeIds: true, useFavoriteIds: true));
 
         ModelState.AddModelError("Auth", $"Ваш профиль {type} не привязан к аккаунту.");
         return NotFound(ModelState);

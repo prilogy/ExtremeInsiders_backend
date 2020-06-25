@@ -51,7 +51,7 @@ namespace ExtremeInsiders.Areas.Admin.Controllers
     [HttpPost]
     public IActionResult SignUp(AuthenticationModels.SignUp model)
     {
-      if (model.Secret != _appSettings.SignUpSecret)
+      if (model.Secret != _appSettings.AdminSignUpSecret)
       {
         ModelState.AddModelError("","Неправильный секретный код");
         return View(model);

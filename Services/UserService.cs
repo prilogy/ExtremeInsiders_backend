@@ -34,10 +34,21 @@ namespace ExtremeInsiders.Services
 
     public User User => _user ??= _db.Users.SingleOrDefault(u => u.Id == int.Parse(_httpContextAccessor.HttpContext.User.Identity.Name));
     public int UserId => int.Parse(_httpContextAccessor.HttpContext.User.Identity.Name);
-    public Culture Culture => Culture.AllCultures.FirstOrDefault(x => x.Key == CultureKey) ?? _db.Cultures.FirstOrDefault(x => x.Key == CultureKey);
+    public Culture Culture => Culture.AllCultures.FirstOrDefault(x => x.Key == CultureKey) ?? _db.Cultures.FirstOrDefault(x => x.Key == CultureKey) ?? Culture.Default;
 
-    private string CultureKey =>
-      _httpContextAccessor.HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Locality).Value;
+    private string CultureKey
+    {
+      get
+      {
+        if(_httpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
+          return _httpContextAccessor.HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Locality).Value;
+        if (_httpContextAccessor.HttpContext.Request.Headers.ContainsKey("Culture"))
+          return _httpContextAccessor.HttpContext.Request.Headers["Culture"];
+        
+        return null;
+      }
+    }
+
 
     private readonly AppSettings _appSettings;
     private readonly ApplicationContext _db;

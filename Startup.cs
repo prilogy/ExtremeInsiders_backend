@@ -55,36 +55,10 @@ namespace ExtremeInsiders
         options.UseLazyLoadingProxies();
         options.UseNpgsql(connect);
       });
-
-      var key = services.ConfigureJwt(Configuration);
-
-      services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-        .AddJwtBearer(x =>
-        {
-          x.RequireHttpsMetadata = false;
-          x.SaveToken = true;
-          x.TokenValidationParameters = new TokenValidationParameters
-          {
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(key),
-            ValidateIssuer = false,
-            ValidateAudience = false
-          };
-        })
-        .AddCookie(x =>
-        {
-          x.LoginPath = new PathString("/admin/auth/login");
-          // x.LogoutPath = new PathString("/admin/auth/logout");
-        });
-
-      services.AddSingleton<IPasswordHasher<User>, PasswordHasherService>();
-      services.AddTransient<ImageService>();
-
-      services.AddScoped<UserService>();
-
-      services.AddScoped<SocialAuthService, FacebookSocialAuthService>();
-      services.AddScoped<SocialAuthService, GoogleSocialAuthService>();
-      services.AddScoped<SocialAuthService, VkSocialAuthService>();
+      
+      services.AddCustomAuthenticationService(Configuration);
+      services.AddHelperServices();
+      services.AddSocialAuthService();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
