@@ -9,6 +9,7 @@ using ExtremeInsiders.Services;
 using ExtremeInsiders.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ExtremeInsiders.Areas.Api.Controllers
 {
@@ -20,12 +21,14 @@ namespace ExtremeInsiders.Areas.Api.Controllers
     private readonly ApplicationContext _db;
     private readonly UserService _userService;
     private readonly IEnumerable<SocialAuthService> _authServices;
+    private readonly ConfirmationService _confirmationService;
 
-    public UserController(ApplicationContext db, UserService userService, IEnumerable<SocialAuthService> authServices)
+    public UserController(ApplicationContext db, UserService userService, IEnumerable<SocialAuthService> authServices, ConfirmationService confirmationService)
     {
       _db = db;
       _userService = userService;
       _authServices = authServices;
+      _confirmationService = confirmationService;
     }
     
     [HttpPut("{type}")]
@@ -69,12 +72,12 @@ namespace ExtremeInsiders.Areas.Api.Controllers
     }
 
     [HttpGet("{id}")]
-    public IActionResult Like(int id)
+    public async Task<IActionResult> Like(int id)
     {
-      var like = _db.Likes.FirstOrDefault(l => l.EntityId == id && l.UserId == _userService.UserId);
+      var like = await _db.Likes.FirstOrDefaultAsync(l => l.EntityId == id && l.UserId == _userService.UserId);
       if (like == null)
       {
-        var entity = _db.EntitiesLikeable.FirstOrDefault(x => x.Id == id);
+        var entity = await _db.EntitiesLikeable.FirstOrDefaultAsync(x => x.Id == id);
         if (entity == null) return NotFound();
 
         like = new Like
@@ -94,12 +97,12 @@ namespace ExtremeInsiders.Areas.Api.Controllers
     }
     
     [HttpGet("{id}")]
-    public IActionResult Favorite(int id)
+    public async Task<IActionResult> Favorite(int id)
     {
-      var favorite = _db.Favorites.FirstOrDefault(l => l.EntityId == id && l.UserId == _userService.UserId);
+      var favorite = await _db.Favorites.FirstOrDefaultAsync(l => l.EntityId == id && l.UserId == _userService.UserId);
       if (favorite == null)
       {
-        var entity = _db.EntitiesBase.FirstOrDefault(x => x.Id == id);
+        var entity = await _db.EntitiesBase.FirstOrDefaultAsync(x => x.Id == id);
         if (entity == null) return NotFound();
 
         favorite = new Favorite
@@ -118,11 +121,17 @@ namespace ExtremeInsiders.Areas.Api.Controllers
       return Ok();
     }
 
+    [HttpGet]
+    public async Task<IActionResult> VerifyEmail()
+    {
+      await _confirmationService.SendEmailConfirmationAsync(_userService.User);
+      return Ok();
+    }
+
     [HttpPost]
     public async Task<IActionResult> VerifyEmail([FromBody] string code)
     {
-      var confirmationCode = _userService.User.ConfirmationCodes.FirstOrDefault(x =>
-        x.Type == ConfirmationCode.Types.EmailConfirmation && x.Code == code && x.IsConfirmed == false);
+      var confirmationCode = _userService.User.ConfirmationCodes.FirstOrDefault(x => x.Code == code && x.Type == ConfirmationCode.Types.EmailConfirmation && x.IsConfirmed == false);
 
       if (confirmationCode == null)
         return BadRequest();
@@ -130,6 +139,37 @@ namespace ExtremeInsiders.Areas.Api.Controllers
       confirmationCode.IsConfirmed = true;
       await _db.SaveChangesAsync();
 
+      return Ok();
+    }
+
+    [HttpPost]
+    [AllowAnonymous]
+    public async Task<IActionResult> ResetPassword([FromBody] string email)
+    {
+      email = email.ToLower();
+      var user = await _db.Users.FirstOrDefaultAsync(x => x.Email == email);
+      if (user == null) return BadRequest();
+
+      await _confirmationService.SendPasswordReset(user);
+
+      return Ok();
+    }
+
+    [HttpPatch]
+    [AllowAnonymous]
+    public async Task<IActionResult> ResetPassword([FromBody]UserModels.PasswordReset model)
+    {
+      // TODO: NOT WORKING!!!!!!!!
+      Console.WriteLine(model.Password);
+      var confirmationCode = await _db.ConfirmationCodes.FirstOrDefaultAsync(x => x.Code == model.Code && x.Type == ConfirmationCode.Types.PasswordReset && x.IsConfirmed == false);
+      if (confirmationCode == null) return BadRequest();
+
+      confirmationCode.IsConfirmed = true;
+      var user = _db.Entry(confirmationCode.User).Entity;
+      Console.WriteLine(user.Password);
+      user.Password = _userService.HashPassword(user, model.Password);
+      await _db.SaveChangesAsync();
+      Console.WriteLine(user.Password);
       return Ok();
     }
   }

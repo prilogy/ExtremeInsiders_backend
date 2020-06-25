@@ -26,8 +26,7 @@ namespace ExtremeInsiders.Services
       emailMessage.Subject = subject;
       emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
       {
-        Text = message + "<hr/> <h3>© 2020 ExtremeInsiders</h3>" +
-               "<style>* {font-weight: 300 !important}</style>"
+        Text = WrapEmailBody(message)
       };
       
       await Task.Run(async () =>
@@ -39,6 +38,12 @@ namespace ExtremeInsiders.Services
         await client.SendAsync(emailMessage);
         await client.DisconnectAsync(true);
       });
+    }
+
+    private string WrapEmailBody(string body)
+    {
+      return body + "<hr/> <h3>© 2020 ExtremeInsiders</h3>" +
+             "<style>* {font-weight: 300 !important}</style>";
     }
   }
 }

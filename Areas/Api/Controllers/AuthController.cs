@@ -41,7 +41,7 @@ namespace ExtremeInsiders.Areas.Api.Controllers
       var user = await SignUpInternal(model);
       if (user != null)
       {
-        _confirmationService.SendEmailConfirmationAsync(user);
+        await _confirmationService.SendEmailConfirmationAsync(user);
         return Ok();
       }
 
@@ -93,6 +93,7 @@ namespace ExtremeInsiders.Areas.Api.Controllers
         {
           account.UserId = user.Id;
           await _db.SaveChangesAsync();
+          await _confirmationService.SendEmailConfirmationAsync(user);
           return Ok();
         }
         
@@ -108,7 +109,8 @@ namespace ExtremeInsiders.Areas.Api.Controllers
     public async Task<IActionResult> LogIn(AuthenticationModels.LogIn model)
     {
       var user = await _userService.Authenticate(model.Email, model.Password);
-
+      Console.Write(user);
+      
       if (user != null)
         return Ok(user.WithoutSensitive(token: true, useLikeIds: true, useFavoriteIds: true));
 

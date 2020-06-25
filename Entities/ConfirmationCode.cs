@@ -33,6 +33,6 @@ namespace ExtremeInsiders.Entities
     {
       EmailConfirmation,
       PasswordReset
-    } 
+    }
   }
 }

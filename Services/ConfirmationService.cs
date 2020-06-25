@@ -18,21 +18,43 @@ namespace ExtremeInsiders.Services
       _emailService = emailService;
     }
 
-    public void SendEmailConfirmationAsync(User user)
+    public async Task SendEmailConfirmationAsync(User user)
     {
       var confirmationCode = new ConfirmationCode
       {
         UserId = user.Id,
         Type = ConfirmationCode.Types.EmailConfirmation
       };
-      _db.ConfirmationCodes.Add(confirmationCode);
-      _db.SaveChanges();
+      await _db.ConfirmationCodes.AddAsync(confirmationCode);
+      await _db.SaveChangesAsync();
       var resource = CultureResources.EmailConfirmation(_userService.Culture);
-      
       _ = _emailService.SendEmailAsync(user.Email, resource["subject"],
-        $"<h3 style=\"font-weight: 300;\">{resource["body_before_code"]}:</h3> " +
-        $"<h1 style=\"font-weight: 300;\">{confirmationCode.Code}</h1> <h3 style=\"font-weight: 300;\">{resource["body_after_code"]}</h3>");
+        GenerateMessageWithCode(beforeCode:
+          resource["body_before_code"],
+          code: confirmationCode.Code,
+          afterCode: resource["body_after_code"]));
     }
 
+    public async Task SendPasswordReset(User user)
+    {
+      var confirmationCode = new ConfirmationCode
+      {
+        UserId = user.Id,
+        Type = ConfirmationCode.Types.PasswordReset
+      };
+
+      await _db.ConfirmationCodes.AddAsync(confirmationCode);
+      await _db.SaveChangesAsync();
+      var resource = CultureResources.PasswordReset(_userService.Culture);
+      _ = _emailService.SendEmailAsync(user.Email, resource["subject"],
+        GenerateMessageWithCode(beforeCode:
+          resource["body_before_code"],
+          code: confirmationCode.Code,
+          afterCode: resource["body_after_code"]));
+    }
+
+    private string GenerateMessageWithCode(string beforeCode, string afterCode, string code) =>
+      $"<h3 style=\"font-weight: 300;\">{beforeCode}:</h3> " +
+      $"<h1 style=\"font-weight: 300;\">{code}</h1> <h3 style=\"font-weight: 300;\">{afterCode}</h3>";
   }
 }
