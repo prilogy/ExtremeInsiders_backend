@@ -130,13 +130,12 @@ namespace ExtremeInsiders.Services
       {
         user.Avatar = await _imageService.AddImage(model.Avatar);
       }
-
       user.Password = HashPassword(user, model.Password);
       
       return user;
     }
 
-    public string HashPassword(User user, string password) => _passwordHasherService.HashPassword(user, user.Password);
+    public string HashPassword(User user, string password) => _passwordHasherService.HashPassword(user, password);
     
     private async Task<User> VerifyUser(string email, string password)
     {

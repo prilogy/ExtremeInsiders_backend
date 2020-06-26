@@ -115,7 +115,7 @@ namespace ExtremeInsiders.Services
         {
           Audience = new[] {_appSettings.GoogleClientId},
         });
-        Console.WriteLine($"Google: {payload.Email}, {payload.Name}, {payload.Subject}");
+        
         return new SocialAuthIdentity
         {
           Id = payload.Subject,

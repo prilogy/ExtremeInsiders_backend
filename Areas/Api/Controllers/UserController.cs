@@ -131,7 +131,7 @@ namespace ExtremeInsiders.Areas.Api.Controllers
     [HttpPost]
     public async Task<IActionResult> VerifyEmail([FromBody] string code)
     {
-      var confirmationCode = _userService.User.ConfirmationCodes.FirstOrDefault(x => x.Code == code && x.Type == ConfirmationCode.Types.EmailConfirmation && x.IsConfirmed == false);
+      var confirmationCode = _userService.User.ConfirmationCodes.FirstOrDefault(x=>ConfirmationCode.CanBeUsed(x, code, ConfirmationCode.Types.EmailConfirmation));
 
       if (confirmationCode == null)
         return BadRequest();
@@ -159,17 +159,16 @@ namespace ExtremeInsiders.Areas.Api.Controllers
     [AllowAnonymous]
     public async Task<IActionResult> ResetPassword([FromBody]UserModels.PasswordReset model)
     {
-      // TODO: NOT WORKING!!!!!!!!
-      Console.WriteLine(model.Password);
-      var confirmationCode = await _db.ConfirmationCodes.FirstOrDefaultAsync(x => x.Code == model.Code && x.Type == ConfirmationCode.Types.PasswordReset && x.IsConfirmed == false);
+      
+      var confirmationCode = await _db.ConfirmationCodes.FirstOrDefaultAsync( ConfirmationCode.CanBeUsed(model.Code, ConfirmationCode.Types.PasswordReset));
       if (confirmationCode == null) return BadRequest();
 
       confirmationCode.IsConfirmed = true;
-      var user = _db.Entry(confirmationCode.User).Entity;
-      Console.WriteLine(user.Password);
+      
+      var user = confirmationCode.User;
       user.Password = _userService.HashPassword(user, model.Password);
       await _db.SaveChangesAsync();
-      Console.WriteLine(user.Password);
+      
       return Ok();
     }
   }

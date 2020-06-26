@@ -109,8 +109,7 @@ namespace ExtremeInsiders.Areas.Api.Controllers
     public async Task<IActionResult> LogIn(AuthenticationModels.LogIn model)
     {
       var user = await _userService.Authenticate(model.Email, model.Password);
-      Console.Write(user);
-      
+
       if (user != null)
         return Ok(user.WithoutSensitive(token: true, useLikeIds: true, useFavoriteIds: true));
 
