@@ -57,6 +57,7 @@ namespace ExtremeInsiders
       });
       
       services.AddCustomAuthenticationService(Configuration);
+      services.AddCustomAuthorizationService();
       services.AddHelperServices();
       services.AddSocialAuthService();
     }

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ExtremeInsiders.Models
 {
-  [Authorize]
+  [Authorize(Policy = SubscriptionHandler.POLICY_NAME)]
   [ApiController]
   [Route("api/[controller]")]
   public class ControllerBase<T, TR> : Controller

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -30,26 +31,6 @@ namespace ExtremeInsiders.Services
 
   public class UserService : IUserService
   {
-    private User _user { get; set; } = null;
-
-    public User User => _user ??= _db.Users.SingleOrDefault(u => u.Id == int.Parse(_httpContextAccessor.HttpContext.User.Identity.Name));
-    public int UserId => int.Parse(_httpContextAccessor.HttpContext.User.Identity.Name);
-    public Culture Culture => Culture.All.FirstOrDefault(x => x.Key == CultureKey) ?? _db.Cultures.FirstOrDefault(x => x.Key == CultureKey) ?? Culture.Default;
-
-    private string CultureKey
-    {
-      get
-      {
-        if(_httpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
-          return _httpContextAccessor.HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Locality).Value;
-        if (_httpContextAccessor.HttpContext.Request.Headers.ContainsKey("Culture"))
-          return _httpContextAccessor.HttpContext.Request.Headers["Culture"];
-        
-        return null;
-      }
-    }
-
-
     private readonly AppSettings _appSettings;
     private readonly ApplicationContext _db;
     private readonly IHttpContextAccessor _httpContextAccessor;
@@ -63,6 +44,36 @@ namespace ExtremeInsiders.Services
       _httpContextAccessor = httpContextAccessor;
       _passwordHasherService = passwordHasherService;
       _imageService = imageService;
+    }
+    
+    private User _user { get; set; } = null;
+
+    public User User => _user ??= _db.Users.SingleOrDefault(u => u.Id == int.Parse(_httpContextAccessor.HttpContext.User.Identity.Name));
+    public int UserId => int.Parse(_httpContextAccessor.HttpContext.User.Identity.Name);
+    public Culture Culture => Culture.All.FirstOrDefault(x => x.Key == CultureKey) ?? _db.Cultures.FirstOrDefault(x => x.Key == CultureKey) ?? Culture.Default;
+
+    public DateTime DateSubscriptionEnd
+    {
+      get
+      {
+        if (_httpContextAccessor.HttpContext.User.Claims.Any(x => x.Type == ClaimTypes.Expiration))
+          return DateTime.Parse(
+            _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Expiration)?.Value);
+        
+        return default;
+      }
+    }
+    private string CultureKey
+    {
+      get
+      {
+        if(_httpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
+          return _httpContextAccessor.HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Locality).Value;
+        if (_httpContextAccessor.HttpContext.Request.Headers.ContainsKey("Culture"))
+          return _httpContextAccessor.HttpContext.Request.Headers["Culture"];
+        
+        return null;
+      }
     }
 
     public async Task<User> Authenticate(string email, string password)
@@ -165,7 +176,8 @@ namespace ExtremeInsiders.Services
       var claims = new ClaimsIdentity(new Claim[]
       {
         new Claim(ClaimTypes.Name, user.Id.ToString()),
-        new Claim(ClaimTypes.Role, user.Role.Name)
+        new Claim(ClaimTypes.Role, user.Role.Name),
+        new Claim(ClaimTypes.Expiration, user.Subscription != null ? user.Subscription.DateEnd.ToString(CultureInfo.InvariantCulture) : ""), 
       }, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
       
       if(culture != null)

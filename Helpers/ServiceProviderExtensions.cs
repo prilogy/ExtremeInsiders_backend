@@ -1,6 +1,7 @@
 ﻿using ExtremeInsiders.Entities;
 using ExtremeInsiders.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -41,6 +42,15 @@ namespace ExtremeInsiders.Helpers
           x.LoginPath = new PathString("/admin/auth/login");
           // x.LogoutPath = new PathString("/admin/auth/logout");
         });
+    }
+
+    public static void AddCustomAuthorizationService(this IServiceCollection services)
+    {
+      services.AddTransient<IAuthorizationHandler, SubscriptionHandler>();
+      services.AddAuthorization(options =>
+      {
+        options.AddPolicy(SubscriptionHandler.POLICY_NAME, policy => policy.Requirements.Add(new SubscriptionRequirement()));
+      });
     }
 
     public static void AddHelperServices(this IServiceCollection services)
