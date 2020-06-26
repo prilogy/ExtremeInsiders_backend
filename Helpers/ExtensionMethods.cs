@@ -44,8 +44,8 @@ namespace ExtremeInsiders.Helpers
       where T : ITranslatableEntity<T, TR>
       where TR : TranslatableEntityTranslation<T>
     {
-      var cultureObj = Culture.AllCultures.FirstOrDefault(x => x.Key == culture);
-      return cultureObj == null ? entity.OfCulture(Culture.AllCultures.First()) : entity.OfCulture(cultureObj);
+      var cultureObj = Culture.All.FirstOrDefault(x => x.Key == culture);
+      return cultureObj == null ? entity.OfCulture(Culture.All.First()) : entity.OfCulture(cultureObj);
     }
     public static List<T> OfCulture<T, TR>(this IEnumerable<ITranslatableEntity<T, TR>> list, Culture culture) 
       where T : ITranslatableEntity<T, TR>

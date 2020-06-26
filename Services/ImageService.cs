@@ -48,7 +48,7 @@ namespace ExtremeInsiders.Services
         
         return image;
       }
-      catch(Exception ex)
+      catch 
       {
         return null;
       }

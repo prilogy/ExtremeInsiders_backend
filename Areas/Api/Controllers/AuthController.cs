@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace ExtremeInsiders.Areas.Api.Controllers
 {
@@ -41,7 +42,6 @@ namespace ExtremeInsiders.Areas.Api.Controllers
       var user = await SignUpInternal(model);
       if (user != null)
       {
-        await _confirmationService.SendEmailConfirmationAsync(user);
         return Ok();
       }
 
@@ -93,7 +93,6 @@ namespace ExtremeInsiders.Areas.Api.Controllers
         {
           account.UserId = user.Id;
           await _db.SaveChangesAsync();
-          await _confirmationService.SendEmailConfirmationAsync(user);
           return Ok();
         }
         
@@ -159,6 +158,13 @@ namespace ExtremeInsiders.Areas.Api.Controllers
       }
 
       await _db.Users.AddAsync(user);
+      await _db.SaveChangesAsync();
+      
+      await _confirmationService.SendEmailConfirmationAsync(user);
+      
+      user.Culture = _db.Cultures.FirstOrDefault(x => x.Key == _userService.Culture.Key);
+      var subscription = Subscription.Demo(user);
+      await _db.Subscriptions.AddAsync(subscription);
       await _db.SaveChangesAsync();
       return user;
     }

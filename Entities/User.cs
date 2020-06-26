@@ -34,7 +34,14 @@ namespace ExtremeInsiders.Entities
     public virtual List<Favorite> Favorites { get; set; }
     [JsonIgnore]
     public virtual List<ConfirmationCode> ConfirmationCodes { get; set; }
+    [JsonIgnore]
+    public virtual List<Subscription> Subscriptions { get; set; }
 
+    [JsonRequired]
+    public Subscription Subscription => Subscriptions.FirstOrDefault(x => DateTime.Now < x.DateEnd);
+    
+    public virtual Culture Culture { get; set; }
+    public virtual Currency Currency { get; set; }
 
     [NotMapped]
     public bool EmailVerified =>

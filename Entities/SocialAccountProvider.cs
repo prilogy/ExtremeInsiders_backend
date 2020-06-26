@@ -9,7 +9,7 @@ namespace ExtremeInsiders.Entities
     public int Id { get; set; }
     public string Name { get; set; }
 
-    public static readonly List<SocialAccountProvider> AllProviders = new List<SocialAccountProvider>
+    public static readonly List<SocialAccountProvider> All = new List<SocialAccountProvider>
     {
       new SocialAccountProvider {Id = 1, Name = Providers.Google},
       new SocialAccountProvider {Id = 2, Name = Providers.Vk},

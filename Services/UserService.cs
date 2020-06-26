@@ -34,7 +34,7 @@ namespace ExtremeInsiders.Services
 
     public User User => _user ??= _db.Users.SingleOrDefault(u => u.Id == int.Parse(_httpContextAccessor.HttpContext.User.Identity.Name));
     public int UserId => int.Parse(_httpContextAccessor.HttpContext.User.Identity.Name);
-    public Culture Culture => Culture.AllCultures.FirstOrDefault(x => x.Key == CultureKey) ?? _db.Cultures.FirstOrDefault(x => x.Key == CultureKey) ?? Culture.Default;
+    public Culture Culture => Culture.All.FirstOrDefault(x => x.Key == CultureKey) ?? _db.Cultures.FirstOrDefault(x => x.Key == CultureKey) ?? Culture.Default;
 
     private string CultureKey
     {
@@ -176,7 +176,7 @@ namespace ExtremeInsiders.Services
     private Culture GetCultureHeader()
     {
       var cultureHeader = (string)_httpContextAccessor.HttpContext.Request.Headers["Culture"];
-      var culture = Culture.AllCultures.FirstOrDefault(c => c.Key == cultureHeader);
+      var culture = Culture.All.FirstOrDefault(c => c.Key == cultureHeader);
 
       return culture ?? Culture.Russian;
     }

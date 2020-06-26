@@ -37,10 +37,15 @@ namespace ExtremeInsiders.Data
     public DbSet<Favorite> Favorites { get; set; }
     
     public DbSet<ConfirmationCode> ConfirmationCodes { get; set; }
+    public DbSet<Currency> Currencies { get; set; }
+    
+    public DbSet<Subscription> Subscriptions { get; set; }
+    public DbSet<SubscriptionPlan> SubscriptionPlans { get; set; }
+    public DbSet<SubscriptionPlanTranslation> SubscriptionPlansTranslations { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-      modelBuilder.Entity<SocialAccountProvider>().HasData(SocialAccountProvider.AllProviders);
+      modelBuilder.Entity<SocialAccountProvider>().HasData(SocialAccountProvider.All);
       modelBuilder.Entity<Role>().HasData(Role.User, Role.Admin);
       modelBuilder.Entity<Culture>().HasData(Culture.Russian, Culture.English);
       
@@ -56,7 +61,8 @@ namespace ExtremeInsiders.Data
       
       modelBuilder.Entity<Like>().HasKey(x => new {x.UserId, x.EntityId});
       modelBuilder.Entity<Like>().HasKey(x => new {x.UserId, x.EntityId});
-      modelBuilder.Entity<ConfirmationCode>().HasKey(x => new {x.UserId, x.Code});
+
+      modelBuilder.Entity<Currency>().HasData(Currency.All);
     }
 
     public ApplicationContext(DbContextOptions options) : base(options)
