@@ -193,7 +193,7 @@ namespace ExtremeInsiders.Services
       {
         new Claim(ClaimTypes.Name, user.Id.ToString()),
         new Claim(ClaimTypes.Role, user.Role.Name),
-        new Claim(ClaimTypes.Expiration, user.Subscription != null ? user.Subscription.DateEnd.ToString(CultureInfo.InvariantCulture) : ""), 
+        new Claim(ClaimTypes.Expiration, user.Subscription != null ? user.Subscription.DateEnd.ToString() : ""), 
       }, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
       
       if(culture != null)

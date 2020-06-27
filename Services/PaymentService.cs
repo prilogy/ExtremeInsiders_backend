@@ -27,7 +27,7 @@ namespace ExtremeInsiders.Services
         secretKey: appSettings.Value.KassaSecret).MakeAsync();
     }
 
-    public async Task<Entities.Payment> CreatePayment(
+    public async Task<string> CreatePayment(
       decimal value,
       Entities.Payment.Types type,
       Dictionary<string, string> metadata = null, 
@@ -37,14 +37,23 @@ namespace ExtremeInsiders.Services
       if (user == null) user = _userService.User;
       if (currency == null) currency = user.Currency;
 
+      metadata[Entities.Payment.TypeMetadataName] = type.ToString();
+
       var newPayment = new NewPayment
       {
         Amount = new Amount {Value = value, Currency = currency.Key},
-        Metadata = metadata
+        Metadata = metadata,
+        Confirmation = new Confirmation
+        {
+          Type = ConfirmationType.Redirect,
+          ReturnUrl = "localhost"
+        }
       };
 
       var payment = await _client.CreatePaymentAsync(newPayment);
-      return await SavePaymentToDb(payment, user, currency, type);
+      await SavePaymentToDb(payment, user, currency, type);
+      
+      return payment.Confirmation.ConfirmationUrl;
     }
 
     public async Task<Entities.Payment> CapturePayment(Yandex.Checkout.V3.Payment payment)
@@ -53,7 +62,7 @@ namespace ExtremeInsiders.Services
       if (dbPayment == null) return null;
       
       payment = await _client.CapturePaymentAsync(payment);
-      dbPayment.Status = payment.Status;
+      dbPayment.Status = PaymentStatus.Succeeded;
       await _db.SaveChangesAsync();
 
       dbPayment.Metadata = payment.Metadata;
@@ -68,7 +77,7 @@ namespace ExtremeInsiders.Services
         Value = payment.Amount.Value,
         Status = payment.Status,
         UserId = user.Id,
-        Currency = currency,
+        CurrencyId = currency.Id,
         Type = type
       };
       

@@ -25,8 +25,7 @@ namespace ExtremeInsiders.Helpers
       
       if (DateTime.UtcNow < dateSubscriptionEnd)
         context.Succeed(requirement);
-      
-      context.Fail();
+      else context.Fail();
 
       return Task.CompletedTask;
     }

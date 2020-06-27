@@ -14,10 +14,13 @@ namespace ExtremeInsiders.Entities
     public int UserId { get; set; }
     [JsonIgnore]
     public virtual User User { get; set; }
-    
+    [JsonIgnore]
     public DateTime DateStart { get; set; }
     public DateTime DateEnd { get; set; }
     
+    [JsonIgnore]
+    public int? PlanId { get; set; }
+    [JsonIgnore]
     public virtual SubscriptionPlan Plan { get; set; }
 
     public static Subscription Demo(User user)

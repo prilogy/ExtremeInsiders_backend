@@ -40,7 +40,7 @@ namespace ExtremeInsiders.Entities
     public virtual List<Payment> Payments { get; set; }
 
     [JsonRequired]
-    public Subscription Subscription => Subscriptions.FirstOrDefault(x => DateTime.Now < x.DateEnd);
+    public Subscription Subscription => Subscriptions != null && Subscriptions.LastOrDefault().DateEnd > DateTime.Now ? Subscriptions.LastOrDefault() : null;
     
     public virtual Culture Culture { get; set; }
     public virtual Currency Currency { get; set; }

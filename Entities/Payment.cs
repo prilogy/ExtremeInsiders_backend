@@ -16,12 +16,14 @@ namespace ExtremeInsiders.Entities
     public DateTime DateCreated { get; set; }
     public Types Type { get; set; }
     public int UserId { get; set; }
-    public User User { get; set; }
+    public virtual User User { get; set; }
     
     public int CurrencyId { get; set; }
-    public Currency Currency { get; set; }
+    public virtual Currency Currency { get; set; }
     [NotMapped]
     public Dictionary<string, string> Metadata { get; set; }
+
+    [NotMapped] public const string TypeMetadataName = "type";
 
     public enum Types
     {
