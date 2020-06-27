@@ -47,7 +47,7 @@ namespace ExtremeInsiders.Services
         {
           Type = ConfirmationType.Redirect,
           ReturnUrl = "localhost"
-        }
+        },
       };
 
       var payment = await _client.CreatePaymentAsync(newPayment);

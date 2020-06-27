@@ -58,7 +58,7 @@ namespace ExtremeInsiders.Areas.Api.Controllers
     {
       var user = payment.User;
       var planId = int.Parse(payment.Metadata["planId"]);
-      var plan = await _db.SubscriptionPlans.FirstOrDefaultAsync(x => x.Id == planId);
+      var plan = await _db.SubscriptionsPlans.FirstOrDefaultAsync(x => x.Id == planId);
       if(plan == null) return;
 
       var subscription = new Subscription

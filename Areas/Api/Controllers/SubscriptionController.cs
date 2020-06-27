@@ -30,13 +30,13 @@ namespace ExtremeInsiders.Areas.Api.Controllers
     [HttpGet]
     public async Task<IActionResult> GetPlans()
     {
-      return Ok((await _db.SubscriptionPlans.ToListAsync()).OfCulture(_userService.Culture));
+      return Ok((await _db.SubscriptionsPlans.ToListAsync()).OfCulture(_userService.Culture));
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetPaymentUrl(int id)
     {
-      var plan = await _db.SubscriptionPlans.FirstOrDefaultAsync(x => x.Id == id);
+      var plan = await _db.SubscriptionsPlans.FirstOrDefaultAsync(x => x.Id == id);
       if (plan == null) return NotFound();
 
       var metadata = new Dictionary<string, string>

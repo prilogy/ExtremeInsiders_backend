@@ -40,8 +40,8 @@ namespace ExtremeInsiders.Data
     public DbSet<Currency> Currencies { get; set; }
     
     public DbSet<Subscription> Subscriptions { get; set; }
-    public DbSet<SubscriptionPlan> SubscriptionPlans { get; set; }
-    public DbSet<SubscriptionPlanTranslation> SubscriptionPlansTranslations { get; set; }
+    public DbSet<SubscriptionPlan> SubscriptionsPlans { get; set; }
+    public DbSet<SubscriptionPlanTranslation> SubscriptionsPlansTranslations { get; set; }
     
     public DbSet<Payment> Payments { get; set; }
     
