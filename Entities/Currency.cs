@@ -26,6 +26,8 @@ namespace ExtremeInsiders.Entities
       Id = 3,
       Key = "USD"
     };
+
+    public static Currency Default => USD;
     
     public static readonly List<Currency> All = new List<Currency>
     {

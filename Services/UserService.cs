@@ -51,6 +51,22 @@ namespace ExtremeInsiders.Services
     public User User => _user ??= _db.Users.SingleOrDefault(u => u.Id == int.Parse(_httpContextAccessor.HttpContext.User.Identity.Name));
     public int UserId => int.Parse(_httpContextAccessor.HttpContext.User.Identity.Name);
     public Culture Culture => Culture.All.FirstOrDefault(x => x.Key == CultureKey) ?? _db.Cultures.FirstOrDefault(x => x.Key == CultureKey) ?? Culture.Default;
+    public Currency Currency
+    {
+      get
+      {
+        if (!_httpContextAccessor.HttpContext.User.Identity.IsAuthenticated) return default;
+        
+        if(User.Currency != null)
+          return User.Currency;
+
+        if (_httpContextAccessor.HttpContext.Request.Headers.ContainsKey("Currency"))
+          return Currency.All.FirstOrDefault(x =>
+            x.Key == _httpContextAccessor.HttpContext.Request.Headers["Currency"]);
+          
+        return Currency.Default;
+      }
+    }
 
     public DateTime DateSubscriptionEnd
     {

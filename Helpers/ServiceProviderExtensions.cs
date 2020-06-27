@@ -60,6 +60,7 @@ namespace ExtremeInsiders.Helpers
       services.AddScoped<UserService>();
       services.AddScoped<EmailService>();
       services.AddScoped<ConfirmationService>();
+      services.AddScoped<PaymentService>();
     }
   }
 }

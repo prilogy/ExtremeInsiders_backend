@@ -43,6 +43,8 @@ namespace ExtremeInsiders.Data
     public DbSet<SubscriptionPlan> SubscriptionPlans { get; set; }
     public DbSet<SubscriptionPlanTranslation> SubscriptionPlansTranslations { get; set; }
     
+    public DbSet<Payment> Payments { get; set; }
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
       modelBuilder.Entity<SocialAccountProvider>().HasData(SocialAccountProvider.All);
@@ -61,7 +63,7 @@ namespace ExtremeInsiders.Data
       
       modelBuilder.Entity<Like>().HasKey(x => new {x.UserId, x.EntityId});
       modelBuilder.Entity<Like>().HasKey(x => new {x.UserId, x.EntityId});
-
+      
       modelBuilder.Entity<Currency>().HasData(Currency.All);
     }
 

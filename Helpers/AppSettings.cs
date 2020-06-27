@@ -17,6 +17,8 @@ namespace ExtremeInsiders.Helpers
     public string EmailSenderSmtp { get; set; }
     public string EmailSenderLogin { get; set; }
     public string EmailSenderPassword { get; set; }
+    public string KassaShopId { get; set; }
+    public string KassaSecret { get; set; }
   }
   
   public static class AppSettingsExtensions {

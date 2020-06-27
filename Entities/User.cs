@@ -36,6 +36,8 @@ namespace ExtremeInsiders.Entities
     public virtual List<ConfirmationCode> ConfirmationCodes { get; set; }
     [JsonIgnore]
     public virtual List<Subscription> Subscriptions { get; set; }
+    [JsonIgnore]
+    public virtual List<Payment> Payments { get; set; }
 
     [JsonRequired]
     public Subscription Subscription => Subscriptions.FirstOrDefault(x => DateTime.Now < x.DateEnd);
