@@ -17,7 +17,10 @@ namespace ExtremeInsiders.Data
     /* Entities */
     public DbSet<EntityBase> EntitiesBase { get; set; }
     public DbSet<EntityLikeable> EntitiesLikeable { get; set; }
-
+    
+    public DbSet<EntitySaleable> EntitiesSaleable { get; set; }
+    public DbSet<EntitySaleablePrice> EntitySaleablePrices { get; set; }
+    
     /* Sports */
     public DbSet<Sport> Sports { get; set; }
     public DbSet<SportTranslation> SportsTranslations { get; set; }
@@ -60,9 +63,14 @@ namespace ExtremeInsiders.Data
       modelBuilder.Entity<Playlist>().HasData(playlist);
       modelBuilder.Entity<Video>().HasData(video);
       modelBuilder.Entity<Movie>().HasData(movie);
+
+      modelBuilder.Entity<SportTranslation>().HasKey(x => new {x.CultureId, x.BaseEntityId});
+      modelBuilder.Entity<PlaylistTranslation>().HasKey(x => new {x.CultureId, x.BaseEntityId});
+      modelBuilder.Entity<MovieTranslation>().HasKey(x => new {x.CultureId, x.BaseEntityId});
+      modelBuilder.Entity<VideoTranslation>().HasKey(x => new {x.CultureId, x.BaseEntityId});
       
       modelBuilder.Entity<Like>().HasKey(x => new {x.UserId, x.EntityId});
-      modelBuilder.Entity<Like>().HasKey(x => new {x.UserId, x.EntityId});
+      modelBuilder.Entity<EntitySaleablePrice>().HasKey(x => new {x.CurrencyId, x.EntityId});
       
       modelBuilder.Entity<Currency>().HasData(Currency.All);
     }

@@ -146,10 +146,9 @@ namespace ExtremeInsiders.Areas.Api.Controllers
     private async Task<User> SignUpInternal(AuthenticationModels.SignUp model)
     {
       var user = await _userService.Create(model);
-      if (user == null)
-      {
-        return null;
-      }
+      if (user == null) return null;
+      user.CultureId = _userService.Culture.Id;
+      user.CurrencyId = _userService.Currency.Id;
       
       if (model.Avatar != null && user.Avatar == null)
       {
@@ -161,8 +160,6 @@ namespace ExtremeInsiders.Areas.Api.Controllers
       await _db.SaveChangesAsync();
       
       await _confirmationService.SendEmailConfirmationAsync(user);
-      
-      user.Culture = _db.Cultures.FirstOrDefault(x => x.Key == _userService.Culture.Key);
       var subscription = Subscription.Demo(user);
       await _db.Subscriptions.AddAsync(subscription);
       await _db.SaveChangesAsync();

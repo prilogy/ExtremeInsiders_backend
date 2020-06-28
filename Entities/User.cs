@@ -33,6 +33,8 @@ namespace ExtremeInsiders.Entities
     [JsonIgnore]
     public virtual List<Favorite> Favorites { get; set; }
     [JsonIgnore]
+    public virtual List<Sale> Sales { get; set; }
+    [JsonIgnore]
     public virtual List<ConfirmationCode> ConfirmationCodes { get; set; }
     [JsonIgnore]
     public virtual List<Subscription> Subscriptions { get; set; }

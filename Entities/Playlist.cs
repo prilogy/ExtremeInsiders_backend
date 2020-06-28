@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace ExtremeInsiders.Entities
 {
-  public class Playlist : EntityBase, ITranslatableEntity<Playlist, PlaylistTranslation>
+  public class Playlist : EntitySaleable, ITranslatableEntity<Playlist, PlaylistTranslation>
   {
     public int SportId { get; set; }
     [JsonIgnore]

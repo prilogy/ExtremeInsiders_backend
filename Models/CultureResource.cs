@@ -57,7 +57,7 @@ namespace ExtremeInsiders.Models
         {
           Culture.Russian.Key, new Dictionary<string, string>
           {
-            {"subject", "Код подтверждения Email"},
+            {"subject", "Сброс пароля"},
             {"body_before_code", "Секретный код сброса пароля вашего аккаунта ExtremeInsiders"},
             {"body_after_code", "Если вы не хотели сбросить пароль - просто проигнорируйте это сообщение."}
           }

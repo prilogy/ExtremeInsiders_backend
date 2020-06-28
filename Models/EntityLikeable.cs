@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace ExtremeInsiders.Models
 {
-  public class EntityLikeable : EntityBase 
+  public class  EntityLikeable : EntitySaleable
   {
     [ForeignKey("EntityId")]
     [JsonIgnore]

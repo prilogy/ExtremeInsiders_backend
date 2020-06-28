@@ -48,25 +48,41 @@ namespace ExtremeInsiders.Services
     
     private User _user { get; set; } = null;
 
-    public User User => _user ??= _db.Users.SingleOrDefault(u => u.Id == int.Parse(_httpContextAccessor.HttpContext.User.Identity.Name));
+    public User User => _user ??= _httpContextAccessor.HttpContext.User.Identity.IsAuthenticated ? _db.Users.FirstOrDefault(u => u.Id == int.Parse(_httpContextAccessor.HttpContext.User.Identity.Name)) : null;
     public int UserId => int.Parse(_httpContextAccessor.HttpContext.User.Identity.Name);
-    public Culture Culture => Culture.All.FirstOrDefault(x => x.Key == CultureKey) ?? _db.Cultures.FirstOrDefault(x => x.Key == CultureKey) ?? Culture.Default;
+
+    public Culture Culture
+    {
+      get
+      {
+        if(User?.Culture != null)
+          return User.Culture;
+
+        if (CultureFromHeader != null)
+          return _db.Cultures.FirstOrDefault(x =>
+            x.Key == CultureFromHeader);
+          
+        return _db.Cultures.First(x => x.Key == Culture.Default.Key);
+      }
+    }
+    
     public Currency Currency
     {
       get
       {
-        if (!_httpContextAccessor.HttpContext.User.Identity.IsAuthenticated) return default;
-        
-        if(User.Currency != null)
+        if(User?.Currency != null)
           return User.Currency;
 
-        if (_httpContextAccessor.HttpContext.Request.Headers.ContainsKey("Currency"))
+        if (CurrencyFromHeader != null)
           return _db.Currencies.FirstOrDefault(x =>
-            x.Key == _httpContextAccessor.HttpContext.Request.Headers["Currency"]);
+            x.Key == CurrencyFromHeader);
           
-        return Currency.Default;
+        return _db.Currencies.First(x => x.Key == Currency.Default.Key);
       }
     }
+    
+    private string CultureFromHeader =>  _httpContextAccessor.HttpContext.Request.Headers.ContainsKey("Culture") ? _httpContextAccessor.HttpContext.Request.Headers["Culture"].ToString() : null;
+    private string CurrencyFromHeader => _httpContextAccessor.HttpContext.Request.Headers.ContainsKey("Currency") ? _httpContextAccessor.HttpContext.Request.Headers["Currency"].ToString() : null;
 
     public DateTime DateSubscriptionEnd
     {
@@ -77,18 +93,6 @@ namespace ExtremeInsiders.Services
             _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Expiration)?.Value);
         
         return default;
-      }
-    }
-    private string CultureKey
-    {
-      get
-      {
-        if(_httpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
-          return _httpContextAccessor.HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Locality).Value;
-        if (_httpContextAccessor.HttpContext.Request.Headers.ContainsKey("Culture"))
-          return _httpContextAccessor.HttpContext.Request.Headers["Culture"];
-        
-        return null;
       }
     }
 
@@ -102,15 +106,8 @@ namespace ExtremeInsiders.Services
     
     public async Task<User> Authenticate(User user)
     {
-      if (user.Currency == null || _httpContextAccessor.HttpContext.Request.Headers.ContainsKey("Currency"))
-      {
-        var currency = await _db.Currencies.FirstOrDefaultAsync(x => x.Key == _httpContextAccessor.HttpContext.Request.Headers["Currency"].ToString()) ??
-                       await _db.Currencies.FirstOrDefaultAsync(x => x.Key == Entities.Currency.Default.Key);
-
-        _db.Entry(user).Entity.CurrencyId = currency.Id;
-        
-        await _db.SaveChangesAsync();
-      }
+      user = await UpdateMeta(user);
+      await _db.SaveChangesAsync();
       
       var tokenHandler = new JwtSecurityTokenHandler();
       var tokenDescriptor = GenerateTokenDescriptor(user, GetCultureHeader());
@@ -118,7 +115,7 @@ namespace ExtremeInsiders.Services
       user.Token = tokenHandler.WriteToken(token);
       return user;
     }
-
+    
     public async Task<User> AuthenticateCookies(string email, string password, bool adminOnly)
     {
       var user = await VerifyUser(email, password);
@@ -164,11 +161,33 @@ namespace ExtremeInsiders.Services
         user.Avatar = await _imageService.AddImage(model.Avatar);
       }
       user.Password = HashPassword(user, model.Password);
+      user = await UpdateMeta(user);
       
       return user;
     }
 
     public string HashPassword(User user, string password) => _passwordHasherService.HashPassword(user, password);
+    
+    private async Task<User> UpdateMeta(User user)
+    {
+      if (user.Currency == null || (CurrencyFromHeader != null && user.Currency?.Key != CurrencyFromHeader))
+      {
+        var currency = await _db.Currencies.FirstOrDefaultAsync(x => x.Key == CurrencyFromHeader) ??
+                       await _db.Currencies.FirstOrDefaultAsync(x => x.Key == Entities.Currency.Default.Key);
+
+        _db.Entry(user).Entity.CurrencyId = currency.Id;
+      }
+      
+      if (user.Culture == null || (CultureFromHeader != null && user.Culture?.Key != CultureFromHeader))
+      {
+        var culture = await _db.Cultures.FirstOrDefaultAsync(x => x.Key == CultureFromHeader) ??
+                      await _db.Cultures.FirstOrDefaultAsync(x => x.Key == Entities.Culture.Default.Key);
+
+        _db.Entry(user).Entity.CultureId = culture.Id;
+      }
+
+      return user;
+    }
     
     private async Task<User> VerifyUser(string email, string password)
     {

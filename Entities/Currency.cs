@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace ExtremeInsiders.Entities
 {
   public class Currency
   {
+    [JsonIgnore]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
     public string Key { get; set; }
