@@ -140,6 +140,7 @@ namespace ExtremeInsiders.Areas.Api.Controllers
     [HttpGet("refresh")]
     public async Task<IActionResult> Refresh()
     {
+      if (_userService.User == null) return BadRequest();
       return Ok((await _userService.Authenticate(_userService.User)).WithoutSensitive(token: true, useLikeIds: true, useFavoriteIds:true, useSaleIds: true));
     }
 

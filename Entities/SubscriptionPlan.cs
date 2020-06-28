@@ -10,15 +10,15 @@ namespace ExtremeInsiders.Entities
   {
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
-    
+    [JsonIgnore]
     public TimeSpan Duration { get; set; }
     [JsonIgnore]
     [ForeignKey("BaseEntityId")]
     public virtual List<SubscriptionPlanTranslation> Translations { get; set; }
     [NotMapped]
     public SubscriptionPlanTranslation Content { get; set; }
-
-
+    
+    [JsonIgnore]
     public virtual List<SubscriptionPlanPrice> Prices { get; set; }
     [NotMapped]
     public SubscriptionPlanPrice Price { get; set; }

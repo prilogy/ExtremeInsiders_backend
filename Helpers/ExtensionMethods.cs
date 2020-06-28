@@ -4,7 +4,6 @@ using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
 using ExtremeInsiders.Entities;
-using ExtremeInsiders.Migrations;
 using ExtremeInsiders.Models;
 using ExtremeInsiders.Services;
 using Microsoft.EntityFrameworkCore;
@@ -58,6 +57,12 @@ namespace ExtremeInsiders.Helpers
       }
 
       return entity;
+    }
+    
+    public static List<ISaleable<T>> OfCurrency<T>(this IEnumerable<ISaleable<T>> list, Currency currency) 
+      where T : ISaleablePrice
+    {
+      return list.Select(s => s.OfCurrency(currency)).ToList();
     }
 
     public static T OfFormat<T, TR>(this ITranslatableEntity<T, TR> entity, UserService userService)

@@ -30,7 +30,7 @@ namespace ExtremeInsiders.Areas.Api.Controllers
     [HttpGet]
     public async Task<IActionResult> GetPlans()
     {
-      return Ok((await _db.SubscriptionsPlans.ToListAsync()).OfCulture(_userService.Culture));
+      return Ok((await _db.SubscriptionsPlans.ToListAsync()).OfCulture(_userService.Culture).OfCurrency(_userService.Currency));
     }
 
     [HttpGet("{id}")]

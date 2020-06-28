@@ -20,7 +20,6 @@ namespace ExtremeInsiders.Entities
     
     [JsonIgnore]
     public int? PlanId { get; set; }
-    [JsonIgnore]
     public virtual SubscriptionPlan Plan { get; set; }
     [JsonIgnore]
     public int? PaymentId { get; set; }
