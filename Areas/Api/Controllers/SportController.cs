@@ -30,8 +30,8 @@ namespace ExtremeInsiders.Areas.Api.Controllers
       
       return Ok(new
       {
-        Videos = sport.Playlists.SelectMany(x => x.Videos).SearchAtWithQueryAsync<Video, VideoTranslation>(query).OfCulture(_userService.Culture),
-        Playlists = sport.Playlists.SearchAtWithQueryAsync<Playlist, PlaylistTranslation>(query).OfCulture(_userService.Culture)
+        Videos = sport.Playlists.SelectMany(x => x.Videos).SearchAtWithQueryAsync<Video, VideoTranslation>(query).OfFormat(_userService),
+        Playlists = sport.Playlists.SearchAtWithQueryAsync<Playlist, PlaylistTranslation>(query).OfFormat(_userService)
       });
     }
   }

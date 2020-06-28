@@ -31,20 +31,21 @@ namespace ExtremeInsiders.Models
     }
     
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<T>>> GetAll([FromQuery]int page, [FromQuery]int pageSize)
+    public async Task<IActionResult> GetAll([FromQuery]int page, [FromQuery]int pageSize)
     {
       var list = _db.Set<T>();
-      return (page == 0 ? await list.ToListAsync() : await list.Page(page, pageSize == 0 ? PAGE_SIZE: pageSize).ToListAsync()).OfCulture(_userService.Culture);
+      return Ok((page == 0 ? await list.ToListAsync() : await list.Page(page, pageSize == 0 ? PAGE_SIZE: pageSize).ToListAsync()).OfFormat(_userService));
     }
 
     [HttpPost]
-    public async Task<ActionResult<IEnumerable<T>>> GetByIds(int[] ids)
+    public async Task<IActionResult> GetByIds(int[] ids, [FromQuery]int page, [FromQuery]int pageSize)
     {
-      return Ok((await _db.Set<T>().Where(x => ids.Contains(x.Id)).ToListAsync()).OfCulture(_userService.Culture));
+      var list = _db.Set<T>().Where(x => ids.Contains(x.Id));
+      return Ok((page == 0 ? await list.ToListAsync() : await list.Page(page, pageSize == 0 ? PAGE_SIZE: pageSize).ToListAsync()).OfFormat(_userService));
     }
         
     [HttpGet("{id}")]
-    public async Task<ActionResult<T>> GetById(int id)
+    public async Task<IActionResult> GetById(int id)
     {
       var entity = await _db.Set<T>().FindAsync(id);
 
@@ -53,7 +54,7 @@ namespace ExtremeInsiders.Models
         return NotFound();
       }
 
-      return entity.OfCulture(_userService.Culture);
+      return Ok(entity.OfFormat(_userService));
     }
 
     [HttpPost("{id}/search")]

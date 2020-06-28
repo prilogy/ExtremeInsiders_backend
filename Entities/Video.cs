@@ -12,6 +12,8 @@ namespace ExtremeInsiders.Entities
     public int PlaylistId { get; set; }
     [JsonIgnore]
     public virtual Playlist Playlist { get; set; }
+
+    public bool IsInPaidPlaylist => Playlist.IsPaid;
     
     [JsonIgnore]
     [ForeignKey("BaseEntityId")]
@@ -20,7 +22,7 @@ namespace ExtremeInsiders.Entities
     public VideoTranslation Content { get; set; }
   }
 
-  public class VideoTranslation : TranslatableEntityTranslation<Video>, IDefaultTranslatableContent
+  public class VideoTranslation : TranslatableEntityTranslation<Video>, IDefaultTranslatableContent, IWithUrl
   {
     public string Name { get; set; }
     public string Description { get; set; }

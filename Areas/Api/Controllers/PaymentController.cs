@@ -46,12 +46,30 @@ namespace ExtremeInsiders.Areas.Api.Controllers
           case Payment.Types.SubscriptionContinuation:
             await SubscriptionContinuationHandle(dbPayment);
             break;
+          case Payment.Types.SaleableEntityBuy:
+            await SaleableEntityBuyHandle(dbPayment);
+            break;
           default:
             return BadRequest();
         }
       }
 
       return Ok();
+    }
+
+    private async Task SaleableEntityBuyHandle(Entities.Payment payment)
+    {
+      var user = payment.User;
+      var entityId = int.Parse(payment.Metadata["entityId"]);
+
+      var sale = new Sale
+      {
+        EntityId = entityId,
+        UserId = user.Id
+      };
+
+      await _db.Sales.AddAsync(sale);
+      await _db.SaveChangesAsync();
     }
 
     private async Task SubscriptionContinuationHandle(Entities.Payment payment)

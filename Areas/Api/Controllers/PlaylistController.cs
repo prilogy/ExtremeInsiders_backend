@@ -27,7 +27,7 @@ namespace ExtremeInsiders.Areas.Api.Controllers
       
       return Ok(new
       {
-        Videos = playlist.Videos.SearchAtWithQueryAsync<Video, VideoTranslation>(query).OfCulture(_userService.Culture)
+        Videos = playlist.Videos.SearchAtWithQueryAsync<Video, VideoTranslation>(query).OfFormat(_userService)
       });
     }
   }

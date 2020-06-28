@@ -24,6 +24,7 @@ namespace ExtremeInsiders.Models
 
   public class EntitySaleablePrice
   {
+    [JsonIgnore]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
     public decimal Value { get; set; }

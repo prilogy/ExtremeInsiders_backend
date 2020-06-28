@@ -27,7 +27,8 @@ namespace ExtremeInsiders.Entities
 
     public enum Types
     {
-      SubscriptionContinuation
+      SubscriptionContinuation,
+      SaleableEntityBuy
     }
     
     public Payment()

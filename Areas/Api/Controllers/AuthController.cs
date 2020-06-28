@@ -110,7 +110,7 @@ namespace ExtremeInsiders.Areas.Api.Controllers
       var user = await _userService.Authenticate(model.Email, model.Password);
 
       if (user != null)
-        return Ok(user.WithoutSensitive(token: true, useLikeIds: true, useFavoriteIds: true));
+        return Ok(user.WithoutSensitive(token: true, useLikeIds: true, useFavoriteIds: true, useSaleIds: true));
 
       ModelState.AddModelError("Auth", "Неправильный логин или пароль");
       return NotFound(ModelState);
@@ -125,7 +125,7 @@ namespace ExtremeInsiders.Areas.Api.Controllers
         var user = await handler.FindUser(model.Token);
 
         if (user != null)
-          return Ok(user.WithoutSensitive(token: true, useLikeIds: true, useFavoriteIds: true));
+          return Ok(user.WithoutSensitive(token: true, useLikeIds: true, useFavoriteIds: true, useSaleIds: true));
 
         ModelState.AddModelError("Auth", $"Ваш профиль {type} не привязан к аккаунту.");
         return NotFound(ModelState);
@@ -140,7 +140,7 @@ namespace ExtremeInsiders.Areas.Api.Controllers
     [HttpGet("refresh")]
     public async Task<IActionResult> Refresh()
     {
-      return Ok((await _userService.Authenticate(_userService.User)).WithoutSensitive(token: true, useLikeIds: true, useFavoriteIds:true));
+      return Ok((await _userService.Authenticate(_userService.User)).WithoutSensitive(token: true, useLikeIds: true, useFavoriteIds:true, useSaleIds: true));
     }
 
     private async Task<User> SignUpInternal(AuthenticationModels.SignUp model)

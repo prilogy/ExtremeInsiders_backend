@@ -59,6 +59,8 @@ namespace ExtremeInsiders.Entities
     [NotMapped] 
     public object FavoriteIds { get; set; }
     [NotMapped] 
+    public object SaleIds { get; set; }
+    [NotMapped] 
     public string Token { get; set; }
 
 
@@ -67,7 +69,7 @@ namespace ExtremeInsiders.Entities
       DateSignUp = DateTime.UtcNow;
     }
     
-    public User WithoutSensitive(bool token = false, bool useLikeIds = false, bool useFavoriteIds = false)
+    public User WithoutSensitive(bool token = false, bool useLikeIds = false, bool useFavoriteIds = false, bool useSaleIds = false)
     {
       Password = null;
       Token = token ? Token : null;
@@ -90,7 +92,17 @@ namespace ExtremeInsiders.Entities
           Sports = Favorites.Where(x => x.Entity is Sport).Select(x => x.EntityId),
           Playlists = Favorites.Where(x=> x.Entity is Playlist).Select(x => x.EntityId),
         };
-        Likes = null;
+      }
+
+      if (useSaleIds)
+      {
+        SaleIds = new
+        {
+          Videos = Sales.Where(x => x.Entity is Video).Select(x => x.EntityId),
+          Movies = Sales.Where(x=> x.Entity is Movie).Select(x => x.EntityId),
+          Playlists = Sales.Where(x=> x.Entity is Playlist).Select(x => x.EntityId),
+        };
+        
       }
 
       return this;

@@ -18,6 +18,7 @@ namespace ExtremeInsiders.Data
     public DbSet<EntityBase> EntitiesBase { get; set; }
     public DbSet<EntityLikeable> EntitiesLikeable { get; set; }
     
+    public DbSet<Sale> Sales { get; set; }
     public DbSet<EntitySaleable> EntitiesSaleable { get; set; }
     public DbSet<EntitySaleablePrice> EntitySaleablePrices { get; set; }
     

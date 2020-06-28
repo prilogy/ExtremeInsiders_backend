@@ -31,13 +31,12 @@ namespace ExtremeInsiders.Areas.Api.Controllers
     [HttpPost]
     public async Task<IActionResult> Search([FromBody]string query)
     {
-      var culture = _userService.Culture;
       return Ok(new
       {
-        Sports = (await _db.Sports.SearchAtWithQueryAsync<Sport, SportTranslation>(query)).OfCulture(culture),
-        Playlists = (await _db.Playlists.SearchAtWithQueryAsync<Playlist, PlaylistTranslation>(query)).OfCulture(culture),
-        Videos = (await _db.Videos.SearchAtWithQueryAsync<Video, VideoTranslation>(query)).OfCulture(culture),
-        Movies = (await _db.Movies.SearchAtWithQueryAsync<Movie, MovieTranslation>(query)).OfCulture(culture)
+        Sports = (await _db.Sports.SearchAtWithQueryAsync<Sport, SportTranslation>(query)).OfFormat(_userService),
+        Playlists = (await _db.Playlists.SearchAtWithQueryAsync<Playlist, PlaylistTranslation>(query)).OfFormat(_userService),
+        Videos = (await _db.Videos.SearchAtWithQueryAsync<Video, VideoTranslation>(query)).OfFormat(_userService),
+        Movies = (await _db.Movies.SearchAtWithQueryAsync<Movie, MovieTranslation>(query)).OfFormat(_userService),
       });
     }
 

@@ -55,6 +55,10 @@ namespace ExtremeInsiders.Services
     {
       get
       {
+        var claim = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Locality);
+        if (claim != null && Culture.All.Any(x => x.Key == claim.Value))
+          return Culture.All.FirstOrDefault(x => x.Key == claim.Value);
+        
         if(User?.Culture != null)
           return User.Culture;
 
@@ -70,6 +74,10 @@ namespace ExtremeInsiders.Services
     {
       get
       {
+        var claim = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "Currency");
+        if (claim != null && Currency.All.Any(x => x.Key == claim.Value))
+          return Currency.All.FirstOrDefault(x => x.Key == claim.Value);
+        
         if(User?.Currency != null)
           return User.Currency;
 
@@ -121,7 +129,7 @@ namespace ExtremeInsiders.Services
       var user = await VerifyUser(email, password);
       if (user == null) return null;
       
-      var claimsIdentity = GenerateClaimsIdentity(user, null);
+      var claimsIdentity = GenerateClaimsIdentity(user);
       var authProperties = new AuthenticationProperties
       {
         AllowRefresh = true,
@@ -205,24 +213,24 @@ namespace ExtremeInsiders.Services
       var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
       var tokenDescriptor = new SecurityTokenDescriptor
       {
-        Subject = GenerateClaimsIdentity(user,culture),
+        Subject = GenerateClaimsIdentity(user),
         Expires = DateTime.UtcNow.AddDays(7),
         SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
       };
       return tokenDescriptor;
     }
 
-    private ClaimsIdentity GenerateClaimsIdentity(User user, Culture culture)
+    private ClaimsIdentity GenerateClaimsIdentity(User user)
     {
       var claims = new ClaimsIdentity(new Claim[]
       {
         new Claim(ClaimTypes.Name, user.Id.ToString()),
         new Claim(ClaimTypes.Role, user.Role.Name),
-        new Claim(ClaimTypes.Expiration, user.Subscription != null ? user.Subscription.DateEnd.ToString() : ""), 
+        new Claim(ClaimTypes.Expiration, user.Subscription != null ? user.Subscription.DateEnd.ToString() : ""),
+        new Claim(ClaimTypes.Locality, user.Culture.Key),
+        new Claim("Currency", user.Currency.Key), 
       }, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
-      
-      if(culture != null)
-        claims.AddClaim(new Claim(ClaimTypes.Locality,culture.Key));
+
       return claims;
     }
     

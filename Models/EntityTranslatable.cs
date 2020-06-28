@@ -14,6 +14,8 @@ namespace ExtremeInsiders.Models
     TR Content { get; set; }
   }
 
+  
+  
   public abstract class TranslatableEntityTranslation<T>
   {
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -35,5 +37,9 @@ namespace ExtremeInsiders.Models
     string Name { get; set; }
     string Description { get; set; }
   }
-
+  
+  public interface IWithUrl
+  {
+    public string Url { get; set; }
+  }
 }
