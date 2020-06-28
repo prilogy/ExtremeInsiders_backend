@@ -25,7 +25,7 @@ namespace ExtremeInsiders.Services
   {
     User User { get; }
     Task<User> Authenticate(string email, string password);
-    User Authenticate(User user);
+    Task<User> Authenticate(User user);
     Task<User> Create(AuthenticationModels.SignUp model);
   }
 
@@ -61,7 +61,7 @@ namespace ExtremeInsiders.Services
           return User.Currency;
 
         if (_httpContextAccessor.HttpContext.Request.Headers.ContainsKey("Currency"))
-          return Currency.All.FirstOrDefault(x =>
+          return _db.Currencies.FirstOrDefault(x =>
             x.Key == _httpContextAccessor.HttpContext.Request.Headers["Currency"]);
           
         return Currency.Default;
@@ -96,16 +96,22 @@ namespace ExtremeInsiders.Services
     {
       var user = await VerifyUser(email, password);
       if (user == null) return null;
-      
-      var tokenHandler = new JwtSecurityTokenHandler();
-      var tokenDescriptor = GenerateTokenDescriptor(user, GetCultureHeader());
-      var token = tokenHandler.CreateToken(tokenDescriptor);
-      user.Token = tokenHandler.WriteToken(token);
-      return user;
+
+      return await Authenticate(user);
     }
     
-    public User Authenticate(User user)
+    public async Task<User> Authenticate(User user)
     {
+      if (user.Currency == null || _httpContextAccessor.HttpContext.Request.Headers.ContainsKey("Currency"))
+      {
+        var currency = await _db.Currencies.FirstOrDefaultAsync(x => x.Key == _httpContextAccessor.HttpContext.Request.Headers["Currency"].ToString()) ??
+                       await _db.Currencies.FirstOrDefaultAsync(x => x.Key == Entities.Currency.Default.Key);
+
+        _db.Entry(user).Entity.CurrencyId = currency.Id;
+        
+        await _db.SaveChangesAsync();
+      }
+      
       var tokenHandler = new JwtSecurityTokenHandler();
       var tokenDescriptor = GenerateTokenDescriptor(user, GetCultureHeader());
       var token = tokenHandler.CreateToken(tokenDescriptor);

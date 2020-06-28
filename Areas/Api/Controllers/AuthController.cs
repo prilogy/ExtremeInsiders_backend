@@ -138,9 +138,9 @@ namespace ExtremeInsiders.Areas.Api.Controllers
         
     [Authorize]
     [HttpGet("refresh")]
-    public IActionResult Refresh()
+    public async Task<IActionResult> Refresh()
     {
-      return Ok(_userService.Authenticate(_userService.User).WithoutSensitive(token: true, useLikeIds: true, useFavoriteIds:true));
+      return Ok((await _userService.Authenticate(_userService.User)).WithoutSensitive(token: true, useLikeIds: true, useFavoriteIds:true));
     }
 
     private async Task<User> SignUpInternal(AuthenticationModels.SignUp model)

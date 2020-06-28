@@ -66,6 +66,7 @@ namespace ExtremeInsiders.Areas.Api.Controllers
         PlanId = plan.Id,
         UserId = user.Id,
         DateStart = DateTime.UtcNow,
+        PaymentId = payment.Id
       };
       
       if (user.Subscription == null)

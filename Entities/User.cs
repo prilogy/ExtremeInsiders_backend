@@ -42,7 +42,11 @@ namespace ExtremeInsiders.Entities
     [JsonRequired]
     public Subscription Subscription => Subscriptions != null && Subscriptions.LastOrDefault().DateEnd > DateTime.Now ? Subscriptions.LastOrDefault() : null;
     
+    [JsonIgnore]
+    public int CultureId { get; set; }
     public virtual Culture Culture { get; set; }
+    [JsonIgnore]
+    public int CurrencyId { get; set; }
     public virtual Currency Currency { get; set; }
 
     [NotMapped]

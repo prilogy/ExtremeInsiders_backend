@@ -22,6 +22,10 @@ namespace ExtremeInsiders.Entities
     public int? PlanId { get; set; }
     [JsonIgnore]
     public virtual SubscriptionPlan Plan { get; set; }
+    [JsonIgnore]
+    public int? PaymentId { get; set; }
+    [JsonIgnore]
+    public virtual Payment Payment { get; set; }
 
     public static Subscription Demo(User user)
     {
