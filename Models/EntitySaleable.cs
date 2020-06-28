@@ -5,7 +5,23 @@ using Newtonsoft.Json;
 
 namespace ExtremeInsiders.Models
 {
-  public class EntitySaleable : EntityBase 
+  public interface ISaleable<T>
+  {
+    List<T> Prices { get; set; }
+    T Price { get; set; }
+  }
+
+  public interface ISaleablePrice
+  {
+    public decimal Value { get; set; }
+    
+    int CurrencyId { get; set; }
+    Currency Currency { get; set; }
+    
+    int EntityId { get; set; }
+  }
+  
+  public class EntitySaleable : EntityBase, ISaleable<EntitySaleablePrice>
   {
     [ForeignKey("EntityId")]
     [JsonIgnore]
@@ -22,7 +38,7 @@ namespace ExtremeInsiders.Models
     public int SalesAmount => Sales.Count;
   }
 
-  public class EntitySaleablePrice
+  public class EntitySaleablePrice : ISaleablePrice
   {
     [JsonIgnore]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

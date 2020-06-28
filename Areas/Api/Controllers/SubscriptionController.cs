@@ -38,13 +38,15 @@ namespace ExtremeInsiders.Areas.Api.Controllers
     {
       var plan = await _db.SubscriptionsPlans.FirstOrDefaultAsync(x => x.Id == id);
       if (plan == null) return NotFound();
+      plan = (SubscriptionPlan)plan.OfCurrency(_userService.Currency);
 
       var metadata = new Dictionary<string, string>
       {
         {"planId", plan.Id.ToString()}
       };
       
-      var url = await _paymentService.CreatePayment(user: _userService.User, currency: Currency.RUB, type: Payment.Types.SubscriptionContinuation, metadata: metadata, value: plan.CostInRub);
+      
+      var url = await _paymentService.CreatePayment(user: _userService.User, currency: plan.Price.Currency, type: Payment.Types.SubscriptionContinuation, metadata: metadata, value: plan.Price.Value);
 
       return Ok(url);
     }

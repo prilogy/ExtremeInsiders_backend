@@ -48,7 +48,8 @@ namespace ExtremeInsiders.Helpers
       return list.Select(s => s.OfCulture(culture)).ToList();
     }
     
-    public static EntitySaleable OfCurrency(this EntitySaleable entity, Currency currency)
+    public static ISaleable<T> OfCurrency<T>(this ISaleable<T> entity, Currency currency)
+    where T: ISaleablePrice
     {
       if (entity.Prices.Count > 0)
       {

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using ExtremeInsiders.Data;
 using ExtremeInsiders.Entities;
 using ExtremeInsiders.Helpers;
+using ExtremeInsiders.Models;
 using ExtremeInsiders.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +32,7 @@ namespace ExtremeInsiders.Areas.Api.Controllers
     {
       var entity = (await _db.EntitiesSaleable.FirstOrDefaultAsync(x => x.Id == id));
       if (entity == null || !entity.IsPaid) return NotFound();
-      entity = entity.OfCurrency(_userService.Currency);
+      entity = (EntitySaleable)entity.OfCurrency(_userService.Currency);
       
       var metadata = new Dictionary<string, string>
       {
