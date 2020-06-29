@@ -52,6 +52,11 @@
     <ItemGroup>
       <UpToDateCheckInput Remove="Views\Shared\_Layout.cshtml" />
       <UpToDateCheckInput Remove="Views\Shared\_ValidationScriptsPartial.cshtml" />
+      <UpToDateCheckInput Remove="Areas\Admin\Views\Sport\Create.cshtml" />
+      <UpToDateCheckInput Remove="Areas\Admin\Views\Sport\Delete.cshtml" />
+      <UpToDateCheckInput Remove="Areas\Admin\Views\Sport\Details.cshtml" />
+      <UpToDateCheckInput Remove="Areas\Admin\Views\Sport\Edit.cshtml" />
+      <UpToDateCheckInput Remove="Areas\Admin\Views\Sport\Index.cshtml" />
     </ItemGroup>
 
 </Project>

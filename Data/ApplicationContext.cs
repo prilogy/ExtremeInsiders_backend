@@ -65,13 +65,13 @@ namespace ExtremeInsiders.Data
       modelBuilder.Entity<Video>().HasData(video);
       modelBuilder.Entity<Movie>().HasData(movie);
 
-      modelBuilder.Entity<SportTranslation>().HasKey(x => new {x.CultureId, x.BaseEntityId});
-      modelBuilder.Entity<PlaylistTranslation>().HasKey(x => new {x.CultureId, x.BaseEntityId});
-      modelBuilder.Entity<MovieTranslation>().HasKey(x => new {x.CultureId, x.BaseEntityId});
-      modelBuilder.Entity<VideoTranslation>().HasKey(x => new {x.CultureId, x.BaseEntityId});
+      modelBuilder.Entity<SportTranslation>().HasIndex(x => new {x.CultureId, x.BaseEntityId}).IsUnique();
+      modelBuilder.Entity<PlaylistTranslation>().HasIndex(x => new {x.CultureId, x.BaseEntityId}).IsUnique();
+      modelBuilder.Entity<MovieTranslation>().HasIndex(x => new {x.CultureId, x.BaseEntityId}).IsUnique();
+      modelBuilder.Entity<VideoTranslation>().HasIndex(x => new {x.CultureId, x.BaseEntityId}).IsUnique();
       
-      modelBuilder.Entity<Like>().HasKey(x => new {x.UserId, x.EntityId});
-      modelBuilder.Entity<EntitySaleablePrice>().HasKey(x => new {x.CurrencyId, x.EntityId});
+      modelBuilder.Entity<Like>().HasIndex(x => new {x.UserId, x.EntityId}).IsUnique();
+      modelBuilder.Entity<EntitySaleablePrice>().HasIndex(x => new {x.CurrencyId, x.EntityId}).IsUnique();
       
       modelBuilder.Entity<Currency>().HasData(Currency.All);
     }

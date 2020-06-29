@@ -1,17 +1,17 @@
 @model ExtremeInsiders.Entities.Sport
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Подробнее";
 }
 
-<h1>Details</h1>
+<h1>Подробнее</h1>
 
 <div>
-    <h4>Sport</h4>
+    <h4>Вид спорта</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateCreated)
+            Дата создания
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.DateCreated)
@@ -19,6 +19,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Изменить</a> |
+    <a asp-action="Index">Назад к списку</a>
 </div>

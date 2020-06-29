@@ -92,11 +92,6 @@ namespace ExtremeInsiders
         endpoints.MapControllerRoute(
           name: "Admin",
           pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-        
-        // endpoints.MapAreaControllerRoute(
-        //   name: "AdminArea",
-        //   areaName: "Admin",
-        //   pattern: "{area:exists}/{controller=Index}/{action=Index}/{id?}");
       });
     }
   }

@@ -1,5 +1,7 @@
-﻿@using ExtremeInsiders.Entities
+﻿@using System.Net.Http
+@using ExtremeInsiders.Entities
 @using ExtremeInsiders.Services
+@inject UserService _userService
 
 @{
     var user = User.Identity;
@@ -27,6 +29,9 @@
                 <ul class="navbar-nav flex-grow-1">
                     @if (User.Identity.IsAuthenticated)
                     {
+                        <li class="nav-item ml-auto">
+                            <p class="nav-link text-dark mb-0">@_userService.User.Email</p>
+                        </li>
                         <li class="nav-item">
                             <a asp-area="Admin" asp-controller="Auth" asp-action="LogOut" class="nav-link text-primary">Выход</a>
                         </li>

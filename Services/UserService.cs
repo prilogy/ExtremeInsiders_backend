@@ -26,7 +26,7 @@ namespace ExtremeInsiders.Services
     User User { get; }
     Task<User> Authenticate(string email, string password);
     Task<User> Authenticate(User user);
-    Task<User> Create(AuthenticationModels.SignUp model);
+    Task<User> Create(AuthenticationModels.SignUp model, bool asAdmin);
   }
 
   public class UserService : IUserService
@@ -147,19 +147,21 @@ namespace ExtremeInsiders.Services
       return user;
     }
 
-    public async Task<User> Create(AuthenticationModels.SignUp model)
+    public async Task<User> Create(AuthenticationModels.SignUp model, bool asAdmin = false)
     {
       model.Email = model.Email.ToLower();
       
       if (await _db.Users.AnyAsync(u => u.Email == model.Email))
         return null;
 
+      var role = asAdmin ? Role.AdminRole : Role.UserRole;
+
       var user = new User
       {
         Email = model.Email,
         Name = model.Name, 
         Password = model.Password, 
-        Role = await _db.Roles.SingleAsync(r => r.Name == Role.UserRole),
+        Role = await _db.Roles.SingleAsync(r => r.Name == role),
         PhoneNumber = model.PhoneNumber,
         DateBirthday = DateTime.ParseExact(model.DateBirthday, "dd.MM.yyyy", null),
       };

@@ -14,7 +14,7 @@ namespace ExtremeInsiders.Entities
     [JsonIgnore]
     public virtual List<Movie> Movies { get; set; }
 
-    public List<int> PlaylistsIds => Playlists.Select(x => x.Id).ToList();
+    public List<int> PlaylistsIds => Playlists?.Count > 0 ? Playlists.Select(x => x.Id).ToList() : null;
     public List<int> MoviesIds => Movies.Select(x => x.Id).ToList();
 
     [JsonIgnore]
