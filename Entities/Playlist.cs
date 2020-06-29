@@ -24,7 +24,7 @@ namespace ExtremeInsiders.Entities
     public PlaylistTranslation Content { get; set; }
   }
   
-  public class PlaylistTranslation : TranslatableEntityTranslation<Playlist>, IDefaultTranslatableContent
+  public class PlaylistTranslation : TranslatableEntityTranslation<Playlist>, IDefaultTranslatableContent, ITranslationWithImage
   {
     public string Name { get; set; }
     public string Description { get; set; }

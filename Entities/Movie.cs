@@ -20,7 +20,7 @@ namespace ExtremeInsiders.Entities
     public MovieTranslation Content { get; set; }
   }
   
-  public class MovieTranslation : TranslatableEntityTranslation<Movie>, IDefaultTranslatableContent, IWithUrl
+  public class MovieTranslation : TranslatableEntityTranslation<Movie>, IDefaultTranslatableContent, ITranslationWithUrl, ITranslationWithImage
   {
     public string Name { get; set; }
     public string Description { get; set; }

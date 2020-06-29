@@ -38,8 +38,14 @@ namespace ExtremeInsiders.Models
     string Description { get; set; }
   }
   
-  public interface IWithUrl
+  public interface ITranslationWithUrl
   {
     public string Url { get; set; }
+  }
+
+  public interface ITranslationWithImage
+  {
+    int? ImageId { get; set; }
+    Image Image { get; set; }
   }
 }

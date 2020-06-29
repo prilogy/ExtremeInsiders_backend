@@ -41,6 +41,11 @@
       <_ContentIncludedByDefault Remove="Areas\Admin\Views\Sport\Details.cshtml" />
       <_ContentIncludedByDefault Remove="Areas\Admin\Views\Sport\Edit.cshtml" />
       <_ContentIncludedByDefault Remove="Areas\Admin\Views\Sport\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Playlist\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Playlist\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Playlist\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Playlist\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Playlist\Index.cshtml" />
     </ItemGroup>
 
     <ItemGroup>

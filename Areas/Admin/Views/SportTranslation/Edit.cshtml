@@ -18,25 +18,25 @@
                 <span asp-validation-for="Id" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
+                <label class="control-label">Название</label>
                 <input asp-for="Name" class="form-control"/>
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
+                <label class="control-label">Описание</label>
                 <input asp-for="Description" class="form-control"/>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div>
-                <label class="control-label">Current image</label>
+                <label class="control-label">Текущее изображение</label>
                 <img src="@(Model.Image?.Path)" style="max-width: 350px"/>
             </div>
             <div class="form-group">
-                <label class="control-label">New image</label>
+                <label class="control-label">Новое изображение</label>
                 <input type="file" accept="image/*" name="ImageSrc" class="form-control"/>
             </div>
             <div class="form-group">
-                <label asp-for="BaseEntityId" class="control-label"></label>
+                <label class="control-label">Id базового представления</label>
                 <input readonly asp-for="BaseEntityId" class="form-control"/>
                 <span asp-validation-for="BaseEntityId" class="text-danger"></span>
             </div>

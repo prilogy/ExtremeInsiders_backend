@@ -24,7 +24,7 @@ namespace ExtremeInsiders.Entities
     public SportTranslation Content { get; set; }
   }
 
-  public class SportTranslation : TranslatableEntityTranslation<Sport>, IDefaultTranslatableContent
+  public class SportTranslation : TranslatableEntityTranslation<Sport>, IDefaultTranslatableContent, ITranslationWithImage
   {
     public string Name { get; set; }
     public string Description { get; set; }

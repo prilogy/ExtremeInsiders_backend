@@ -76,7 +76,7 @@ namespace ExtremeInsiders.Helpers
         saleable.OfCurrency(userService.Currency);
         if (userService.User.Sales.All(x => x.EntityId != saleable.Id))
         {
-          if (entity.Content is IWithUrl withUrl)
+          if (entity.Content is ITranslationWithUrl withUrl)
             withUrl.Url = null;
         }
       }
