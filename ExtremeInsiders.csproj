@@ -46,6 +46,11 @@
       <_ContentIncludedByDefault Remove="Areas\Admin\Views\Playlist\Details.cshtml" />
       <_ContentIncludedByDefault Remove="Areas\Admin\Views\Playlist\Edit.cshtml" />
       <_ContentIncludedByDefault Remove="Areas\Admin\Views\Playlist\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\PlaylistTranslation\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\PlaylistTranslation\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\PlaylistTranslation\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\PlaylistTranslation\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\PlaylistTranslation\Index.cshtml" />
     </ItemGroup>
 
     <ItemGroup>

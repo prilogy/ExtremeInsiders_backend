@@ -25,13 +25,13 @@ namespace ExtremeInsiders.Areas.Admin.Models
             _context = context;
         }
 
-        // GET: Sport
+        // GET: <Entity>
         public async Task<IActionResult> Index()
         {
             return View(await _context.Set<T>().ToListAsync());
         }
 
-        // GET: Sport/Details/5
+        // GET: <Entity>/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -49,13 +49,13 @@ namespace ExtremeInsiders.Areas.Admin.Models
             return View(entity);
         }
 
-        // GET: Sport/Create
+        // GET: <Entity>/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Sport/Create
+        // POST: <Entity>/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("DateCreated")] T entity)
@@ -69,7 +69,7 @@ namespace ExtremeInsiders.Areas.Admin.Models
             return View(entity);
         }
 
-        // GET: Sport/Edit/5
+        // GET: <Entity>/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -77,15 +77,15 @@ namespace ExtremeInsiders.Areas.Admin.Models
                 return NotFound();
             }
 
-            var sport = await _context.Sports.FindAsync(id);
-            if (sport == null)
+            var entity = await _context.Set<T>().FindAsync(id);
+            if (entity == null)
             {
                 return NotFound();
             }
-            return View(sport);
+            return View(entity);
         }
 
-        // POST: Sport/Edit/5
+        // POST: <Entity>/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,DateCreated")] T entity)
@@ -118,7 +118,7 @@ namespace ExtremeInsiders.Areas.Admin.Models
             return View(entity);
         }
 
-        // GET: Sport/Delete/5
+        // GET: <Entity>/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -136,7 +136,7 @@ namespace ExtremeInsiders.Areas.Admin.Models
             return View(entity);
         }
 
-        // POST: Sport/Delete/5
+        // POST: <Entity>/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

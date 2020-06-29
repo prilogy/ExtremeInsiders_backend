@@ -1,0 +1,98 @@
+@using ExtremeInsiders.Data
+@model ExtremeInsiders.Entities.Playlist
+@inject ApplicationContext _db;
+
+@{
+    ViewData["Title"] = "Изменение";
+}
+
+<h1>Изменение</h1>
+
+<h4>Плейлист</h4>
+<hr/>
+<div class="row justify-content-between">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <input readonly asp-for="Id" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Дата создания</label>
+                <input readonly asp-for="DateCreated" class="form-control"/>
+                <span asp-validation-for="DateCreated" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Сохранить" class="btn btn-primary"/>
+            </div>
+            <div>
+                <a asp-action="Index">Назад к списку</a>
+            </div>
+        </form>
+    </div>
+
+
+    <div class="col-md-8 ">
+        <h4>Локализации</h4>
+        <div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>
+                        Культура
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Id)
+                    </th>
+                    <th>
+                        Название
+                    </th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in _db.Cultures.ToList())
+                {
+                    var matchedTranslation = Model.Translations.FirstOrDefault(x => x.CultureId == item.Id);
+                    if (matchedTranslation != null)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => matchedTranslation.Culture.Key)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => matchedTranslation.Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => matchedTranslation.Name)
+                            </td>
+                            <td>
+                                <a asp-area="Admin" asp-controller="PlaylistTranslation" asp-action="Edit" asp-route-id="@matchedTranslation.Id">Изменить</a> |
+                                <a asp-area="Admin" asp-controller="PlaylistTranslation" asp-action="Delete" asp-route-id="@matchedTranslation.Id">Удалить</a>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Key)
+                            </td>
+
+                            <td>
+                                <a asp-area="Admin" asp-controller="PlaylistTranslation" asp-action="Create" asp-route-baseEntityId="@Model.Id" asp-route-cultureId="@item.Id">Создать</a>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+                    }
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
