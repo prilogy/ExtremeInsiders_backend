@@ -1,0 +1,20 @@
+@model ExtremeInsiders.Entities.BannerEntity
+
+<h1>Удаление</h1>
+
+<h3>Вы точно хотите удалить запись?</h3>
+<div>
+    <h4>BannerEntity</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Entity)
+        </dt>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Удалить" class="btn btn-danger" /> |
+        <a asp-action="Index">Назад к списку</a>
+    </form>
+</div>

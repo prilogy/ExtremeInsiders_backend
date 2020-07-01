@@ -1,0 +1,17 @@
+@model ExtremeInsiders.Entities.BannerEntity
+
+<h1>Подробнее</h1>
+
+<div>
+    <h4>BannerEntity</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Entity)
+        </dt>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Изменение</a> |
+    <a asp-action="Index">Назад к списку</a>
+</div>
