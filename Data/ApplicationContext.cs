@@ -17,7 +17,10 @@ namespace ExtremeInsiders.Data
     /* Entities */
     public DbSet<EntityBase> EntitiesBase { get; set; }
     public DbSet<EntityLikeable> EntitiesLikeable { get; set; }
+
+    /* Banner entity */
     public DbSet<BannerEntity> BannerEntities { get; set; }
+    public DbSet<BannerEntityTranslation> BannerEntitiesTranslations { get; set; }
     
     public DbSet<Sale> Sales { get; set; }
     public DbSet<EntitySaleable> EntitiesSaleable { get; set; }
@@ -71,6 +74,7 @@ namespace ExtremeInsiders.Data
       modelBuilder.Entity<PlaylistTranslation>().HasIndex(x => new {x.CultureId, x.BaseEntityId}).IsUnique();
       modelBuilder.Entity<MovieTranslation>().HasIndex(x => new {x.CultureId, x.BaseEntityId}).IsUnique();
       modelBuilder.Entity<VideoTranslation>().HasIndex(x => new {x.CultureId, x.BaseEntityId}).IsUnique();
+      modelBuilder.Entity<BannerEntityTranslation>().HasIndex(x => new {x.CultureId, x.BaseEntityId}).IsUnique();
       
       modelBuilder.Entity<Like>().HasIndex(x => new {x.UserId, x.EntityId}).IsUnique();
       modelBuilder.Entity<EntitySaleablePrice>().HasIndex(x => new {x.CurrencyId, x.EntityId}).IsUnique();

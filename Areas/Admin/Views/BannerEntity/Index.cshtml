@@ -1,3 +1,5 @@
+@using ExtremeInsiders.Entities
+@using ExtremeInsiders.Helpers
 @model IEnumerable<ExtremeInsiders.Entities.BannerEntity>
 
 <h1>Баннер</h1>
@@ -12,7 +14,10 @@
             Id
         </th>
         <th>
-            Id сущности
+            Заголовок
+        </th>
+        <th>
+            Id привязанной сущности
         </th>
         <th></th>
     </tr>
@@ -23,6 +28,9 @@
         <tr>
             <td>
                 @Html.DisplayFor(model => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.OfCulture(Culture.Russian).Content.Name)
             </td>
             <td>
                 @Html.DisplayFor(model => item.EntityId)

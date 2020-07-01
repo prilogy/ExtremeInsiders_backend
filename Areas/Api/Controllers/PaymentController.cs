@@ -29,7 +29,6 @@ namespace ExtremeInsiders.Areas.Api.Controllers
 
     public async Task<IActionResult> Notification()
     {
-      Console.WriteLine("sssssssssssss");
       var message = Client.ParseMessage(Request.Method, Request.ContentType, await new StreamReader(HttpContext.Request.Body).ReadToEndAsync());
       if (message == null) return BadRequest();
       
