@@ -1,8 +1,6 @@
+@using ExtremeInsiders.Entities
+@using ExtremeInsiders.Helpers
 @model IEnumerable<ExtremeInsiders.Entities.Playlist>
-
-@{
-    ViewData["Title"] = "Виды спорта";
-}
 
 <h1>Плейлисты</h1>
 
@@ -16,8 +14,14 @@
             @Html.DisplayNameFor(model => model.Id)
         </th>
         <th>
+                    Название
+                </th>
+        <th>
             Дата создания
         </th>
+         <th>
+                    Доп. плата
+                </th>
         <th></th>
     </tr>
     </thead>
@@ -29,7 +33,13 @@
                 @Html.DisplayFor(modelItem => item.Id)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.OfCulture(Culture.Russian).Content.Name)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.DateCreated)
+            </td>
+            <td>
+                @(item.IsPaid ? "Да" : "Нет")
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Изменить</a> |

@@ -10,17 +10,17 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ExtremeInsiders.Areas.Admin.Controllers
 {
-  public class PlaylistController : ControllerBase<Playlist>
+  public class VideoController : ControllerBase<Video>
   {
-    public PlaylistController(ApplicationContext context) : base(context)
+    public VideoController(ApplicationContext context) : base(context)
     {
     }
 
-    private SelectList SportIdSelectList(int id=default)
+    private SelectList PlaylistIdSelectList(int id=default)
     {
       var newList = new List<object>();
-      var sports = _context.Sports.ToList().OfCulture(Culture.Russian);
-      foreach(var item in sports)
+      var playlists = _context.Playlists.ToList().OfCulture(Culture.Russian);
+      foreach(var item in playlists)
         newList.Add( new { 
           Id = item.Id, 
           Name = item.Content != null ? item.Content.Name : $"Нет названия - Id: {item.Id}"
@@ -29,15 +29,15 @@ namespace ExtremeInsiders.Areas.Admin.Controllers
       return new SelectList(newList, "Id", "Name", id);
     }
     
-    public override IActionResult Create(int sportId=default)
+    public override IActionResult Create(int playlistId=default)
     {
-      ViewData["SportId"] = SportIdSelectList(sportId);
-      return base.Create(sportId);
+      ViewData["PlaylistId"] = PlaylistIdSelectList(playlistId);
+      return base.Create(playlistId);
     }
 
     public override Task<IActionResult> Edit(int? id)
     {
-      ViewData["SportId"] = SportIdSelectList(_context.Playlists.Find(id).SportId);
+      ViewData["PlaylistId"] = PlaylistIdSelectList(_context.Videos.Find(id).PlaylistId);
       return base.Edit(id);
     }
   }

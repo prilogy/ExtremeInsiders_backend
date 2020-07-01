@@ -1,0 +1,39 @@
+@model ExtremeInsiders.Models.EntitySaleablePrice
+
+@{
+    var baseIdIsReadOnly = ViewData.ContainsKey("BaseIdIsReadOnly") && (bool)ViewData["BaseIdIsReadOnly"];
+    var currencyIdIsReadOnly = ViewData.ContainsKey("CurrencyIdIsReadOnly") && (bool)ViewData["CurrencyIdIsReadOnly"];
+}
+
+<h1>Создание</h1>
+
+<h4>Цена</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Value" class="control-label"></label>
+                <input asp-for="Value" class="form-control" />
+                <span asp-validation-for="Value" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CurrencyId" class="control-label">Валюта</label>
+                <select readonly="@currencyIdIsReadOnly" asp-for="CurrencyId" class ="form-control" asp-items="ViewBag.CurrencyId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="EntityId" class="control-label">Id базовой сущности</label>
+                <select readonly="@baseIdIsReadOnly" asp-for="EntityId" class ="form-control" asp-items="ViewBag.EntityId"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Создать" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Назад к списку</a>
+</div>
+

@@ -15,7 +15,7 @@ namespace ExtremeInsiders.Entities
     [JsonIgnore]
     public virtual List<Video> Videos { get; set; }
 
-    public List<int> VideosIds => Videos.Select(x => x.Id).ToList();
+    public List<int> VideosIds => Videos?.Count > 0 ? Videos.Select(x => x.Id).ToList() : null;
 
     [JsonIgnore]
     [ForeignKey("BaseEntityId")]

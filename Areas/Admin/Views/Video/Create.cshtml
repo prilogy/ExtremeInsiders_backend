@@ -1,4 +1,4 @@
-@model ExtremeInsiders.Entities.Playlist
+@model ExtremeInsiders.Entities.Video
 
 @{
     var baseIdIsReadOnly = ViewData.ContainsKey("BaseIdIsReadOnly") && (bool)ViewData["BaseIdIsReadOnly"];
@@ -6,15 +6,15 @@
 
 <h1>Создание</h1>
 
-<h4>Плейлист</h4>
+<h4>Видео</h4>
 <hr/>
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="SportId" class="control-label">Вид спорта</label>
-                <select readonly="@baseIdIsReadOnly" asp-for="SportId" class="form-control" asp-items="ViewBag.SportId"></select>
+                <label asp-for="PlaylistId" class="control-label">Видео</label>
+                <select readonly="@baseIdIsReadOnly" asp-for="PlaylistId" class="form-control" asp-items="ViewBag.PlaylistId"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Создать" class="btn btn-primary"/>

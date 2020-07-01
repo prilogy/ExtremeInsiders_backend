@@ -33,7 +33,7 @@ namespace ExtremeInsiders.Areas.Admin.Models
         public abstract IActionResult RedirectToBaseEntity(int id);
             // RedirectToAction("Edit", "Sport", new { Id = id });
        
-        // GET: ranslation
+        // GET: translation
         public async Task<IActionResult> Index()
         {
             var applicationContext = _context.Set<TR>();
@@ -92,11 +92,9 @@ namespace ExtremeInsiders.Areas.Admin.Models
         }
 
         // POST: SportTranslation/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Description,ImageId,Id,BaseEntityId,CultureId")] TR sportTranslation, [FromForm] IFormFile imageSrc)
+        public async Task<IActionResult> Create(TR sportTranslation, [FromForm] IFormFile imageSrc)
         {
             if (ModelState.IsValid)
             {
@@ -146,7 +144,7 @@ namespace ExtremeInsiders.Areas.Admin.Models
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Name,Description,ImageId,Id,BaseEntityId,CultureId")] TR translation, [FromForm] IFormFile imageSrc)
+        public async Task<IActionResult> Edit(int id, TR translation, [FromForm] IFormFile imageSrc)
         {
             if (id != translation.Id)
             {

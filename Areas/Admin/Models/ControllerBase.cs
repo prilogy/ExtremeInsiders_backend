@@ -18,7 +18,7 @@ namespace ExtremeInsiders.Areas.Admin.Models
     public abstract class ControllerBase<T> : Controller
     where T : EntityBase
     {
-        private readonly ApplicationContext _context;
+        protected readonly ApplicationContext _context;
 
         public ControllerBase(ApplicationContext context)
         {
@@ -50,15 +50,17 @@ namespace ExtremeInsiders.Areas.Admin.Models
         }
 
         // GET: <Entity>/Create
-        public IActionResult Create()
+        public virtual IActionResult Create(int baseId=default)
         {
+            if (baseId != default)
+                ViewData["BaseIdIsReadOnly"] = true; 
             return View();
         }
 
         // POST: <Entity>/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DateCreated")] T entity)
+        public async Task<IActionResult> Create(T entity)
         {
             if (ModelState.IsValid)
             {
@@ -70,7 +72,7 @@ namespace ExtremeInsiders.Areas.Admin.Models
         }
 
         // GET: <Entity>/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public virtual async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -88,7 +90,7 @@ namespace ExtremeInsiders.Areas.Admin.Models
         // POST: <Entity>/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,DateCreated")] T entity)
+        public async Task<IActionResult> Edit(int id, T entity)
         {
             if (id != entity.Id)
             {

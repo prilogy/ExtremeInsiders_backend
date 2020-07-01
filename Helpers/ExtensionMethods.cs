@@ -34,7 +34,8 @@ namespace ExtremeInsiders.Helpers
       if (entity.Translations.Count > 0)
       {
         entity.Content = entity.Translations.FirstOrDefault(tr => tr.Culture.Key == culture.Key) ??
-                         entity.Translations.FirstOrDefault(x => x.Culture.Key == Culture.Default.Key);
+                         entity.Translations.FirstOrDefault(x => x.Culture.Key == Culture.Default.Key) ??
+                          entity.Translations.FirstOrDefault();
       }
 
       return (T)entity;
@@ -71,13 +72,24 @@ namespace ExtremeInsiders.Helpers
     {
       entity = entity.OfCulture(userService.Culture);
       
-      if (entity is EntitySaleable saleable && saleable.IsPaid)
+      if (entity is EntitySaleable saleable)
       {
-        saleable.OfCurrency(userService.Currency);
-        if (userService.User.Sales.All(x => x.EntityId != saleable.Id))
+        if (saleable.IsPaid)
         {
-          if (entity.Content is ITranslationWithUrl withUrl)
-            withUrl.Url = null;
+          saleable.OfCurrency(userService.Currency);
+          if (userService.User.Sales.All(x => x.EntityId != saleable.Id))
+          {
+            if (entity.Content is ITranslationWithUrl withUrl)
+              withUrl.Url = null;
+          }
+        }
+        else if (saleable is Video saleableVideo && saleableVideo.IsInPaidPlaylist)
+        {
+          if (userService.User.Sales.All(x => x.EntityId != saleableVideo.PlaylistId))
+          {
+            if (saleableVideo.Content is ITranslationWithUrl withUrl)
+              withUrl.Url = null;
+          }
         }
       }
 

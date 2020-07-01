@@ -1,4 +1,6 @@
 @using ExtremeInsiders.Data
+@using ExtremeInsiders.Entities
+@using ExtremeInsiders.Helpers
 @model ExtremeInsiders.Entities.Sport
 @inject ApplicationContext _db;
 
@@ -95,4 +97,87 @@
             </table>
         </div>
     </div>
+    <div class="col-md-6">
+        <div style="display: flex;">
+            <h4>Плейлисты</h4>
+            <a asp-area="Admin" asp-controller="Playlist" asp-action="Create" asp-route-sportId="@Model.Id" class="nav-link">Создать</a>
+        </div>
+        <div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Id)
+                    </th>
+                    <th>
+                        Название
+                    </th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model.Playlists.ToList())
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OfCulture(Culture.Russian).Content.Name)
+                        </td>
+                        <td>
+                            <a asp-area="Admin" asp-controller="Playlist" asp-action="Edit" asp-route-id="@item.Id">Изменить</a> |
+                            <a asp-area="Admin" asp-controller="Playlist" asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+                        </td>
+                    </tr>
+
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+                <div style="display: flex;">
+                            <h4>Фильмы</h4>
+                            @* TODO: заменить на Movie контроллер *@
+                            <a asp-area="Admin" asp-controller="Playlist" asp-action="Create" asp-route-sportId="@Model.Id" class="nav-link">Создать</a>
+                        </div>
+                <div>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Id)
+                            </th>
+                            <th>
+                                Название
+                            </th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var item in Model.Movies.ToList())
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Id)
+                                </td>
+    
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.OfCulture(Culture.Russian).Content.Name)
+                                </td>
+                                <td>
+                                @* TODO: заменить на Movie контроллер *@
+                                    <a asp-area="Admin" asp-controller="Playlist" asp-action="Edit" asp-route-id="@item.Id">Изменить</a> |
+                                    <a asp-area="Admin" asp-controller="Playlist" asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+                                </td>
+                            </tr>
+    
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 </div>

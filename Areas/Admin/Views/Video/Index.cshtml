@@ -1,12 +1,8 @@
 @using ExtremeInsiders.Entities
 @using ExtremeInsiders.Helpers
-@model IEnumerable<ExtremeInsiders.Entities.Sport>
+@model IEnumerable<ExtremeInsiders.Entities.Video>
 
-@{
-    ViewData["Title"] = "Виды спорта";
-}
-
-<h1>Виды спорта</h1>
+<h1>Видео</h1>
 
 <p>
     <a asp-action="Create">Создать</a>
@@ -23,6 +19,9 @@
         <th>
             Дата создания
         </th>
+                        <th>
+                                    Доп. плата
+                                </th>
         <th></th>
     </tr>
     </thead>
@@ -39,6 +38,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.DateCreated)
             </td>
+                        <td>
+                            @(item.IsPaid ? "Да" : "Нет")
+                        </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Изменить</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Подробнее</a> |

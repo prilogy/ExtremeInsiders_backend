@@ -1,0 +1,27 @@
+@model ExtremeInsiders.Entities.Video
+
+@{
+    ViewData["Title"] = "Удаление записи";
+}
+
+<h1>Удаление</h1>
+
+<h3>Вы точно хотите удалить запись?</h3>
+<div>
+    <h4>Видео</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            Дата создания
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DateCreated)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Удалить" class="btn btn-danger" /> |
+        <a asp-action="Index">Назад к списку</a>
+    </form>
+</div>

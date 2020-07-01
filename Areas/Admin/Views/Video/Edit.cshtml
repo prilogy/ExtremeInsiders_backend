@@ -1,7 +1,7 @@
 @using ExtremeInsiders.Data
 @using ExtremeInsiders.Entities
 @using ExtremeInsiders.Helpers
-@model ExtremeInsiders.Entities.Playlist
+@model ExtremeInsiders.Entities.Video
 @inject ApplicationContext _db;
 
 @{
@@ -10,7 +10,7 @@
 
 <h1>Изменение</h1>
 
-<h4>Плейлист</h4>
+<h4>Видео</h4>
 <hr/>
 <div class="row justify-content-between">
     <div class="col-md-4">
@@ -27,10 +27,10 @@
             </div>
             <div class="form-group">
                 <div style="display: flex">
-                    <label asp-for="SportId" class="control-label">Вид спорта</label>
-                    <a class="nav-link p-0 ml-2" asp-area="Admin" asp-controller="Sport" asp-action="Edit" asp-route-id="@Model.SportId">Перейти</a>
+                    <label asp-for="PlaylistId" class="control-label">Плейлист</label>
+                    <a class="nav-link p-0 ml-2" asp-area="Admin" asp-controller="Playlist" asp-action="Edit" asp-route-id="@Model.PlaylistId">Перейти</a>
                 </div>
-                <select asp-for="SportId" class="form-control" asp-items="ViewBag.SportId"></select>
+                <select asp-for="PlaylistId" class="form-control" asp-items="ViewBag.PlaylistId"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Сохранить" class="btn btn-primary"/>
@@ -77,8 +77,8 @@
                                 @Html.DisplayFor(modelItem => matchedTranslation.Name)
                             </td>
                             <td>
-                                <a asp-area="Admin" asp-controller="PlaylistTranslation" asp-action="Edit" asp-route-id="@matchedTranslation.Id">Изменить</a> |
-                                <a asp-area="Admin" asp-controller="PlaylistTranslation" asp-action="Delete" asp-route-id="@matchedTranslation.Id">Удалить</a>
+                                <a asp-area="Admin" asp-controller="VideoTranslation" asp-action="Edit" asp-route-id="@matchedTranslation.Id">Изменить</a> |
+                                <a asp-area="Admin" asp-controller="VideoTranslation" asp-action="Delete" asp-route-id="@matchedTranslation.Id">Удалить</a>
                             </td>
                         </tr>
                     }
@@ -90,7 +90,7 @@
                             </td>
 
                             <td>
-                                <a asp-area="Admin" asp-controller="PlaylistTranslation" asp-action="Create" asp-route-baseEntityId="@Model.Id" asp-route-cultureId="@item.Id">Создать</a>
+                                <a asp-area="Admin" asp-controller="VideoTranslation" asp-action="Create" asp-route-baseEntityId="@Model.Id" asp-route-cultureId="@item.Id">Создать</a>
                             </td>
                             <td>
                             </td>
@@ -104,49 +104,16 @@
         </div>
     </div>
 
-    <div class="col-md-6">
-        <div style="display: flex;">
-            <h4>Видео</h4>
-            <a asp-area="Admin" asp-controller="Video" asp-action="Create" asp-route-playlistId="@Model.Id" class="nav-link">Создать</a>
-        </div>
-        <div>
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Id)
-                    </th>
-                    <th>
-                        Название
-                    </th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach (var item in Model.Videos.ToList())
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Id)
-                        </td>
 
-                        <td>
-                            @Html.DisplayFor(modelItem => item.OfCulture(Culture.Russian).Content.Name)
-                        </td>
-                        <td>
-                            <a asp-area="Admin" asp-controller="Video" asp-action="Edit" asp-route-id="@item.Id">Изменить</a> |
-                            <a asp-area="Admin" asp-controller="Video" asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
-                        </td>
-                    </tr>
-                }
-                </tbody>
-            </table>
-        </div>
-    </div>
-    
     <div class="col-md-6">
-            <h4>Цены</h4>
-            <div>
+        <h4>Цены</h4>
+        <div>
+            @if (Model.Playlist.IsPaid)
+            {
+                <h5 style="font-weight: 400" class="text-info">Видео уже находится в платном плейлисте.</h5>
+            }
+            else
+            {
                 <table class="table">
                     <thead>
                     <tr>
@@ -172,7 +139,7 @@
                                 <td>
                                     @Html.DisplayFor(modelItem => matchedPrice.Currency.Key)
                                 </td>
-    
+
                                 <td>
                                     @Html.DisplayFor(modelItem => matchedPrice.Id)
                                 </td>
@@ -191,7 +158,7 @@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Key)
                                 </td>
-    
+
                                 <td>
                                     <a asp-area="Admin" asp-controller="EntitySaleablePrice" asp-action="Create" asp-route-baseEntityId="@Model.Id" asp-route-currencyId="@item.Id">Создать</a>
                                 </td>
@@ -204,9 +171,10 @@
                     }
                     </tbody>
                 </table>
-                <p style="font-style: italic; color: darkgrey" >* Сущность является платной если задана хотя-бы одна цена в любой валюте</p>
-                <p style="font-style: italic; color: darkgrey" >** Для корректной работы во всех регионах нужно обязательно указывать цены во всех доступных валютах</p>
-                           
-                </div>
+                <p style="font-style: italic; color: darkgrey">* Сущность является платной если задана хотя-бы одна цена в любой валюте</p>
+                <p style="font-style: italic; color: darkgrey">** Для корректной работы во всех регионах нужно обязательно указывать цены во всех доступных валютах</p>
+
+            }
         </div>
+    </div>
 </div>
