@@ -9,7 +9,7 @@ namespace ExtremeInsiders.Data
   {
     public DbSet<User> Users { get; set; }
     public DbSet<SocialAccount> SocialAccounts { get; set; }
-    public DbSet<SocialAccountProvider> SocialAccountProviders { get; set; }
+    public DbSet<SocialAccountProvider> SocialAccountsProviders { get; set; }
     public DbSet<Role> Roles { get; set; }
     public DbSet<Image> Images { get; set; }
     public DbSet<Culture> Cultures { get; set; }
@@ -32,9 +32,9 @@ namespace ExtremeInsiders.Data
     
     /* Videos and Movies */
     public DbSet<Video> Videos { get; set; }
-    public DbSet<VideoTranslation> VideoTranslations { get; set; }
+    public DbSet<VideoTranslation> VideosTranslations { get; set; }
     public DbSet<Movie> Movies { get; set; }
-    public DbSet<MovieTranslation> MovieTranslations { get; set; }
+    public DbSet<MovieTranslation> MoviesTranslations { get; set; }
     
     
     public DbSet<Like> Likes { get; set; }
@@ -46,6 +46,7 @@ namespace ExtremeInsiders.Data
     public DbSet<Subscription> Subscriptions { get; set; }
     public DbSet<SubscriptionPlan> SubscriptionsPlans { get; set; }
     public DbSet<SubscriptionPlanTranslation> SubscriptionsPlansTranslations { get; set; }
+    public DbSet<SubscriptionPlanPrice> SubscriptionsPlansPrices { get; set; }
     
     public DbSet<Payment> Payments { get; set; }
     

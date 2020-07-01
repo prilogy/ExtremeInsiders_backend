@@ -33,10 +33,13 @@ namespace ExtremeInsiders.Entities
   public class SubscriptionPlanPrice : ISaleablePrice
   {
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [JsonIgnore]
     public int Id { get; set; }
     public decimal Value { get; set; }
+    [JsonIgnore]
     public int CurrencyId { get; set; }
     public virtual Currency Currency { get; set; }
+    [JsonIgnore]
     public int EntityId { get; set; }
     public virtual SubscriptionPlan Entity { get; set; }
   }

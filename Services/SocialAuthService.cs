@@ -54,7 +54,7 @@ namespace ExtremeInsiders.Services
       return new SocialAccount
       {
         Key = identity.Id,
-        Provider = await _db.SocialAccountProviders.FirstOrDefaultAsync(r =>
+        Provider = await _db.SocialAccountsProviders.FirstOrDefaultAsync(r =>
           r.Name == ProviderName)
       };
     }
@@ -67,7 +67,7 @@ namespace ExtremeInsiders.Services
       return new SocialAccount
       {
         Key = identity.Id,
-        Provider = await _db.SocialAccountProviders.FirstOrDefaultAsync(r =>
+        Provider = await _db.SocialAccountsProviders.FirstOrDefaultAsync(r =>
           r.Name == ProviderName)
       };
     }

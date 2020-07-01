@@ -1,8 +1,8 @@
-@model ExtremeInsiders.Entities.SportTranslation
+@model ExtremeInsiders.Entities.SubscriptionPlanTranslation
 
 <h1>Изменение</h1>
 
-<h4>Локализация "Вид спорта"</h4>
+<h4>Локализация "План подписки"</h4>
 <hr/>
 <div class="row">
     <div class="col-md-4">
@@ -22,14 +22,6 @@
                 <label class="control-label">Описание</label>
                 <input asp-for="Description" class="form-control"/>
                 <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div>
-                <label class="control-label">Текущее изображение</label>
-                <img src="@(Model.Image?.Path)" style="max-width: 350px"/>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Новое изображение</label>
-                <input type="file" accept="image/*" name="ImageSrc" class="form-control"/>
             </div>
             <div class="form-group">
                 <label class="control-label">Id базового представления</label>
