@@ -40,7 +40,7 @@ namespace ExtremeInsiders.Areas.Admin.Controllers
     {
       var user = await _userService.AuthenticateCookies(model.Email, model.Password, true);
       if (user != null)
-        return Redirect("/admin/");
+        return RedirectToAction("Index", "Home");
       
       ModelState.AddModelError("", "Неправильный пароль или логин, или вы не админ.");
       return View(model);
