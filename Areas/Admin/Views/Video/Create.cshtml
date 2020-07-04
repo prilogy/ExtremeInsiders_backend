@@ -13,7 +13,7 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="PlaylistId" class="control-label">Видео</label>
+                <label asp-for="PlaylistId" class="control-label">Плейлист</label>
                 <select readonly="@baseIdIsReadOnly" asp-for="PlaylistId" class="form-control" asp-items="ViewBag.PlaylistId"></select>
             </div>
             <div class="form-group">

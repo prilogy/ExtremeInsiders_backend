@@ -55,7 +55,7 @@ namespace ExtremeInsiders.Areas.Admin.Controllers
         // GET: SportTranslation/Create
         public IActionResult Create(int baseEntityId=default, int cultureId=default)
         {
-            var list = new SelectList(_context.SubscriptionsPlansTranslations, "Id", "Id");
+            var list = new SelectList(_context.SubscriptionsPlans, "Id", "Id");
             if (baseEntityId != default)
             {
                 var item = list.FirstOrDefault(x => x.Value == baseEntityId.ToString());
