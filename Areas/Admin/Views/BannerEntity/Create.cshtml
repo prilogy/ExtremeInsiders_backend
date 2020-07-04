@@ -9,9 +9,10 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="EntityId" class="control-label">Id сущности</label>
-                <select asp-for="EntityId" class ="form-control" asp-items="ViewBag.EntityId"></select>
+                <label asp-for="EntityId" class="control-label">Id связанного объекта (необязательно)</label>
+                <input asp-for="EntityId" class ="form-control" />
             </div>
+            <p style="font-style: italic; color: darkgrey" >* Данные будут взяты из уже существующего объекта, который вы указали. Это может быть вид спорта, плейлист, видео или фильм.</p>
             <div class="form-group">
                 <input type="submit" value="Создать" class="btn btn-primary" />
             </div>

@@ -15,8 +15,6 @@ namespace ExtremeInsiders.Areas.Api.Models
       [Required]
       [MinLength(6, ErrorMessage = "Минимальная длина пароля - 6 символов")]
       public string Password { get; set; }
-      
-      [Required]
       public string PhoneNumber { get; set; }
       [Required]
       public string DateBirthday { get; set; }
@@ -46,8 +44,6 @@ namespace ExtremeInsiders.Areas.Api.Models
       [Required]
       [MinLength(6, ErrorMessage = "Минимальная длина пароля - 6 символов")]
       public string Password { get; set; }
-      
-      [Required]
       public string PhoneNumber { get; set; }
       [Required]
       public string BirthDate { get; set; }

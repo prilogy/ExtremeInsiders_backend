@@ -9,6 +9,8 @@ using ExtremeInsiders.Data;
 using ExtremeInsiders.Entities;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace ExtremeInsiders.Areas.Admin.Controllers
 {
@@ -51,7 +53,6 @@ namespace ExtremeInsiders.Areas.Admin.Controllers
         // GET: BannerEntity/Create
         public IActionResult Create()
         {
-            ViewData["EntityId"] = new SelectList(_context.EntitiesBase, "Id", "Id");
             return View();
         }
 
@@ -62,11 +63,17 @@ namespace ExtremeInsiders.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                
+                if (bannerEntity.EntityId != default && !_context.EntitiesBase.Any(x => x.Id == bannerEntity.EntityId))
+                {
+                    ModelState.AddModelError("", "Id связанного объекта не существует");
+                    return View();
+                }
+                    
                 _context.Add(bannerEntity);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Edit), new {id = bannerEntity.Id});
             }
-            ViewData["EntityId"] = new SelectList(_context.EntitiesBase, "Id", "Id", bannerEntity.EntityId);
             return View(bannerEntity);
         }
 
