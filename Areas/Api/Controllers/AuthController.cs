@@ -138,10 +138,13 @@ namespace ExtremeInsiders.Areas.Api.Controllers
         
     [Authorize]
     [HttpGet("refresh")]
-    public async Task<IActionResult> Refresh()
+    public async Task<IActionResult> Refresh([FromQuery] bool token)
     {
       if (_userService.User == null) return BadRequest();
-      return Ok((await _userService.Authenticate(_userService.User)).WithoutSensitive(token: true, useLikeIds: true, useFavoriteIds:true, useSaleIds: true));
+      if (token)
+        return Ok((await _userService.Authenticate(_userService.User)).WithoutSensitive(token: true, useLikeIds: true, useFavoriteIds:true, useSaleIds: true));
+      return Ok(_userService.User.WithoutSensitive(token: false, useLikeIds: true, useFavoriteIds: true,
+        useSaleIds: true));
     }
 
     private async Task<User> SignUpInternal(AuthenticationModels.SignUp model)

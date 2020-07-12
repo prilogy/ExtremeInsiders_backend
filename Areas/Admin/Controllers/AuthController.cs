@@ -29,12 +29,14 @@ namespace ExtremeInsiders.Areas.Admin.Controllers
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public IActionResult LogIn()
     {
       return View();
     }
     
     [HttpPost]
+    [AllowAnonymous]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> LogIn(AuthenticationModels.LogIn model)
     {
@@ -47,12 +49,14 @@ namespace ExtremeInsiders.Areas.Admin.Controllers
     }
     
     [HttpGet]
+    [AllowAnonymous]
     public IActionResult SignUp()
     {
       return View();
     }
 
     [HttpPost]
+    [AllowAnonymous]
     public async Task<IActionResult> SignUp(AuthenticationModels.SignUp model)
     {
       if (model.Secret != _appSettings.AdminSignUpSecret)

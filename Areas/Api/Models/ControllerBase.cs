@@ -5,12 +5,13 @@ using System.Threading.Tasks;
 using ExtremeInsiders.Data;
 using ExtremeInsiders.Entities;
 using ExtremeInsiders.Helpers;
+using ExtremeInsiders.Models;
 using ExtremeInsiders.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace ExtremeInsiders.Models
+namespace ExtremeInsiders.Areas.Api.Models
 {
   [Authorize(Policy = SubscriptionHandler.POLICY_NAME)]
   [ApiController]
@@ -34,15 +35,15 @@ namespace ExtremeInsiders.Models
     public async Task<IActionResult> GetAll([FromQuery]int page, [FromQuery]int pageSize)
     {
       var list = _db.Set<T>();
-      return Ok((page == 0 ? await list.ToListAsync() : await list.Page(page, pageSize == 0 ? PAGE_SIZE: pageSize).ToListAsync()).OfFormat(_userService));
+      return await Paging(list, page, pageSize);
+      
     }
 
     [HttpPost]
     public async Task<IActionResult> GetByIds(int[] ids, [FromQuery]int page, [FromQuery]int pageSize)
     {
       var list = _db.Set<T>().Where(x => ids.Contains(x.Id));
-      return Ok((page == 0 ? await list.ToListAsync() : await list.Page(page, pageSize == 0 ? PAGE_SIZE: pageSize).ToListAsync()).OfFormat(_userService));
-    }
+      return await Paging(list, page, pageSize);}
         
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
@@ -61,6 +62,16 @@ namespace ExtremeInsiders.Models
     public virtual async Task<IActionResult> Search([FromBody] string query, [FromRoute]int id)
     {
       return await Task.Run(() => { return NotFound(); });
+    }
+
+    protected async Task<IActionResult> Paging(IQueryable<T> q, int page, int pageSize)
+    {
+      return Ok((page == 0 ? await q.ToListAsync() : await q.Page(page, pageSize == 0 ? PAGE_SIZE: pageSize).ToListAsync()).OfFormat(_userService));
+    }
+    
+    protected async Task<IActionResult> Paging(DbSet<T> q, int page, int pageSize)
+    {
+      return Ok((page == 0 ? await q.ToListAsync() : await q.Page(page, pageSize == 0 ? PAGE_SIZE: pageSize).ToListAsync()).OfFormat(_userService));
     }
   }
 }

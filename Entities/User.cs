@@ -55,7 +55,7 @@ namespace ExtremeInsiders.Entities
     public bool EmailVerified =>
       ConfirmationCodes.Any(x => x.Type == ConfirmationCode.Types.EmailConfirmation && x.IsConfirmed == true);
     [NotMapped]
-    public object LikesIds { get; set; }
+    public object LikeIds { get; set; }
     [NotMapped] 
     public object FavoriteIds { get; set; }
     [NotMapped] 
@@ -76,7 +76,7 @@ namespace ExtremeInsiders.Entities
 
       if (useLikeIds)
       {
-        LikesIds = new
+        LikeIds = new
         {
           Videos = Likes.Where(x => x.Entity is Video).Select(x => x.EntityId),
           Movies = Likes.Where(x=> x.Entity is Movie).Select(x => x.EntityId)
