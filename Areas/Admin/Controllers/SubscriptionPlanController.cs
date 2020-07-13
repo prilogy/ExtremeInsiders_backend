@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using ExtremeInsiders.Areas.Admin.Models;
@@ -57,10 +59,11 @@ namespace ExtremeInsiders.Areas.Admin.Controllers
         // POST: <Entity>/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(SubscriptionPlan entity)
+        public async Task<IActionResult> Create(SubscriptionPlan entity, [Required]int durationInDays)
         {
             if (ModelState.IsValid)
             {
+                entity.Duration = TimeSpan.FromDays(durationInDays);
                 _context.Add(entity);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Edit).ToString(), new {id = entity.Id });
@@ -87,7 +90,7 @@ namespace ExtremeInsiders.Areas.Admin.Controllers
         // POST: <Entity>/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, SubscriptionPlan entity)
+        public async Task<IActionResult> Edit(int id, SubscriptionPlan entity, int durationInDays=default)
         {
             if (id != entity.Id)
             {
@@ -98,6 +101,8 @@ namespace ExtremeInsiders.Areas.Admin.Controllers
             {
                 try
                 {
+                    if (durationInDays != default)
+                        entity.Duration = TimeSpan.FromDays(durationInDays);
                     _context.Update(entity);
                     await _context.SaveChangesAsync();
                 }

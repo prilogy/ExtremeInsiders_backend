@@ -119,6 +119,49 @@ namespace ExtremeInsiders.Areas.Admin.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        
+        // POST: User/DeleteSubscription/5
+        [HttpGet]
+        public async Task<IActionResult> DeleteSubscription(int id)
+        {
+            var subscription = await _context.Subscriptions.FindAsync(id);
+            var userId = subscription.UserId;
+            _context.Subscriptions.Remove(subscription);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Edit), new {Id = userId});
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> AddSubscription(int userId, int planId)
+        {
+            var plan = await _context.SubscriptionsPlans.FindAsync(planId);
+            var user = await _context.Users.FindAsync(userId);
+            if (plan == null || user == null)
+            {
+                ModelState.AddModelError("", "Ошибка при создании подписки");
+                return RedirectToAction(nameof(Index));
+            }
+            
+            var subscription = new Subscription
+            {
+                PlanId = plan.Id,
+                UserId = user.Id,
+                DateStart = DateTime.UtcNow,
+                PaymentId = null
+            };
+      
+            if (user.Subscription == null)
+                subscription.DateEnd = DateTime.UtcNow + plan.Duration;
+            else
+            {
+                subscription.DateStart = user.Subscription.DateEnd;
+                subscription.DateEnd = user.Subscription.DateEnd + plan.Duration;
+            }
+
+            await _context.Subscriptions.AddAsync(subscription);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Edit), new {Id = user.Id});
+        }
 
         private bool UserExists(int id)
         {

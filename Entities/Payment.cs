@@ -33,7 +33,7 @@ namespace ExtremeInsiders.Entities
     
     public Payment()
     {
-      DateCreated = DateTime.Now;
+      DateCreated = DateTime.UtcNow;
     }
   }
 }

@@ -21,6 +21,12 @@
                 <input readonly asp-for="Id" class="form-control"/>
             </div>
             <div class="form-group">
+                <label asp-for="Duration" class="control-label">Длительность(в днях) - @Model.Duration.TotalDays</label>
+                <p>Новая длительность</p>
+                <input name="durationInDays" type="number" min="0" step="1" class="form-control"/>
+                <span asp-validation-for="Duration" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Сохранить" class="btn btn-primary"/>
             </div>
             <div>
@@ -91,70 +97,70 @@
             </table>
         </div>
     </div>
-    
+
     <div class="col-md-6">
-            <h4>Цены</h4>
-            <div>
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>
-                            Валюта
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Id)
-                        </th>
-                        <th>
-                            Цена
-                        </th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach (var item in _db.Currencies.ToList())
+        <h4>Цены</h4>
+        <div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>
+                        Валюта
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Id)
+                    </th>
+                    <th>
+                        Цена
+                    </th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in _db.Currencies.ToList())
+                {
+                    var matchedPrice = Model.Prices.FirstOrDefault(x => x.CurrencyId == item.Id);
+                    if (matchedPrice != null)
                     {
-                        var matchedPrice = Model.Prices.FirstOrDefault(x => x.CurrencyId == item.Id);
-                        if (matchedPrice != null)
-                        {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => matchedPrice.Currency.Key)
-                                </td>
-    
-                                <td>
-                                    @Html.DisplayFor(modelItem => matchedPrice.Id)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => matchedPrice.Value)
-                                </td>
-                                <td>
-                                    <a asp-area="Admin" asp-controller="SubscriptionPlanPrice" asp-action="Edit" asp-route-id="@matchedPrice.Id">Изменить</a> |
-                                    <a asp-area="Admin" asp-controller="SubscriptionPlanPrice" asp-action="Delete" asp-route-id="@matchedPrice.Id">Удалить</a>
-                                </td>
-                            </tr>
-                        }
-                        else
-                        {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Key)
-                                </td>
-    
-                                <td>
-                                    <a asp-area="Admin" asp-controller="SubscriptionPlanPrice" asp-action="Create" asp-route-baseEntityId="@Model.Id" asp-route-currencyId="@item.Id">Создать</a>
-                                </td>
-                                <td>
-                                </td>
-                                <td>
-                                </td>
-                            </tr>
-                        }
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => matchedPrice.Currency.Key)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => matchedPrice.Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => matchedPrice.Value)
+                            </td>
+                            <td>
+                                <a asp-area="Admin" asp-controller="SubscriptionPlanPrice" asp-action="Edit" asp-route-id="@matchedPrice.Id">Изменить</a> |
+                                <a asp-area="Admin" asp-controller="SubscriptionPlanPrice" asp-action="Delete" asp-route-id="@matchedPrice.Id">Удалить</a>
+                            </td>
+                        </tr>
                     }
-                    </tbody>
-                </table>
-                <p style="font-style: italic; color: darkgrey" >* Сущность является платной если задана хотя-бы одна цена в любой валюте</p>
-                <p style="font-style: italic; color: darkgrey" >** Для корректной работы во всех регионах нужно обязательно указывать цены во всех доступных валютах</p>
-                           
-                </div>
+                    else
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Key)
+                            </td>
+
+                            <td>
+                                <a asp-area="Admin" asp-controller="SubscriptionPlanPrice" asp-action="Create" asp-route-baseEntityId="@Model.Id" asp-route-currencyId="@item.Id">Создать</a>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+                    }
+                }
+                </tbody>
+            </table>
+            <p style="font-style: italic; color: darkgrey">* Сущность является платной если задана хотя-бы одна цена в любой валюте</p>
+            <p style="font-style: italic; color: darkgrey">** Для корректной работы во всех регионах нужно обязательно указывать цены во всех доступных валютах</p>
+
         </div>
+    </div>
 </div>

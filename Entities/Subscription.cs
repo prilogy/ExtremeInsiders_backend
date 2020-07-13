@@ -32,7 +32,7 @@ namespace ExtremeInsiders.Entities
       {
         User =  user,
         DateStart = DateTime.UtcNow,
-        DateEnd = DateTime.Now + TimeSpan.FromDays(31)
+        DateEnd = DateTime.UtcNow + TimeSpan.FromDays(31)
       };
     }
   }

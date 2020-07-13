@@ -14,14 +14,11 @@
             @Html.DisplayNameFor(model => model.Id)
         </th>
         <th>
-                    Название
-                </th>
-        <th>
-            Дата создания
+            Название
         </th>
-         <th>
-                    Доп. плата
-                </th>
+        <th>
+            Длительность(в днях)
+        </th>
         <th></th>
     </tr>
     </thead>
@@ -33,7 +30,13 @@
                 @Html.DisplayFor(modelItem => item.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.OfCulture(Culture.Russian).Content.Name)
+                @{
+                    var name = item.OfCulture(Culture.Russian).Content?.Name;
+                } 
+                @(name ?? "Нет названия")
+            </td>
+            <td>
+                @item.Duration.TotalDays
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Изменить</a> |

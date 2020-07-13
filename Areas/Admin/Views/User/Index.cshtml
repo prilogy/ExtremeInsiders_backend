@@ -9,25 +9,25 @@
                 @Html.DisplayNameFor(model => model.Email)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                Имя
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DateBirthday)
+                Дата рождения
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DateSignUp)
+                Дата регистрации
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PhoneNumber)
+                Тел. номер
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Role)
+                Роль
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Culture)
+                Культура
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Currency)
+                Валюта
             </th>
             <th></th>
         </tr>
@@ -51,13 +51,13 @@
                 @Html.DisplayFor(modelItem => item.PhoneNumber)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Role.Id)
+                @Html.DisplayFor(modelItem => item.Role.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Culture.Id)
+                @Html.DisplayFor(modelItem => item.Culture.Key)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Currency.Id)
+                @Html.DisplayFor(modelItem => item.Currency.Key)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Изменить</a>

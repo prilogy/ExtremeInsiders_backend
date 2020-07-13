@@ -1,39 +1,44 @@
+@using ExtremeInsiders.Helpers
+@using ExtremeInsiders.Entities
+@using ExtremeInsiders.Data
 @model ExtremeInsiders.Entities.User
+@inject ApplicationContext _db
 
 <h1>Изменить</h1>
 
 <h4>Пользователь</h4>
-<hr />
-<div class="row">
+<hr/>
+
+<div class="row justify-content-between">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Id"/>
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
-                <input readonly asp-for="Email" class="form-control" />
+                <input readonly asp-for="Email" class="form-control"/>
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
-                <input readonly asp-for="Name" class="form-control" />
+                <input readonly asp-for="Name" class="form-control"/>
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <input type="hidden" asp-for="Password" class="form-control" />
-            <input type="hidden" asp-for="AvatarId" class="form-control" />
+            <input type="hidden" asp-for="Password" class="form-control"/>
+            <input type="hidden" asp-for="AvatarId" class="form-control"/>
             <div class="form-group">
                 <label asp-for="DateBirthday" class="control-label"></label>
-                <input readonly asp-for="DateBirthday" class="form-control" />
+                <input readonly asp-for="DateBirthday" class="form-control"/>
                 <span asp-validation-for="DateBirthday" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="DateSignUp" class="control-label"></label>
-                <input readonly asp-for="DateSignUp" class="form-control" />
+                <input readonly asp-for="DateSignUp" class="form-control"/>
                 <span asp-validation-for="DateSignUp" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PhoneNumber" class="control-label"></label>
-                <input readonly asp-for="PhoneNumber" class="form-control" />
+                <input readonly asp-for="PhoneNumber" class="form-control"/>
                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -52,7 +57,84 @@
                 <span asp-validation-for="CurrencyId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Сохранить" class="btn btn-primary" />
+                <input type="submit" value="Сохранить" class="btn btn-primary"/>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-8 ">
+        <h4>Подписка</h4>
+        @if (Model.Subscription != null)
+        {
+            <div>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>
+                            Название
+                        </th>
+                        <th>
+                            Действует(от->до)
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @{
+                        var currentSubscription = Model.Subscriptions.FirstOrDefault(x => x.DateEnd > DateTime.UtcNow);
+                    }
+                    @foreach (var item in Model.Subscriptions)
+                    {
+                        <tr class="@(currentSubscription?.Id == item.Id ? "bg-info" : "")">
+                            @{
+                                var name = item.Plan?.OfCulture(Culture.Russian).Content?.Name;
+                            }
+                            <td class="@(name == null ? "text-info" : "")">
+                                @(name ?? "Демо период")
+                            </td>
+                            <td>
+                                @(item.DateStart + " -> " + item.DateEnd)
+                            </td>
+                            <td>
+                                <a asp-area="Admin" asp-controller="User" asp-action="DeleteSubscription" asp-route-id="@item.Id">Удалить</a>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+            <div class="mb-3" style="display: flex; align-items: center; flex-direction: row">
+                <div class="bg-info" style="width: 20px; height: 30px; border-radius: 5px"> </div>
+                <p class="text-dark m-0 p-0 ml-2">Текущая подписка</p>
+            </div>
+        }
+        else
+        {
+            <p class="text-warning">У пользователя нет активной подписки</p>
+        }
+
+        <h6>Добавить подписку</h6>
+        <form asp-action="AddSubscription">
+            @{
+                var newList = new List<object>();
+                var sports = _db.SubscriptionsPlans.OrderBy(x => x.Id).ToList().OfCulture(Culture.Russian);
+                foreach (var item in sports)
+                {
+                    newList.Add(new
+                    {
+                        Id = item.Id,
+                        Name = item.Content != null ? item.Content.Name : $"Нет названия - Id: {item.Id}"
+                    });
+                }
+
+                var slist = new SelectList(newList, "Id", "Name");
+            }
+            <input name="userId" type="hidden" value="@Model.Id"/>
+            <div class="form-group">
+                <label class="control-label">План подписки</label>
+                <select name="planId" class="form-control" asp-items="@slist"></select>
+                <span asp-validation-for="RoleId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Добавить" class="btn btn-primary"/>
             </div>
         </form>
     </div>
@@ -61,4 +143,3 @@
 <div>
     <a asp-action="Index">Назад к списку</a>
 </div>
-
