@@ -35,5 +35,8 @@ namespace ExtremeInsiders.Areas.Api.Controllers
         Playlists = sport.Playlists.SearchAtWithQueryAsync<Playlist, PlaylistTranslation>(query).OfFormat(_userService)
       });
     }
+
+    protected override IQueryable<Sport> GetRecommendedQueryable() =>
+      _db.Sports.OrderBy(x => x.Playlists.Count).ThenBy(x => x.Movies.Count);
   }
 }

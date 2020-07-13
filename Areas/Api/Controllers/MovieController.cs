@@ -19,5 +19,7 @@ namespace ExtremeInsiders.Areas.Api.Controllers
     public MovieController(ApplicationContext db, UserService userService) : base(db, userService)
     {
     }
+    
+    protected override IQueryable<Movie> GetRecommendedQueryable() => _db.Movies.OrderByDescending(x => x.Likes.Count);
   }
 }

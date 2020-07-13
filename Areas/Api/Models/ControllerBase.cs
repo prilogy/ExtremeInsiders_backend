@@ -42,17 +42,11 @@ namespace ExtremeInsiders.Areas.Api.Models
         public async Task<IActionResult> GetRecommended([FromQuery] int page, [FromQuery] int pageSize,
             [FromQuery] string orderByDate)
         {
-            
-            if(typeof(T).IsSubclassOf(typeof(EntityLikeable)))
-            {
-                Console.WriteLine("tes");
-            }
-
             var queryable = GetRecommendedQueryable();
-            
-            if(queryable == null)
-                return NotFound();
 
+            if (queryable == null)
+                return NotFound();
+            
             return await Paging(queryable, page, pageSize, orderByDate);
         }
 
