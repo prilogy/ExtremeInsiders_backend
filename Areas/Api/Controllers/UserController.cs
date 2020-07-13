@@ -8,6 +8,7 @@ using ExtremeInsiders.Entities;
 using ExtremeInsiders.Services;
 using ExtremeInsiders.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,13 +23,15 @@ namespace ExtremeInsiders.Areas.Api.Controllers
     private readonly UserService _userService;
     private readonly IEnumerable<SocialAuthService> _authServices;
     private readonly ConfirmationService _confirmationService;
-
-    public UserController(ApplicationContext db, UserService userService, IEnumerable<SocialAuthService> authServices, ConfirmationService confirmationService)
+    private readonly ImageService _imageService;
+    
+    public UserController(ApplicationContext db, UserService userService, IEnumerable<SocialAuthService> authServices, ConfirmationService confirmationService, ImageService imageService)
     {
       _db = db;
       _userService = userService;
       _authServices = authServices;
       _confirmationService = confirmationService;
+      _imageService = imageService;
     }
     
     [HttpPut("{type}")]
@@ -85,14 +88,14 @@ namespace ExtremeInsiders.Areas.Api.Controllers
           EntityId = entity.Id,
           UserId = _userService.UserId,
         };
-        _db.Likes.Add(like);
+        await _db.Likes.AddAsync(like);
       }
       else
       {
         _db.Remove(like);
       }
 
-      _db.SaveChanges();
+      await _db.SaveChangesAsync();
       return Ok();
     }
     
@@ -110,14 +113,14 @@ namespace ExtremeInsiders.Areas.Api.Controllers
           EntityId = entity.Id,
           UserId = _userService.UserId,
         };
-        _db.Favorites.Add(favorite);
+        await _db.Favorites.AddAsync(favorite);
       }
       else
       {
         _db.Remove(favorite);
       }
 
-      _db.SaveChanges();
+      await _db.SaveChangesAsync();
       return Ok();
     }
 
@@ -157,7 +160,7 @@ namespace ExtremeInsiders.Areas.Api.Controllers
 
     [HttpPatch]
     [AllowAnonymous]
-    public async Task<IActionResult> ResetPassword([FromBody]UserModels.PasswordReset model)
+    public async Task<IActionResult> ResetPassword([FromBody] UserModels.PasswordReset model)
     {
       
       var confirmationCode = await _db.ConfirmationCodes.FirstOrDefaultAsync( ConfirmationCode.CanBeUsed(model.Code, ConfirmationCode.Types.PasswordReset));
@@ -170,6 +173,29 @@ namespace ExtremeInsiders.Areas.Api.Controllers
       await _db.SaveChangesAsync();
       
       return Ok();
+    }
+
+    [HttpPatch]
+    public async Task<IActionResult> Edit([FromForm]UserModels.ProfileEdit model)
+    {
+      var user = await _db.Users.FindAsync(_userService.UserId);
+      if (model.Email != null)
+      {
+        user.Email = model.Email;
+        user.ConfirmationCodes.RemoveAll(x => x.Type == ConfirmationCode.Types.EmailConfirmation);
+      }
+
+      if (model.Name != null)
+        user.Name = model.Name;
+
+      if (model.AvatarSrc != null)
+        user.AvatarId = (await _imageService.AddImage(model.AvatarSrc)).Id;
+
+      if (model.PhoneNumber != null)
+        user.PhoneNumber = model.PhoneNumber;
+
+      await _db.SaveChangesAsync();
+      return Ok(_userService.User.WithoutSensitive(false, true, true, true));
     }
   }
 }
