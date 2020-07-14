@@ -1,0 +1,44 @@
+@model ExtremeInsiders.Entities.PromoCode
+
+<h1>Создать</h1>
+
+<h4>Промо-код</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Code" class="control-label">Код</label>
+                <input asp-for="Code" class="form-control" />
+                <span asp-validation-for="Code" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SubscriptionPlanId" class="control-label">Связанный план подписки</label>
+                <select asp-for="SubscriptionPlanId" class ="form-control" asp-items="ViewBag.SubscriptionPlanId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="EntitySaleableId" class="control-label">Связанный платный объект</label>
+                <select asp-for="EntitySaleableId" class ="form-control" asp-items="ViewBag.EntitySaleableId"></select>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsInfinite" /> Многоразовый
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input type="checkbox" checked class="form-check-input" asp-for="IsValid" /> Действует
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Создать" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Назад к списку</a>
+</div>
+

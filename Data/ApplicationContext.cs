@@ -54,6 +54,8 @@ namespace ExtremeInsiders.Data
     
     public DbSet<Payment> Payments { get; set; }
     
+    public DbSet<PromoCode> PromoCodes { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
       modelBuilder.Entity<SocialAccountProvider>().HasData(SocialAccountProvider.All);

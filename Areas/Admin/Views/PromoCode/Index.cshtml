@@ -1,0 +1,61 @@
+@using ExtremeInsiders.Helpers
+@using ExtremeInsiders.Entities
+@model IEnumerable<ExtremeInsiders.Entities.PromoCode>
+
+<h1>Промо-коды</h1>
+
+<p>
+    <a asp-action="Create">Создать</a>
+</p>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>
+            Код
+        </th>
+        <th>
+            Связанная подписка
+        </th>
+        <th>
+            Связанный объект
+        </th>
+        <th>
+            Многоразовый
+        </th>
+        <th>
+            Действует
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Code)
+            </td>
+            <td>
+                @(item.SubscriptionPlan?.OfCulture(Culture.Russian).Content?.Name ?? "-")
+            </td>
+            <td>
+                @(item.EntitySaleable != null ? $"Id: {item.EntitySaleableId}" : "-")
+            </td>
+            <td>
+                @(item.IsInfinite ? "Да" : "Нет")
+            </td>
+            <td>
+                @(item.IsValid ? "Да" : "Нет")
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Изменить</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
