@@ -40,6 +40,8 @@ namespace ExtremeInsiders.Entities
     public virtual List<Subscription> Subscriptions { get; set; }
     [JsonIgnore]
     public virtual List<Payment> Payments { get; set; }
+    [JsonIgnore]
+    public virtual List<PromoCodeUser> PromoCodes { get; set; }
 
     [JsonRequired]
     public Subscription Subscription => Subscriptions.Count > 0 && Subscriptions.LastOrDefault().DateEnd > DateTime.UtcNow ? Subscriptions.LastOrDefault() : null;

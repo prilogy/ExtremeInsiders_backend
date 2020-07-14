@@ -50,8 +50,6 @@ namespace ExtremeInsiders.Areas.Admin.Controllers
         }
 
         // POST: User/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Email,Name,Password,AvatarId,DateBirthday,DateSignUp,PhoneNumber,RoleId,CultureId,CurrencyId")] User user)
@@ -96,10 +94,6 @@ namespace ExtremeInsiders.Areas.Admin.Controllers
             }
 
             var user = await _context.Users
-                .Include(u => u.Avatar)
-                .Include(u => u.Culture)
-                .Include(u => u.Currency)
-                .Include(u => u.Role)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (user == null)
             {
@@ -128,7 +122,7 @@ namespace ExtremeInsiders.Areas.Admin.Controllers
             var userId = subscription.UserId;
             _context.Subscriptions.Remove(subscription);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Edit), new {Id = userId});
+            return RedirectToAction(nameof(Edit), new {Area = "Admin", Id = userId});
         }
         
         [HttpPost]
@@ -160,7 +154,7 @@ namespace ExtremeInsiders.Areas.Admin.Controllers
 
             await _context.Subscriptions.AddAsync(subscription);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Edit), new {Id = user.Id});
+            return RedirectToAction(nameof(Edit), new {Area = "Admin", Id = userId});
         }
 
         private bool UserExists(int id)

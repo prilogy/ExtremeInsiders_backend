@@ -60,8 +60,8 @@
                 @Html.DisplayFor(modelItem => item.Currency.Key)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Изменить</a>
-                <a asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+                <a asp-area="Admin" asp-controller="User" asp-action="Edit" asp-route-id="@item.Id">Изменить</a>
+                <a asp-area="Admin" asp-controller="User" asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
             </td>
         </tr>
 }

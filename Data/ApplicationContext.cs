@@ -55,6 +55,7 @@ namespace ExtremeInsiders.Data
     public DbSet<Payment> Payments { get; set; }
     
     public DbSet<PromoCode> PromoCodes { get; set; }
+    public DbSet<PromoCodeUser> PromoCodesUsers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -77,9 +78,10 @@ namespace ExtremeInsiders.Data
       modelBuilder.Entity<MovieTranslation>().HasIndex(x => new {x.CultureId, x.BaseEntityId}).IsUnique();
       modelBuilder.Entity<VideoTranslation>().HasIndex(x => new {x.CultureId, x.BaseEntityId}).IsUnique();
       modelBuilder.Entity<BannerEntityTranslation>().HasIndex(x => new {x.CultureId, x.BaseEntityId}).IsUnique();
-      
+      modelBuilder.Entity<PromoCodeUser>().HasIndex(x => new {x.PromoCodeId, x.UserId}).IsUnique();
       modelBuilder.Entity<Like>().HasIndex(x => new {x.UserId, x.EntityId}).IsUnique();
       modelBuilder.Entity<EntitySaleablePrice>().HasIndex(x => new {x.CurrencyId, x.EntityId}).IsUnique();
+      modelBuilder.Entity<Sale>().HasIndex(x => new {x.UserId, x.EntityId}).IsUnique();
       
       modelBuilder.Entity<Currency>().HasData(Currency.All);
     }

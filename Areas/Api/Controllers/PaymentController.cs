@@ -78,21 +78,7 @@ namespace ExtremeInsiders.Areas.Api.Controllers
       var plan = await _db.SubscriptionsPlans.FirstOrDefaultAsync(x => x.Id == planId);
       if(plan == null) return;
 
-      var subscription = new Subscription
-      {
-        PlanId = plan.Id,
-        UserId = user.Id,
-        DateStart = DateTime.UtcNow,
-        PaymentId = payment.Id
-      };
-      
-      if (user.Subscription == null)
-        subscription.DateEnd = DateTime.UtcNow + plan.Duration;
-      else
-      {
-        subscription.DateStart = user.Subscription.DateEnd;
-        subscription.DateEnd = user.Subscription.DateEnd + plan.Duration;
-      }
+      var subscription = Subscription.Create(plan, user, payment);
 
       await _db.Subscriptions.AddAsync(subscription);
       await _db.SaveChangesAsync();

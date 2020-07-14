@@ -67,7 +67,7 @@ namespace ExtremeInsiders.Helpers
     }
 
     public static T OfFormat<T, TR>(this ITranslatableEntity<T, TR> entity, UserService userService)
-      where T : EntityBase, ITranslatableEntity<T, TR>
+      where T : ITranslatableEntity<T, TR>
       where TR : TranslatableEntityTranslation<T>
     {
       entity = entity.OfCulture(userService.Culture);

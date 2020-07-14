@@ -61,8 +61,8 @@ namespace ExtremeInsiders.Areas.Api.Controllers
           var account = await handler.CreateAccount(identity);
           if (account != null)
           {
-            _db.SocialAccounts.Add(account);
-            _db.SaveChanges();
+            await _db.SocialAccounts.AddAsync(account);
+            await _db.SaveChangesAsync();
 
             return Ok(new AuthenticationModels.SocialSignUp
             {

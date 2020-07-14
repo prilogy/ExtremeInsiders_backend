@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using Castle.Components.DictionaryAdapter;
 using Newtonsoft.Json;
 
 namespace ExtremeInsiders.Entities
@@ -34,6 +35,27 @@ namespace ExtremeInsiders.Entities
         DateStart = DateTime.UtcNow,
         DateEnd = DateTime.UtcNow + TimeSpan.FromDays(31)
       };
+    }
+
+    public static Subscription Create(SubscriptionPlan plan, User user, Payment payment=null)
+    {
+      var subscription = new Subscription
+      {
+        PlanId = plan.Id,
+        UserId = user.Id,
+        DateStart = DateTime.UtcNow,
+        PaymentId = payment?.Id ?? null
+      };
+      
+      if (user.Subscription == null)
+        subscription.DateEnd = DateTime.UtcNow + plan.Duration;
+      else
+      {
+        subscription.DateStart = user.Subscription.DateEnd;
+        subscription.DateEnd = user.Subscription.DateEnd + plan.Duration;
+      }
+
+      return subscription;
     }
   }
 }

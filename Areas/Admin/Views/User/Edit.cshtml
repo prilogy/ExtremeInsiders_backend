@@ -87,7 +87,7 @@
                             @{
                                 var name = item.Plan?.OfCulture(Culture.Russian).Content?.Name;
                             }
-                            <td class="@(name == null ? "text-info" : "")">
+                            <td>
                                 @(name ?? "Демо период")
                             </td>
                             <td>
