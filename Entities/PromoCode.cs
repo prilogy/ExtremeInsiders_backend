@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using ExtremeInsiders.Migrations;
 using ExtremeInsiders.Models;
 
 namespace ExtremeInsiders.Entities

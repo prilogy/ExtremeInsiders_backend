@@ -27,7 +27,7 @@ namespace ExtremeInsiders.Areas.Api.Models
           Email = a.Email,
           Name = a.Name,
           Password = a.Password,
-          DateBirthday = a.BirthDate,
+          DateBirthday = a.DateBirthday,
           Avatar = a.Avatar,
           PhoneNumber = a.PhoneNumber
         };
@@ -46,7 +46,7 @@ namespace ExtremeInsiders.Areas.Api.Models
       public string Password { get; set; }
       public string PhoneNumber { get; set; }
       [Required]
-      public string BirthDate { get; set; }
+      public string DateBirthday { get; set; }
       public IFormFile Avatar { get; set; }
       
       [Required]

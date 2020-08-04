@@ -123,6 +123,7 @@ namespace ExtremeInsiders.Areas.Api.Controllers
       if (handler != null)
       {
         var user = await handler.FindUser(model.Token);
+        user = await _userService.Authenticate(user);
 
         if (user != null)
           return Ok(user.WithoutSensitive(token: true, useLikeIds: true, useFavoriteIds: true, useSaleIds: true));

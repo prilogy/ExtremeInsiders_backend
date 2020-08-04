@@ -163,13 +163,20 @@ namespace ExtremeInsiders.Areas.Admin.Controllers
 
       return p;
     }
+
+    private class SelectListItem
+    {
+      public int Id { get; set; }
+      public string Name { get; set; }
+      public string Discriminator { get; set; }
+    } 
     
     private SelectList SubscriptionPlanSelectList(int id = default)
     {
-      var newList = new List<object> {new {Id = 0, Name = "-"}};
+      var newList = new List<SelectListItem> ();
       var sports = _context.SubscriptionsPlans.ToList().OfCulture(Culture.Russian);
       foreach (var item in sports)
-        newList.Add(new
+        newList.Add(new SelectListItem
         {
           Id = item.Id,
           Name = item.Content != null ? item.Content.Name : $"Нет названия - Id: {item.Id}"
@@ -206,17 +213,24 @@ namespace ExtremeInsiders.Areas.Admin.Controllers
       }
 
 
-      var newList = new List<object> {new {Id = 0, Name = "-"}};
+      var newList = new List<SelectListItem> ();
 
       var list = _context.EntitiesSaleable.Where(x => x.Prices.Count > 0).ToList();
 
       foreach (var item in list)
-        newList.Add(new
+      {
+        newList.Add(new SelectListItem
         {
           Id = item.Id,
-          Name = GetEntityName(item)
+          Name = GetEntityName(item),
+          Discriminator = item.GetType().ToString()
         });
 
+      }
+
+      newList = newList.OrderBy(x => x.Discriminator).ThenBy(x => x.Name.ToLower()).ToList();
+      newList.Insert(0, new SelectListItem {Id = 0, Name = "-"});
+      
       return new SelectList(newList, "Id", "Name", id);
     }
   }
