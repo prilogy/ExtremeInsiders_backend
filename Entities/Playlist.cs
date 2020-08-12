@@ -22,6 +22,8 @@ namespace ExtremeInsiders.Entities
     public virtual List<PlaylistTranslation> Translations { get; set; }
     [NotMapped]
     public PlaylistTranslation Content { get; set; }
+
+    [NotMapped] public int LikesAmount => Videos.Aggregate(0, (acc, x) => acc + x.LikesAmount);
   }
   
   public class PlaylistTranslation : TranslatableEntityTranslation<Playlist>, IDefaultTranslatableContent, ITranslationWithImage

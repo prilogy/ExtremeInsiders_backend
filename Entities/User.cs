@@ -57,11 +57,11 @@ namespace ExtremeInsiders.Entities
     public bool EmailVerified =>
       ConfirmationCodes.Any(x => x.Type == ConfirmationCode.Types.EmailConfirmation && x.IsConfirmed == true);
     [NotMapped]
-    public object LikeIds { get; set; }
+    public EntityIdLists LikeIds { get; set; }
     [NotMapped] 
-    public object FavoriteIds { get; set; }
+    public EntityIdLists FavoriteIds { get; set; }
     [NotMapped] 
-    public object SaleIds { get; set; }
+    public EntityIdLists SaleIds { get; set; }
     [NotMapped] 
     public string Token { get; set; }
 
@@ -70,7 +70,7 @@ namespace ExtremeInsiders.Entities
     {
       DateSignUp = DateTime.UtcNow;
     }
-    
+
     public User WithoutSensitive(bool token = false, bool useLikeIds = false, bool useFavoriteIds = false, bool useSaleIds = false)
     {
       Password = null;
@@ -78,7 +78,7 @@ namespace ExtremeInsiders.Entities
 
       if (useLikeIds)
       {
-        LikeIds = new
+        LikeIds = new EntityIdLists
         {
           Videos = Likes.Where(x => x.Entity is Video).Select(x => x.EntityId),
           Movies = Likes.Where(x=> x.Entity is Movie).Select(x => x.EntityId)
@@ -87,7 +87,7 @@ namespace ExtremeInsiders.Entities
 
       if (useFavoriteIds)
       {
-        FavoriteIds = new
+        FavoriteIds = new EntityIdLists
         {
           Videos = Favorites.Where(x => x.Entity is Video).Select(x => x.EntityId),
           Movies = Favorites.Where(x=> x.Entity is Movie).Select(x => x.EntityId),
@@ -98,7 +98,7 @@ namespace ExtremeInsiders.Entities
 
       if (useSaleIds)
       {
-        SaleIds = new
+        SaleIds = new EntityIdLists
         {
           Videos = Sales.Where(x => x.Entity is Video).Select(x => x.EntityId),
           Movies = Sales.Where(x=> x.Entity is Movie).Select(x => x.EntityId),
@@ -109,5 +109,13 @@ namespace ExtremeInsiders.Entities
 
       return this;
     }
+  }
+  
+  public class EntityIdLists
+  {
+    public IEnumerable<int> Sports { get; set; } = null;
+    public IEnumerable<int> Playlists { get; set; } = null;
+    public IEnumerable<int> Videos { get; set; } = null;
+    public IEnumerable<int> Movies { get; set; } = null;
   }
 }

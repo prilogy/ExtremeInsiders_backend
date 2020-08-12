@@ -10,6 +10,7 @@ namespace ExtremeInsiders.Models
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
     public DateTime DateCreated {get;set;}
+    [NotMapped] public string EntityType => this.GetType().Name.Replace("Proxy", "");
 
     public EntityBase()
     {

@@ -21,6 +21,5 @@ namespace ExtremeInsiders.Areas.Api.Controllers
     }
 
     protected override IQueryable<Video> GetRecommendedQueryable() => _db.Videos.OrderByDescending(x => x.Likes.Count);
-    
   }
 }
