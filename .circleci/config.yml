@@ -6,7 +6,7 @@ orbs:
 jobs:
   build:
     executor: win/default
-
+    working_directory: ~/app-build
     steps:
       - checkout
       - run: dotnet build --runtime linux-x64 --configuration Release --framework netcoreapp3.1
@@ -14,11 +14,12 @@ jobs:
   deploy:
     machine:
       enabled: true
+    working_directory: ~/app-build
     steps:
       - run:
           name: Deploy over SSH
           command: |
-            scp -r $VM_FOLDER $SSH_USER@$SSH_HOST:$SSH_FOLDER
+            scp -r ~/app-build $SSH_USER@$SSH_HOST:$SSH_FOLDER
 
 
 workflows:
