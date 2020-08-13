@@ -16,6 +16,9 @@ jobs:
       enabled: true
     working_directory: ~/app-build
     steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "7b:60:90:19:47:bc:59:3c:90:e1:5f:ac:67:1f:71:6b"
       - run:
           name: Deploy over SSH
           command: |
