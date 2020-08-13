@@ -10,7 +10,7 @@ jobs:
     working_directory: ~/app-build
     steps:
       - checkout
-      - run: dotnet build --runtime linux-x64 --configuration Release --framework netcoreapp3.1
+    #  - run: dotnet build --runtime linux-x64 --configuration Release --framework netcoreapp3.1
       - add_ssh_keys:
           fingerprints:
             - "99:3a:c7:4e:fd:52:48:42:ad:b9:2c:e9:a5:98:29:ff"
