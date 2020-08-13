@@ -23,14 +23,14 @@ jobs:
             ssh $SSH_USER@$SSH_HOST:/var/www/vhosts/prilogy.ru/test
 
 
-  workflows:
-    version: 2.1
-    build-and-deploy:
-      jobs:
-        - build
-        - deploy:
-            requires:
-              - build
-            filters:
-              branches:
-                only: master
+workflows:
+  version: 2.1
+  build-and-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
