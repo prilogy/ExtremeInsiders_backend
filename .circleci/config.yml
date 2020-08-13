@@ -20,7 +20,7 @@ jobs:
       - run:
           name: Deploy over SSH
           command: |
-            ssh $SSH_USER@$SSH_HOST:/var/www/vhosts/prilogy.ru/test
+            ssh $SSH_USER@$SSH_HOST:/var/www/vhosts/prilogy.ru/test -p 22
 
 
 workflows:
