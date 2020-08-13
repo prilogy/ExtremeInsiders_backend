@@ -9,20 +9,7 @@ jobs:
     working_directory: ~/app-build
     steps:
       - checkout
-      - attach_workspace:
-          at: ~/app-build
       - run: dotnet build --runtime linux-x64 --configuration Release --framework netcoreapp3.1
-      - persist_to_workspace:
-          root: .
-          path: .
-
-  deploy:
-    working_directory: ~/app-build
-    machine:
-      enabled: true
-    steps:
-      - attach_workspace:
-          at: ~/app-build
       - add_ssh_keys:
           fingerprints:
             - "99:3a:c7:4e:fd:52:48:42:ad:b9:2c:e9:a5:98:29:ff"
@@ -33,16 +20,3 @@ jobs:
             ls
             scp -r ./bin/Release/netcoreapp3.1/linux-x64 $SSH_USER@$SSH_HOST:$SSH_FOLDER
             ssh $SSH_USER@$SSH_HOST "sudo supervisorctl restart ExtremeInsiders"
-
-
-workflows:
-  version: 2.1
-  build-and-deploy:
-    jobs:
-      - build
-      - deploy:
-          requires:
-            - build
-          filters:
-            branches:
-              only: master
