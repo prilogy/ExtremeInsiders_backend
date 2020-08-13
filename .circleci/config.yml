@@ -22,6 +22,7 @@ jobs:
       - run:
           name: Deploy over SSH
           command: |
+            pwd
             scp -r ./bin/Release/netcoreapp3.1/linux-x64 $SSH_USER@$SSH_HOST:$SSH_FOLDER
             ssh $SSH_USER@$SSH_HOST "sudo supervisorctl restart ExtremeInsiders"
 
