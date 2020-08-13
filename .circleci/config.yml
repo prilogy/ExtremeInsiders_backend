@@ -13,9 +13,8 @@ jobs:
           at: ~/app-build
       - run: dotnet build --runtime linux-x64 --configuration Release --framework netcoreapp3.1
       - persist_to_workspace:
-          root: /root/app-build
-          paths:
-            - .
+          root: .
+          path: .
 
   deploy:
     working_directory: ~/app-build
