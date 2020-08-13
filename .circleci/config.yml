@@ -16,8 +16,10 @@ jobs:
       enabled: true
     steps:
       # Reuse the workspace from the build job
-      - attach_workspace:
-          at: .
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
       - add_ssh_keys:
           fingerprints:
             - "99:3a:c7:4e:fd:52:48:42:ad:b9:2c:e9:a5:98:29:ff"
