@@ -6,6 +6,7 @@ orbs:
 jobs:
   build:
     executor: win/default
+    machine: true
     working_directory: ~/app-build
     steps:
       - checkout
