@@ -9,7 +9,12 @@ jobs:
     working_directory: ~/app-build
     steps:
       - checkout
-      - run: dotnet build --runtime linux-x64 --configuration Release --framework netcoreapp3.1
+      - run:
+        name: Building project
+        command: |
+          pwd
+          ls
+          dotnet build --runtime linux-x64 --configuration Release --framework netcoreapp3.1
 
   deploy:
     machine:
