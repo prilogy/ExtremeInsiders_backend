@@ -9,4 +9,6 @@
     
      steps:
        - checkout
-       - run: dotnet build
+       - run: dotnet build --runtime linux-x64 --configuration Release --framework netcoreapp3.1 
+       - store_artifacts:
+           path: /bin/
