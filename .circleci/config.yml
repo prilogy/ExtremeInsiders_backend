@@ -30,7 +30,7 @@ jobs:
     working_directory: ~/app-build
     steps:
       # attaching to workspace at working directory to get persisted files
-      - attach_workspace: 
+      - attach_workspace:
           at: ~/app-build
           # here we'll have next structure
           # /home/circleci/app-build (it's not the same as in first job because it's linux machine but not windows as in first job)
@@ -43,8 +43,9 @@ jobs:
           command: |
             pwd
             ls
-            scp -r ./bin/Release/netcoreapp3.1/linux-x64 $SSH_USER@${SSH_HOST}:$SSH_FOLDER
+            scp -r ./bin/Release/netcoreapp3.1/linux-x64/* $SSH_USER@${SSH_HOST}:$SSH_FOLDER
             ssh $SSH_USER@$SSH_HOST "sudo supervisorctl restart ExtremeInsiders"
+
 
 workflows:
   version: 2.1
@@ -54,6 +55,9 @@ workflows:
       - deploy:
           requires:
             - build
+          # filter requires commit to be in master branch and to have a "deploy" tag
           filters:
             branches:
               only: master
+            tags:
+              only: /^deploy$/
