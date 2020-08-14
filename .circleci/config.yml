@@ -3,25 +3,38 @@ version: 2.1
 orbs:
   win: circleci/windows@2.2.0
 
+# main point of this config is to build asp.net core app in windows and then deploy it from linux by ssh to remote server
+# the problem was in windows and linux, because of different system structure
+# so it was needed to use persist_to_workspace to pass build files from windows to linux
+
 jobs:
   build:
     executor: win/default
+    # setting our path to somewhere ~/app-build
+    # now we are at C:/Users/circleci/app-build
     working_directory: ~/app-build
     steps:
+      # uploading repository to our path(~/app-build)
       - checkout
       - run: dotnet build --runtime linux-x64 --configuration Release --framework netcoreapp3.1
+      # persisting build files to workspace
       - persist_to_workspace:
-          root: .
-          paths:
+          root: . # specifying path from where we want to persist next paths
+          paths: # specifying path we want to persist
             - ./bin/Release/netcoreapp3.1/linux-x64
 
   deploy:
     machine:
       image: ubuntu-1604:201903-01
+    # setting the exact same path of working directory as in first job
     working_directory: ~/app-build
     steps:
+      # attaching to workspace at working directory to get persisted files
       - attach_workspace: 
           at: ~/app-build
+          # here we'll have next structure
+          # /home/circleci/app-build (it's not the same as in first job because it's linux machine but not windows as in first job)
+          # - bin (folder we asked to persist)
       - add_ssh_keys:
           fingerprints:
             - "99:3a:c7:4e:fd:52:48:42:ad:b9:2c:e9:a5:98:29:ff"
@@ -30,7 +43,7 @@ jobs:
           command: |
             pwd
             ls
-            scp -r * $SSH_USER@${SSH_HOST}:$SSH_FOLDER
+            scp -r ./bin/Release/netcoreapp3.1/linux-x64 $SSH_USER@${SSH_HOST}:$SSH_FOLDER
             ssh $SSH_USER@$SSH_HOST "sudo supervisorctl restart ExtremeInsiders"
 
 workflows:
