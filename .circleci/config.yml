@@ -55,9 +55,7 @@ workflows:
       - deploy:
           requires:
             - build
-          # filter requires commit to be in master branch and to have a "deploy" tag
+          # filter requires commit to have a /^deploy-.{0,}/ tag
           filters:
-            branches:
-              only: master
             tags:
-              only: /^deploy$/
+              only: /^deploy.{0,}/
