@@ -13,7 +13,7 @@ jobs:
       - persist_to_workspace:
           # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is 
           # taken to be the root directory of the workspace.
-          root: workspace
+          root: /root/workspace
           # Must be relative path from root
           paths:
             - .
@@ -24,7 +24,7 @@ jobs:
     working_directory: ~/app-build
     steps:
       - attach_workspace: 
-          at: ~/app-build/workspace
+          at: ~/app-build
       - add_ssh_keys:
           fingerprints:
             - "99:3a:c7:4e:fd:52:48:42:ad:b9:2c:e9:a5:98:29:ff"
