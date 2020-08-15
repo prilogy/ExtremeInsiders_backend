@@ -54,11 +54,11 @@ workflows:
       - build:
           filters:
             tags:
-              only: /.*/
+              only: /^deploy.*/
       - deploy:
           requires:
             - build
           # filter requires commit to have a /^deploy-.{0,}/ tag
           filters:
             tags:
-              only: /^deploy.{0,}/
+              only: /^deploy.*/
