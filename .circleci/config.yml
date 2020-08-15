@@ -51,14 +51,12 @@ workflows:
   version: 2.1
   build-and-deploy:
     jobs:
-      - build:
-          filters:
-            tags:
-              only: /^deploy.*/
+      - build
       - deploy:
           requires:
             - build
-          # filter requires commit to have a /^deploy-.{0,}/ tag
+          # filter requires commit to be on master branch
           filters:
-            tags:
-              only: /^deploy.*/
+            branches:
+              only:
+                - master
