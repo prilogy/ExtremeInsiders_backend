@@ -51,7 +51,10 @@ workflows:
   version: 2.1
   build-and-deploy:
     jobs:
-      - build
+      - build:
+          filters:
+            tags:
+              only: /.*/
       - deploy:
           requires:
             - build
