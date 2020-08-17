@@ -14,8 +14,8 @@ namespace ExtremeInsiders.Entities
     [NotMapped] public int? BestPlaylistId => Playlists.OrderByDescending(x => x.LikesAmount).FirstOrDefault()?.Id;
 
     [NotMapped]
-    public int? BestVideoId => Playlists.Select(x => x.Videos.OrderByDescending(v => v.LikesAmount).First())
-      .OrderByDescending(x => x.LikesAmount).FirstOrDefault()?.Id;
+    public int? BestVideoId => Playlists.Select(x => x.Videos.OrderByDescending(v => v.LikesAmount).FirstOrDefault())
+      .OrderByDescending(x => x?.LikesAmount).FirstOrDefault()?.Id;
 
     public List<int> PlaylistsIds => Playlists?.Count > 0 ? Playlists.Select(x => x.Id).ToList() : null;
     public List<int> MoviesIds => Movies?.Count > 0 ? Movies.Select(x => x.Id).ToList() : null;
