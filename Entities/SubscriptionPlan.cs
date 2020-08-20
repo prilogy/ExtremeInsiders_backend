@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 using ExtremeInsiders.Models;
 using Newtonsoft.Json;
 
@@ -12,6 +13,9 @@ namespace ExtremeInsiders.Entities
     public int Id { get; set; }
     [JsonIgnore]
     public TimeSpan Duration { get; set; }
+
+    public string Color { get; set; }
+    
     [JsonIgnore]
     [ForeignKey("BaseEntityId")]
     public virtual List<SubscriptionPlanTranslation> Translations { get; set; }
@@ -36,6 +40,8 @@ namespace ExtremeInsiders.Entities
     [JsonIgnore]
     public int Id { get; set; }
     public decimal Value { get; set; }
+    [AllowNull]
+    public decimal DiscountValue { get; set; }
     [JsonIgnore]
     public int CurrencyId { get; set; }
     public virtual Currency Currency { get; set; }

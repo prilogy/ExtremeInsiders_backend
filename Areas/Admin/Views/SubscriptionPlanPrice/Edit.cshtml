@@ -14,17 +14,22 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="Value" class="control-label"></label>
+                <label asp-for="Value" class="control-label">Стоимость</label>
                 <input asp-for="Value" class="form-control" />
                 <span asp-validation-for="Value" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CurrencyId" class="control-label"></label>
+                            <label asp-for="DiscountValue" class="control-label">Величина скидки(в деньгах)</label>
+                            <input asp-for="DiscountValue" type="number" class="form-control"/>
+                            <span asp-validation-for="DiscountValue" class="text-danger"></span>
+                        </div>
+            <div class="form-group">
+                <label asp-for="CurrencyId" class="control-label">Валюта</label>
                 <select readonly asp-for="CurrencyId" class="form-control" asp-items="ViewBag.CurrencyId"></select>
                 <span asp-validation-for="CurrencyId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="EntityId" class="control-label"></label>
+                <label asp-for="EntityId" class="control-label">Связанная сущность</label>
                 <select readonly asp-for="EntityId" class="form-control" asp-items="ViewBag.EntityId"></select>
                 <span asp-validation-for="EntityId" class="text-danger"></span>
             </div>

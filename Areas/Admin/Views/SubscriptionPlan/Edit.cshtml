@@ -27,6 +27,11 @@
                 <span asp-validation-for="Duration" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Color" class="control-label">Цвет</label>
+                <input asp-for="Color" type="color" class="form-control"/>
+                <span asp-validation-for="Color" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Сохранить" class="btn btn-primary"/>
             </div>
             <div>
