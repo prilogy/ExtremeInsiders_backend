@@ -81,7 +81,7 @@ namespace ExtremeInsiders.Areas.Api.Controllers
     {
       var userAction = new UserAction
       {
-        Id = id
+        EntityIdItem = new EntityIdItem {EntityId = id}
       };
 
       var like = await _db.Likes.FirstOrDefaultAsync(l => l.EntityId == id && l.UserId == _userService.UserId);
@@ -102,11 +102,13 @@ namespace ExtremeInsiders.Areas.Api.Controllers
       else
       {
         userAction.Entity = like.Entity;
+        userAction.EntityIdItem.Id = like.Id;
         userAction.Status = false;
         _db.Remove(like);
       }
 
       await _db.SaveChangesAsync();
+      if (like.Id != 0) userAction.EntityIdItem.Id = like.Id;
       return Ok(userAction);
     }
 
@@ -115,9 +117,9 @@ namespace ExtremeInsiders.Areas.Api.Controllers
     {
       var userAction = new UserAction
       {
-        Id = id
+        EntityIdItem = new EntityIdItem {EntityId = id}
       };
-      
+
       var favorite = await _db.Favorites.FirstOrDefaultAsync(l => l.EntityId == id && l.UserId == _userService.UserId);
       if (favorite == null)
       {
@@ -135,12 +137,14 @@ namespace ExtremeInsiders.Areas.Api.Controllers
       }
       else
       {
+        userAction.EntityIdItem.Id = favorite.Id;
         userAction.Entity = favorite.Entity;
         userAction.Status = false;
         _db.Remove(favorite);
       }
 
       await _db.SaveChangesAsync();
+      if (favorite.Id != 0) userAction.EntityIdItem.Id = favorite.Id;
       return Ok(userAction);
     }
 

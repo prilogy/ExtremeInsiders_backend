@@ -1,11 +1,12 @@
 ﻿using System;
+using ExtremeInsiders.Entities;
 using Newtonsoft.Json;
 
 namespace ExtremeInsiders.Models
 {
   public class UserAction
   {
-    public int Id { get; set; }
+    public EntityIdItem EntityIdItem;
     public bool Status { get; set; }
     [JsonIgnore]
     public EntityBase Entity { get; set; }
