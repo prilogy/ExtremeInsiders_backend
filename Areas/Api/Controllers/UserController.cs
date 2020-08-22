@@ -183,6 +183,17 @@ namespace ExtremeInsiders.Areas.Api.Controllers
       return Ok();
     }
 
+    [HttpPost("verify")]
+    [AllowAnonymous]
+    public async Task<IActionResult> ResetPassword([FromBody] string code, bool verify)
+    {
+      var confirmationCode =
+        await _db.ConfirmationCodes.FirstOrDefaultAsync(ConfirmationCode.CanBeUsed(code,
+          ConfirmationCode.Types.PasswordReset));
+      if (confirmationCode == null) return NotFound();
+      return Ok();
+    }
+
     [HttpPatch]
     [AllowAnonymous]
     public async Task<IActionResult> ResetPassword([FromBody] UserModels.PasswordReset model)
