@@ -37,8 +37,8 @@ namespace ExtremeInsiders.Areas.Api.Controllers
         return NotFound();
 
       if (promoCode.SubscriptionPlan != null)
-        promoCode.SubscriptionPlan = promoCode.SubscriptionPlan.OfFormat(_userService);
-      
+        promoCode.SubscriptionPlan = promoCode.SubscriptionPlan.OfCulture(_userService.Culture).OfCurrency(_userService.Currency) as SubscriptionPlan;
+
       if (promoCode.EntitySaleable != null)
       {
         promoCode.EntitySaleable = promoCode.EntitySaleable switch
