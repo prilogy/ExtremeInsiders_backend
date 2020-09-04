@@ -23,6 +23,11 @@
                 <input asp-for="Description" class="form-control"/>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label class="control-label">Url</label>
+                <input asp-for="Url" class="form-control"/>
+                <span asp-validation-for="Url" class="text-danger"></span>
+            </div>
             <div>
                 <label class="control-label">Текущее изображение</label>
                 <img src="@(Model.Image?.Path)" style="max-width: 350px"/>
