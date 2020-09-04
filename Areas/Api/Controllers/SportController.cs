@@ -24,19 +24,20 @@ namespace ExtremeInsiders.Areas.Api.Controllers
     public override async Task<IActionResult> Search(string query, int id)
     {
       query = query.ToLower();
-      
+
       var sport = await _db.Sports.FirstOrDefaultAsync(x => x.Id == id);
       if (sport == null)
         return NotFound();
-      
+
       return Ok(new
       {
-        Videos = sport.Playlists.SelectMany(x => x.Videos).SearchAtWithQueryAsync<Video, VideoTranslation>(query).OfFormat(_userService),
+        Videos = sport.Playlists.SelectMany(x => x.Videos).SearchAtWithQueryAsync<Video, VideoTranslation>(query)
+          .OfFormat(_userService),
         Playlists = sport.Playlists.SearchAtWithQueryAsync<Playlist, PlaylistTranslation>(query).OfFormat(_userService)
       });
     }
 
     protected override IQueryable<Sport> GetRecommendedQueryable() =>
-      _db.Sports.OrderBy(x => x.Playlists.Count).ThenBy(x => x.Movies.Count);
+      _db.Sports.OrderByDescending(x => x.Playlists.Count).ThenByDescending(x => x.Movies.Count);
   }
 }
