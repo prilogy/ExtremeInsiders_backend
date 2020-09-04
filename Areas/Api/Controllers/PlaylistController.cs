@@ -25,14 +25,20 @@ namespace ExtremeInsiders.Areas.Api.Controllers
       var playlist = await _db.Playlists.FirstOrDefaultAsync(x => x.Id == id);
       if (playlist == null)
         return NotFound();
-      
+
       return Ok(new
       {
         Videos = playlist.Videos.SearchAtWithQueryAsync<Video, VideoTranslation>(query).OfFormat(_userService)
       });
     }
-    
-    protected override IQueryable<Playlist> GetRecommendedQueryable() => _userService.User.Favorites.Count(x => x.Entity is Sport) > 0 
-      ? _db.Playlists.Where(x => _userService.User.Favorites.Select(x => x.Id).Contains(x.SportId)) : _db.Playlists.OrderBy(x => x.DateCreated);
+
+    protected override IQueryable<Playlist> GetRecommendedQueryable()
+    {
+      var ids = _userService.User.Favorites.Where(x => x.Entity is Sport)
+        .SelectMany(x => (x.Entity as Sport)?.Playlists).Select(x => x.Id).ToList();
+      return ids.Count != 0
+        ? _db.Playlists.Where(x => ids.Contains(x.Id)).OrderByDescending(x => x.Videos.Count).AsQueryable()
+        : _db.Playlists.OrderByDescending(x => x.Videos.Count).ThenByDescending(x => x.DateCreated);
+    }
   }
 }
