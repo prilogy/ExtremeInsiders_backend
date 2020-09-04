@@ -79,7 +79,7 @@ namespace ExtremeInsiders.Areas.Api.Models
             return await Task.Run(() => { return NotFound(); });
         }
 
-        protected async Task<IActionResult> Paging(IQueryable<T> q, int page, int pageSize, string orderByDate)
+        protected async Task<IActionResult> Paging(IQueryable<T> q, int page, int pageSize, string orderByDate=null)
         {
             if (orderByDate == "asc")
                 q = q.OrderBy(x => x.DateCreated);

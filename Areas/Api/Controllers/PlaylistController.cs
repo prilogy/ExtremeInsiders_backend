@@ -20,6 +20,14 @@ namespace ExtremeInsiders.Areas.Api.Controllers
     {
     }
 
+    [HttpGet("popular")]
+    public async Task<IActionResult> GetPopular([FromQuery] int page, [FromQuery] int pageSize)
+    {
+      var list = _db.Set<Playlist>()
+        .OrderByDescending(x => (from y in _db.Videos where y.PlaylistId == x.Id select y.Likes).Count());
+      return await Paging(list, page, pageSize);
+    }
+
     public override async Task<IActionResult> Search(string query, int id)
     {
       var playlist = await _db.Playlists.FirstOrDefaultAsync(x => x.Id == id);
