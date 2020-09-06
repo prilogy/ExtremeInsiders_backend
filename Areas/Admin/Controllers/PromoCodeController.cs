@@ -181,6 +181,8 @@ namespace ExtremeInsiders.Areas.Admin.Controllers
           Id = item.Id,
           Name = item.Content != null ? item.Content.Name : $"Нет названия - Id: {item.Id}"
         });
+      
+      newList.Insert(0, new SelectListItem {Id = 0, Name = "-"});
 
       return new SelectList(newList, "Id", "Name", id);
     }

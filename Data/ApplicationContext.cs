@@ -73,6 +73,8 @@ namespace ExtremeInsiders.Data
       modelBuilder.Entity<Video>().HasData(video);
       modelBuilder.Entity<Movie>().HasData(movie);
 
+      modelBuilder.Entity<User>().HasIndex(x => x.Email).IsUnique();
+      
       modelBuilder.Entity<SportTranslation>().HasIndex(x => new {x.CultureId, x.BaseEntityId}).IsUnique();
       modelBuilder.Entity<PlaylistTranslation>().HasIndex(x => new {x.CultureId, x.BaseEntityId}).IsUnique();
       modelBuilder.Entity<MovieTranslation>().HasIndex(x => new {x.CultureId, x.BaseEntityId}).IsUnique();
@@ -82,7 +84,7 @@ namespace ExtremeInsiders.Data
       modelBuilder.Entity<Like>().HasIndex(x => new {x.UserId, x.EntityId}).IsUnique();
       modelBuilder.Entity<EntitySaleablePrice>().HasIndex(x => new {x.CurrencyId, x.EntityId}).IsUnique();
       modelBuilder.Entity<Sale>().HasIndex(x => new {x.UserId, x.EntityId}).IsUnique();
-      
+
       modelBuilder.Entity<Currency>().HasData(Currency.All);
     }
 
