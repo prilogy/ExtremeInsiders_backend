@@ -65,7 +65,6 @@ namespace ExtremeInsiders.Services
       }
       catch (Exception ex)
       {
-        Console.WriteLine(ex);
         return null;
       }
     }

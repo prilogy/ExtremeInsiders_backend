@@ -14,7 +14,7 @@ namespace ExtremeInsiders.Entities
     [JsonIgnore] public virtual List<Video> Videos { get; set; }
 
     public List<int> VideosIds => Videos?.Count > 0 ? Videos.Select(x => x.Id).ToList() : null;
-    [NotMapped] public int? BestVideoId => Videos.OrderByDescending(v => v.LikesAmount).FirstOrDefault()?.Id;
+    [NotMapped] public int? BestVideoId => Videos?.OrderByDescending(v => v.LikesAmount).FirstOrDefault()?.Id;
 
     [JsonIgnore]
     [ForeignKey("BaseEntityId")]
@@ -22,7 +22,7 @@ namespace ExtremeInsiders.Entities
 
     [NotMapped] public PlaylistTranslation Content { get; set; }
 
-    [NotMapped] public int LikesAmount => Videos.Aggregate(0, (acc, x) => acc + x.LikesAmount);
+    [NotMapped] public int? LikesAmount => Videos?.Aggregate(0, (acc, x) => acc + x.LikesAmount ?? 0);
   }
 
   public class PlaylistTranslation : TranslatableEntityTranslation<Playlist>, IDefaultTranslatableContent,

@@ -33,7 +33,7 @@ namespace ExtremeInsiders.Areas.Api.Controllers
       if (message == null) return BadRequest();
       
       var payment = message?.Object;
-      Console.WriteLine(payment.Status.ToString() + payment.Paid.ToString());
+      
       if (message.Event == Event.PaymentWaitingForCapture && payment.Paid)
       {
         var dbPayment = await _paymentService.CapturePayment(payment);

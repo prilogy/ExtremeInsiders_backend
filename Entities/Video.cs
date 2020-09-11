@@ -13,7 +13,7 @@ namespace ExtremeInsiders.Entities
     [JsonIgnore]
     public virtual Playlist Playlist { get; set; }
 
-    public bool IsInPaidPlaylist => Playlist.IsPaid;
+    public bool IsInPaidPlaylist => Playlist?.IsPaid ?? false;
     
     [JsonIgnore]
     [ForeignKey("BaseEntityId")]

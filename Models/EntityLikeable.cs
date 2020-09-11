@@ -12,6 +12,6 @@ namespace ExtremeInsiders.Models
     [JsonIgnore]
     public virtual List<Like> Likes { get; set; }
 
-    public int LikesAmount => Likes.Count;
+    public int? LikesAmount => Likes?.Count;
   }
 }

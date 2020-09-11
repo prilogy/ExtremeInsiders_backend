@@ -79,7 +79,8 @@ namespace ExtremeInsiders.Areas.Admin.Models
                 return NotFound();
             }
 
-            var entity = await _context.Set<T>().FindAsync(id);
+            
+            var entity = await _context.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
             if (entity == null)
             {
                 return NotFound();
@@ -92,10 +93,12 @@ namespace ExtremeInsiders.Areas.Admin.Models
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, T entity)
         {
+
             if (id != entity.Id)
             {
                 return NotFound();
             }
+
 
             if (ModelState.IsValid)
             {
@@ -117,6 +120,9 @@ namespace ExtremeInsiders.Areas.Admin.Models
                 }
                 return RedirectToAction(nameof(Index).ToString());
             }
+
+            entity = await _context.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
+            
             return View(entity);
         }
 

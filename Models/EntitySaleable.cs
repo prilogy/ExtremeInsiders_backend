@@ -33,9 +33,9 @@ namespace ExtremeInsiders.Models
     [NotMapped]
     public EntitySaleablePrice Price { get; set; }
 
-    public bool IsPaid => Prices.Count > 0;
+    public bool IsPaid => Prices?.Count > 0;
 
-    public int SalesAmount => Sales.Count;
+    public int? SalesAmount => Sales?.Count;
   }
 
   public class EntitySaleablePrice : ISaleablePrice

@@ -11,10 +11,10 @@ namespace ExtremeInsiders.Entities
     [JsonIgnore] public virtual List<Playlist> Playlists { get; set; }
     [JsonIgnore] public virtual List<Movie> Movies { get; set; }
 
-    [NotMapped] public int? BestPlaylistId => Playlists.OrderByDescending(x => x.LikesAmount).FirstOrDefault()?.Id;
+    [NotMapped] public int? BestPlaylistId => Playlists?.OrderByDescending(x => x.LikesAmount).FirstOrDefault()?.Id;
 
     [NotMapped]
-    public int? BestVideoId => Playlists.Select(x => x.Videos.OrderByDescending(v => v.LikesAmount).FirstOrDefault())
+    public int? BestVideoId => Playlists?.Select(x => x.Videos.OrderByDescending(v => v.LikesAmount).FirstOrDefault())
       .OrderByDescending(x => x?.LikesAmount).FirstOrDefault()?.Id;
 
     public List<int> PlaylistsIds => Playlists?.Count > 0 ? Playlists.Select(x => x.Id).ToList() : null;
