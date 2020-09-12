@@ -70,4 +70,11 @@
       <UpToDateCheckInput Remove="Areas\Admin\Views\Sport\Index.cshtml" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Update="wwwroot\Policy.html">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
+    </ItemGroup>
+
 </Project>
