@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using ExtremeInsiders.Data;
 using ExtremeInsiders.Entities;
 using ExtremeInsiders.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using Yandex.Checkout.V3;
 using Payment = Yandex.Checkout.V3.Payment;
 
@@ -34,14 +37,27 @@ namespace ExtremeInsiders.Services
       User user = null, 
       Currency currency = null)
     {
-      if (user == null) user = _userService.User;
-      if (currency == null) currency = user.Currency;
+      user ??= _userService.User;
+      currency ??= user.Currency;
 
       metadata[Entities.Payment.TypeMetadataName] = type.ToString();
 
+      if (currency.Key != "RUB")
+      {
+        using var client = new HttpClient();
+        const string url = "https://www.cbr-xml-daily.ru/daily_json.js";
+        var result = await client.GetAsync(url);
+        var rate = JsonConvert.DeserializeObject<CurrenciesRate>(await result.Content.ReadAsStringAsync());
+        
+        if (Equals(currency, Currency.EUR))
+          value *= Convert.ToDecimal(rate.Valute.EUR.Value);
+        else if (Equals(currency, Currency.USD))
+          value *= Convert.ToDecimal(rate.Valute.USD.Value);
+      }
+
       var newPayment = new NewPayment
       {
-        Amount = new Amount {Value = value, Currency = currency.Key},
+        Amount = new Amount {Value = value, Currency = "RUB"},
         Metadata = metadata,
         Confirmation = new Confirmation
         {
@@ -86,6 +102,22 @@ namespace ExtremeInsiders.Services
       await _db.SaveChangesAsync();
       
       return dbPayment;
+    }
+
+    private class CurrenciesRate
+    {
+      public CurrencyRate Valute { get; set; }
+    }
+    private class CurrencyRate
+    {
+      
+      public CurrencyObject USD { get; set; }
+      public CurrencyObject EUR { get; set; }
+      public class CurrencyObject
+      {
+        public double Value { get; set; }
+        public string CharCode { get; set; }
+      }
     }
   }
 }

@@ -36,6 +36,21 @@ namespace ExtremeInsiders.Entities
       RUB,
       EUR,
       USD
-    }; 
+    };
+    
+    public override bool Equals(object obj)
+    {
+      if (!(obj is Currency item))
+      {
+        return false;
+      }
+
+      return Key.Equals(item.Key);
+    }
+
+    public override int GetHashCode()
+    {
+      return Key.GetHashCode();
+    }
   }
 }
