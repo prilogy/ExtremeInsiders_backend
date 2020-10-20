@@ -65,7 +65,7 @@ namespace ExtremeInsiders.Areas.Api.Models
         {
             var entity = await _db.Set<T>().FindAsync(id);
 
-            if (entity == null)
+            if (entity == null || FormatExtensions.IsPlaylistAndOnlyLocalization(entity, _userService.Culture))
             {
                 return NotFound();
             }
