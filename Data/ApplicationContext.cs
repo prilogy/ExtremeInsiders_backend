@@ -72,6 +72,7 @@ namespace ExtremeInsiders.Data
       modelBuilder.Entity<Playlist>().HasData(playlist);
       modelBuilder.Entity<Video>().HasData(video);
       modelBuilder.Entity<Movie>().HasData(movie);
+      
 
       modelBuilder.Entity<User>().HasIndex(x => x.Email).IsUnique();
       
