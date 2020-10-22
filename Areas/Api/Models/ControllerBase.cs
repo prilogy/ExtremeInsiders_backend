@@ -70,7 +70,9 @@ namespace ExtremeInsiders.Areas.Api.Models
                 return NotFound();
             }
 
-            return Ok(entity.OfFormat(_userService));
+            if (FormatExtensions.IsTranslatableEntityHasTranslation(entity, _userService.Culture))
+                return Ok(entity.OfFormat(_userService));
+            return NoContent();
         }
 
         [HttpPost("{id}/search")]

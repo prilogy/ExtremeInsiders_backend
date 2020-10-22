@@ -73,6 +73,11 @@ namespace ExtremeInsiders.Helpers
                    playlist.OnlyLocalization != null && playlist.OnlyLocalization?.Key != culture.Key;
         }
 
+        public static bool IsTranslatableEntityHasTranslation<T, TR>(ITranslatableEntity<T, TR> entity, Culture culture)
+            where T : ITranslatableEntity<T, TR>
+            where TR : TranslatableEntityTranslation<T>
+            => entity.Translations.Any(x => x.Culture.Key == culture.Key);
+
         public static T OfFormat<T, TR>(this ITranslatableEntity<T, TR> entity, UserService userService)
             where T : ITranslatableEntity<T, TR>
             where TR : TranslatableEntityTranslation<T>
@@ -109,8 +114,8 @@ namespace ExtremeInsiders.Helpers
             where TR : TranslatableEntityTranslation<T>
         {
             return list
-                .Where(y => y.Translations.Any(x => x.Culture.Key == userService.Culture.Key) &&
-                            !IsPlaylistAndOnlyLocalization(y, userService.Culture))
+                .Where(y => IsTranslatableEntityHasTranslation(y, userService.Culture) 
+                            && !IsPlaylistAndOnlyLocalization(y, userService.Culture))
                 .Select(s => s.OfFormat(userService)).ToList();
         }
     }
