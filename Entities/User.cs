@@ -73,8 +73,8 @@ namespace ExtremeInsiders.Entities
       {
         LikeIds = new EntityIdLists
         {
-          Videos = Likes.Where(x => x.Entity is Video).Select(x => new EntityIdItem {Id = x.Id, EntityId = x.EntityId}),
-          Movies = Likes.Where(x => x.Entity is Movie).Select(x => new EntityIdItem {Id = x.Id, EntityId = x.EntityId})
+          Videos = Likes?.Where(x => x.Entity is Video).Select(x => new EntityIdItem {Id = x.Id, EntityId = x.EntityId}),
+          Movies = Likes?.Where(x => x.Entity is Movie).Select(x => new EntityIdItem {Id = x.Id, EntityId = x.EntityId})
         };
       }
 
@@ -82,13 +82,13 @@ namespace ExtremeInsiders.Entities
       {
         FavoriteIds = new EntityIdLists
         {
-          Videos = Favorites.Where(x => x.Entity is Video)
+          Videos = Favorites?.Where(x => x.Entity is Video)
             .Select(x => new EntityIdItem {Id = x.Id, EntityId = x.EntityId}),
-          Movies = Favorites.Where(x => x.Entity is Movie)
+          Movies = Favorites?.Where(x => x.Entity is Movie)
             .Select(x => new EntityIdItem {Id = x.Id, EntityId = x.EntityId}),
-          Sports = Favorites.Where(x => x.Entity is Sport)
+          Sports = Favorites?.Where(x => x.Entity is Sport)
             .Select(x => new EntityIdItem {Id = x.Id, EntityId = x.EntityId}),
-          Playlists = Favorites.Where(x => x.Entity is Playlist)
+          Playlists = Favorites?.Where(x => x.Entity is Playlist)
             .Select(x => new EntityIdItem {Id = x.Id, EntityId = x.EntityId}),
         };
       }
@@ -97,9 +97,9 @@ namespace ExtremeInsiders.Entities
       {
         SaleIds = new EntityIdLists
         {
-          Videos = Sales.Where(x => x.Entity is Video).Select(x => new EntityIdItem {Id = x.Id, EntityId = x.EntityId}),
-          Movies = Sales.Where(x => x.Entity is Movie).Select(x => new EntityIdItem {Id = x.Id, EntityId = x.EntityId}),
-          Playlists = Sales.Where(x => x.Entity is Playlist)
+          Videos = Sales?.Where(x => x.Entity is Video).Select(x => new EntityIdItem {Id = x.Id, EntityId = x.EntityId}),
+          Movies = Sales?.Where(x => x.Entity is Movie).Select(x => new EntityIdItem {Id = x.Id, EntityId = x.EntityId}),
+          Playlists = Sales?.Where(x => x.Entity is Playlist)
             .Select(x => new EntityIdItem {Id = x.Id, EntityId = x.EntityId}),
         };
       }
