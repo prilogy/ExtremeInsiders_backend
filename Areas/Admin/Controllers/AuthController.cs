@@ -69,8 +69,7 @@ namespace ExtremeInsiders.Areas.Admin.Controllers
       {
         Password = model.Password,
         Email = model.Email,
-        Name = model.Name,
-        DateBirthday = "20.02.2000",
+        Name = model.Name
       };
       
       var user = await _userService.Create(newModel, true);

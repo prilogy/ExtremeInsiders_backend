@@ -37,7 +37,11 @@ namespace ExtremeInsiders.Services
     public async Task<User> FindUser(string token)
     {
       var identity = await GetIdentity(token);
+      return await FindUser(identity);
+    }
 
+    public async Task<User> FindUser(SocialAuthIdentity identity)
+    {
       if (identity == null)
         return null;
 
