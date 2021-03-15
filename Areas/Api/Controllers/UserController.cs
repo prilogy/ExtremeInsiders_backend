@@ -216,7 +216,7 @@ namespace ExtremeInsiders.Areas.Api.Controllers
     public async Task<IActionResult> Edit([FromForm] UserModels.ProfileEdit model)
     {
       var user = await _db.Users.FindAsync(_userService.UserId);
-      if (model.Email != null && user.Email.ToLower() != model.Email.ToLower())
+      if (user.Email == null || (model.Email != null && user.Email.ToLower() != model.Email.ToLower()))
       {
         if (await _db.Users.AnyAsync(x => x.Email.ToLower() == model.Email.ToLower()))
           return BadRequest("Email is already being used");
