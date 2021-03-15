@@ -14,10 +14,11 @@ namespace ExtremeInsiders.Entities
   {
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
-    
+
     public string Email { get; set; }
     public string Name { get; set; }
     [JsonIgnore] public string Password { get; set; }
+    [NotMapped] public bool HasPassword => Password != null;
 
     [JsonIgnore] public int? AvatarId { get; set; }
     public virtual Image Avatar { get; set; }
@@ -73,8 +74,10 @@ namespace ExtremeInsiders.Entities
       {
         LikeIds = new EntityIdLists
         {
-          Videos = Likes?.Where(x => x.Entity is Video).Select(x => new EntityIdItem {Id = x.Id, EntityId = x.EntityId}),
-          Movies = Likes?.Where(x => x.Entity is Movie).Select(x => new EntityIdItem {Id = x.Id, EntityId = x.EntityId})
+          Videos = Likes?.Where(x => x.Entity is Video)
+            .Select(x => new EntityIdItem { Id = x.Id, EntityId = x.EntityId }),
+          Movies = Likes?.Where(x => x.Entity is Movie)
+            .Select(x => new EntityIdItem { Id = x.Id, EntityId = x.EntityId })
         };
       }
 
@@ -83,13 +86,13 @@ namespace ExtremeInsiders.Entities
         FavoriteIds = new EntityIdLists
         {
           Videos = Favorites?.Where(x => x.Entity is Video)
-            .Select(x => new EntityIdItem {Id = x.Id, EntityId = x.EntityId}),
+            .Select(x => new EntityIdItem { Id = x.Id, EntityId = x.EntityId }),
           Movies = Favorites?.Where(x => x.Entity is Movie)
-            .Select(x => new EntityIdItem {Id = x.Id, EntityId = x.EntityId}),
+            .Select(x => new EntityIdItem { Id = x.Id, EntityId = x.EntityId }),
           Sports = Favorites?.Where(x => x.Entity is Sport)
-            .Select(x => new EntityIdItem {Id = x.Id, EntityId = x.EntityId}),
+            .Select(x => new EntityIdItem { Id = x.Id, EntityId = x.EntityId }),
           Playlists = Favorites?.Where(x => x.Entity is Playlist)
-            .Select(x => new EntityIdItem {Id = x.Id, EntityId = x.EntityId}),
+            .Select(x => new EntityIdItem { Id = x.Id, EntityId = x.EntityId }),
         };
       }
 
@@ -97,10 +100,12 @@ namespace ExtremeInsiders.Entities
       {
         SaleIds = new EntityIdLists
         {
-          Videos = Sales?.Where(x => x.Entity is Video).Select(x => new EntityIdItem {Id = x.Id, EntityId = x.EntityId}),
-          Movies = Sales?.Where(x => x.Entity is Movie).Select(x => new EntityIdItem {Id = x.Id, EntityId = x.EntityId}),
+          Videos = Sales?.Where(x => x.Entity is Video)
+            .Select(x => new EntityIdItem { Id = x.Id, EntityId = x.EntityId }),
+          Movies = Sales?.Where(x => x.Entity is Movie)
+            .Select(x => new EntityIdItem { Id = x.Id, EntityId = x.EntityId }),
           Playlists = Sales?.Where(x => x.Entity is Playlist)
-            .Select(x => new EntityIdItem {Id = x.Id, EntityId = x.EntityId}),
+            .Select(x => new EntityIdItem { Id = x.Id, EntityId = x.EntityId }),
         };
       }
 

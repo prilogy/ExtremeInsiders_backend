@@ -65,12 +65,12 @@ namespace ExtremeInsiders.Areas.Api.Models
         {
             var entity = await _db.Set<T>().FindAsync(id);
 
-            if (entity == null || FormatExtensions.IsPlaylistAndOnlyLocalization(entity, _userService.Culture))
-            {
-                return NotFound();
-            }
+            // if (entity == null || FormatExtensions.IsPlaylistAndOnlyLocalization(entity, _userService.Culture))
+            // {
+            //     return NotFound();
+            // }
 
-            if (FormatExtensions.IsTranslatableEntityHasTranslation(entity, _userService.Culture))
+            if (FormatExtensions.IsTranslatableEntityHasTranslation(entity))
                 return Ok(entity.OfFormat(_userService));
             return NoContent();
         }
@@ -78,7 +78,7 @@ namespace ExtremeInsiders.Areas.Api.Models
         [HttpPost("{id}/search")]
         public virtual async Task<IActionResult> Search([FromBody] string query, [FromRoute] int id)
         {
-            return await Task.Run(() => { return NotFound(); });
+            return await Task.Run(NotFound);
         }
 
         protected async Task<IActionResult> Paging(IQueryable<T> q, int page, int pageSize, string orderByDate=null)
