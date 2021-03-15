@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore.Internal;
 
 namespace ExtremeInsiders.Entities
@@ -18,7 +19,8 @@ namespace ExtremeInsiders.Entities
     public string Email { get; set; }
     public string Name { get; set; }
     [JsonIgnore] public string Password { get; set; }
-    [NotMapped] public bool HasPassword => Password != null;
+
+    [NotMapped] public bool HasPassword { get; set; }
 
     [JsonIgnore] public int? AvatarId { get; set; }
     public virtual Image Avatar { get; set; }
@@ -67,6 +69,7 @@ namespace ExtremeInsiders.Entities
     public User WithoutSensitive(bool token = false, bool useLikeIds = false, bool useFavoriteIds = false,
       bool useSaleIds = false)
     {
+      HasPassword = Password != null;
       Password = null;
       Token = token ? Token : null;
 
