@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore.Internal;
 
 namespace ExtremeInsiders.Areas.Admin.Controllers
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     [Area("Admin")]
     [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = Role.AdminRole)]
     public class BannerEntityController : Controller

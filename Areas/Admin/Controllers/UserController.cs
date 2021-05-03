@@ -12,7 +12,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace ExtremeInsiders.Areas.Admin.Controllers
 {
-    [Area("Admin")]
+    [ApiExplorerSettings(IgnoreApi = true)]
+[Area("Admin")]
     [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = Role.AdminRole)]
     public class UserController : Controller
     {

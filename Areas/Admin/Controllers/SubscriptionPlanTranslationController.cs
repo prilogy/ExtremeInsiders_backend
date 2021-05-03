@@ -14,7 +14,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ExtremeInsiders.Areas.Admin.Controllers
 {    
-  [Area("Admin")]
+  [ApiExplorerSettings(IgnoreApi = true)]
+[Area("Admin")]
   [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = Role.AdminRole)]
   public class SubscriptionPlanTranslationController : Controller
   {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.IO;
 using System.Threading.Tasks;
 using ExtremeInsiders.Data;
@@ -7,19 +8,19 @@ using ExtremeInsiders.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Yandex.Checkout.V3;
-using Payment = ExtremeInsiders.Entities.Payment;
+using Payment = Yandex.Checkout.V3.Payment;
 
 namespace ExtremeInsiders.Areas.Api.Controllers
 {
     [ApiController]
-    [Route("api/[controller]/[action]")]
-    public class PaymentController : Controller
+    [Route("api/[controller]")]
+    public class AppleNotificationController : Controller
     {
         private readonly ApplicationContext _db;
         private readonly UserService _userService;
         private readonly PaymentService _paymentService;
 
-        public PaymentController(ApplicationContext db, UserService userService, PaymentService paymentService)
+        public AppleNotificationController(ApplicationContext db, UserService userService, PaymentService paymentService)
         {
             _db = db;
             _userService = userService;
@@ -27,33 +28,14 @@ namespace ExtremeInsiders.Areas.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Notification()
+        public async Task<IActionResult> Notification([FromBody] object body)
         {
-            var message = Client.ParseMessage(Request.Method, Request.ContentType,
-                await new StreamReader(HttpContext.Request.Body).ReadToEndAsync());
-            if (message == null) return BadRequest();
-
-            var payment = message?.Object;
-
-            if (message.Event == Event.PaymentWaitingForCapture && payment.Paid)
+            foreach(PropertyDescriptor descriptor in TypeDescriptor.GetProperties(body))
             {
-                var dbPayment = await _paymentService.CapturePayment(payment);
-
-                if (!Enum.TryParse(dbPayment.Metadata[Payment.TypeMetadataName], out Payment.Types type)) return Ok();
-
-                switch (type)
-                {
-                    case Payment.Types.SubscriptionContinuation:
-                        await SubscriptionContinuationHandle(dbPayment);
-                        break;
-                    case Payment.Types.SaleableEntityBuy:
-                        await SaleableEntityBuyHandle(dbPayment);
-                        break;
-                    default:
-                        return BadRequest();
-                }
+                string name=descriptor.Name;
+                object value=descriptor.GetValue(body);
+                Console.WriteLine("{0}={1}",name,value);
             }
-
             return Ok();
         }
 

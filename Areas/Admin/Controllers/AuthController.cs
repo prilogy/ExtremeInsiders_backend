@@ -14,6 +14,7 @@ using AuthenticationModels = ExtremeInsiders.Areas.Admin.Models.AuthenticationMo
 
 namespace ExtremeInsiders.Areas.Admin.Controllers
 {
+  [ApiExplorerSettings(IgnoreApi = true)]
   [Area("Admin")]
   public class AuthController : Controller
   {

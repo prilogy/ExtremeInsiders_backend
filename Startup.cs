@@ -60,6 +60,7 @@ namespace ExtremeInsiders
       services.AddCustomAuthorizationService();
       services.AddHelperServices();
       services.AddSocialAuthService();
+      services.AddSwaggerGen();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,10 +75,18 @@ namespace ExtremeInsiders
         app.UseExceptionHandler("/Home/Error");
         app.UseHsts();
       }
+      
+      app.UseSwagger();
 
       //app.UseHttpsRedirection();
       app.UseStaticFiles();
 
+      // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+      // specifying the Swagger JSON endpoint.
+      app.UseSwaggerUI(c =>
+      {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Extreme Insiders API");
+      });
       
       app.UseAuthentication();
       app.UseRouting();

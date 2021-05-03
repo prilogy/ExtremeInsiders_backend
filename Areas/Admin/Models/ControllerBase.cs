@@ -13,7 +13,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace ExtremeInsiders.Areas.Admin.Models
 {
-    [Area("Admin")]
+    [ApiExplorerSettings(IgnoreApi = true)]
+[Area("Admin")]
     [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = Role.AdminRole)]
     public abstract class ControllerBase<T> : Controller
     where T : EntityBase

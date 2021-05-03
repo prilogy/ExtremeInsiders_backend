@@ -15,7 +15,8 @@ using Microsoft.AspNetCore.Http;
 
 namespace ExtremeInsiders.Areas.Admin.Models
 {
-  [Area("Admin")]
+  [ApiExplorerSettings(IgnoreApi = true)]
+[Area("Admin")]
   [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = Role.AdminRole)]
   public abstract class ControllerTranslationBase<T, TR> : Controller
     where T : EntityBase, ITranslatableEntity<T, TR>

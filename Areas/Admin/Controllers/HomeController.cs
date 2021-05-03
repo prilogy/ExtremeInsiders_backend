@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ExtremeInsiders.Areas.Admin.Controllers
 {
-  [Area("Admin")]
+  [ApiExplorerSettings(IgnoreApi = true)]
+[Area("Admin")]
   [Route("/admin")]
   [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = Role.AdminRole)]
   public class HomeController: Controller

@@ -13,20 +13,22 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace ExtremeInsiders.Areas.Admin.Controllers
-{    
-  [Area("Admin")]
-  [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = Role.AdminRole)]
-  public class BannerEntityTranslationController : Controller
-  {
-    private readonly ApplicationContext _context;
-    
-    public BannerEntityTranslationController(ApplicationContext context)
+{
+    [ApiExplorerSettings(IgnoreApi = true)]
+    [Area("Admin")]
+    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = Role.AdminRole)]
+    public class BannerEntityTranslationController : Controller
     {
-      _context = context;
-    }
-    public IActionResult RedirectToBaseEntity(int id) => RedirectToAction("Edit", "BannerEntity", new { Id = id });
-    
-    
+        private readonly ApplicationContext _context;
+
+        public BannerEntityTranslationController(ApplicationContext context)
+        {
+            _context = context;
+        }
+
+        public IActionResult RedirectToBaseEntity(int id) => RedirectToAction("Edit", "BannerEntity", new { Id = id });
+
+
         // GET: translation
         public async Task<IActionResult> Index()
         {
@@ -53,7 +55,7 @@ namespace ExtremeInsiders.Areas.Admin.Controllers
         }
 
         // GET: SportTranslation/Create
-        public IActionResult Create(int baseEntityId=default, int cultureId=default)
+        public IActionResult Create(int baseEntityId = default, int cultureId = default)
         {
             var list = new SelectList(_context.BannerEntities, "Id", "Id");
             if (baseEntityId != default)
@@ -66,7 +68,7 @@ namespace ExtremeInsiders.Areas.Admin.Controllers
                 }
                 else ModelState.AddModelError("", "Id базового представления не существует.");
             }
-            
+
             var cultureList = new SelectList(_context.Cultures, "Id", "Key");
             if (cultureId != default)
             {
@@ -121,9 +123,10 @@ namespace ExtremeInsiders.Areas.Admin.Controllers
             {
                 return NotFound();
             }
+
             ViewData["BaseEntityId"] = new SelectList(_context.Sports, "Id", "Discriminator", translation.BaseEntityId);
             ViewData["CultureId"] = new SelectList(_context.Cultures, "Id", "Id", translation.CultureId);
-            if(translation is ITranslationWithImage withImage)
+            if (translation is ITranslationWithImage withImage)
                 ViewData["ImageId"] = new SelectList(_context.Images, "Id", "Id", withImage.ImageId);
             return View(translation);
         }
@@ -133,7 +136,8 @@ namespace ExtremeInsiders.Areas.Admin.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, BannerEntityTranslation translation, [FromForm] IFormFile imageSrc)
+        public async Task<IActionResult> Edit(int id, BannerEntityTranslation translation,
+            [FromForm] IFormFile imageSrc)
         {
             if (id != translation.Id)
             {
@@ -158,6 +162,7 @@ namespace ExtremeInsiders.Areas.Admin.Controllers
                         throw;
                     }
                 }
+
                 return RedirectToBaseEntity(translation.BaseEntityId);
             }
 
@@ -198,5 +203,5 @@ namespace ExtremeInsiders.Areas.Admin.Controllers
         {
             return _context.BannerEntitiesTranslations.Any(e => e.Id == id);
         }
-  }
+    }
 }
