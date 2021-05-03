@@ -15,9 +15,22 @@
             </div>
             <div class="form-group">
                 <label asp-for="Color" class="control-label">Цвет</label>
-                <input asp-for="Color" type="color"  class="form-control"/>
+                <input asp-for="Color" type="color" class="form-control"/>
                 <span asp-validation-for="Color" class="text-danger"></span>
             </div>
+
+            <div class="form-group">
+                <label lass="control-label">Ключ товара Apple</label>
+                <input asp-for="AppleInAppPurchaseKey" class="form-control"/>
+                <span asp-validation-for="AppleInAppPurchaseKey" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label lass="control-label">Ключ товара Google</label>
+                <input asp-for="GoogleInAppPurchaseKey" class="form-control"/>
+                <span asp-validation-for="GoogleInAppPurchaseKey" class="text-danger"></span>
+            </div>
+
             <div class="form-group">
                 <input type="submit" value="Создать" class="btn btn-primary"/>
             </div>

@@ -13,6 +13,8 @@ namespace ExtremeInsiders.Entities
     public int Id { get; set; }
     [JsonIgnore]
     public TimeSpan Duration { get; set; }
+    public string AppleInAppPurchaseKey { get; set; }
+    public string GoogleInAppPurchaseKey { get; set; }
 
     public string Color { get; set; }
     
