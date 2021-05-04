@@ -103,6 +103,31 @@ namespace ExtremeInsiders.Services
     }
   }
 
+  public class AppleSocialAuthService : SocialAuthService
+  {
+    public override string ProviderName => SocialAccountProvider.Providers.Apple;
+
+    public AppleSocialAuthService(Data.ApplicationContext db, IOptions<AppSettings> appSettings) : base(db, appSettings)
+    {
+    }
+
+    public override async Task<SocialAuthIdentity> GetIdentity(string token)
+    {
+      var url = $"https://graph.facebook.com/v7.0/me?fields=email%2Cname&access_token={token}";
+
+      try
+      {
+        using var client = new HttpClient();
+        var result = await client.GetAsync(url);
+        var identity = JsonConvert.DeserializeObject<SocialAuthIdentity>(await result.Content.ReadAsStringAsync());
+        return identity.Id == null ? null : identity;
+      }
+      catch
+      {
+        return null;
+      }
+    }
+  }
   public class GoogleSocialAuthService : SocialAuthService
   {
     public override string ProviderName => SocialAccountProvider.Providers.Google;

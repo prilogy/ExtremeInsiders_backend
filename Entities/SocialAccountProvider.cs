@@ -13,7 +13,8 @@ namespace ExtremeInsiders.Entities
     {
       new SocialAccountProvider {Id = 1, Name = Providers.Google},
       new SocialAccountProvider {Id = 2, Name = Providers.Vk},
-      new SocialAccountProvider {Id = 3, Name = Providers.Facebook}
+      new SocialAccountProvider {Id = 3, Name = Providers.Facebook},
+      new SocialAccountProvider {Id = 4, Name = Providers.Apple}
     };
 
     public static class Providers
@@ -21,6 +22,7 @@ namespace ExtremeInsiders.Entities
       public const string Google = "google";
       public const string Vk = "vk";
       public const string Facebook = "facebook";
+      public const string Apple = "apple";
     }
   }
 }

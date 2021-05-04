@@ -57,7 +57,8 @@ namespace ExtremeInsiders.Areas.Api.Models
             [FromQuery] string orderByDate = null)
         {
             var list = _db.Set<T>().Where(x => ids.Contains(x.Id));
-            return await Paging(list, page, pageSize, orderByDate);
+            var r = await Paging(list, page, pageSize, orderByDate);
+            return r;
         }
 
         [HttpGet("{id}")]
@@ -83,10 +84,12 @@ namespace ExtremeInsiders.Areas.Api.Models
 
         protected async Task<IActionResult> Paging(IQueryable<T> q, int page, int pageSize, string orderByDate=null)
         {
-            if (orderByDate == "asc")
-                q = q.OrderBy(x => x.DateCreated);
-            else if (orderByDate == "desc")
-                q = q.OrderByDescending(x => x.DateCreated);
+            q = orderByDate switch
+            {
+                "asc" => q.OrderBy(x => x.DateCreated),
+                "desc" => q.OrderByDescending(x => x.DateCreated),
+                _ => q
+            };
 
             return Ok((page == 0
                 ? await q.ToListAsync()

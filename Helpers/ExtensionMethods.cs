@@ -114,8 +114,8 @@ namespace ExtremeInsiders.Helpers
             where TR : TranslatableEntityTranslation<T>
         {
             return list
-                .Where(y => IsTranslatableEntityHasTranslation(y, userService.Culture) 
-                            && !IsPlaylistAndOnlyLocalization(y, userService.Culture))
+                // .Where(y => IsTranslatableEntityHasTranslation(y, userService.Culture) 
+                            // && !IsPlaylistAndOnlyLocalization(y, userService.Culture))
                 .Select(s => s.OfFormat(userService)).ToList();
         }
     }
