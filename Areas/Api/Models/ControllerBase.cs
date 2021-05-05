@@ -32,14 +32,14 @@ namespace ExtremeInsiders.Areas.Api.Models
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] int page, [FromQuery] int pageSize,
+        public async Task<ActionResult<List<T>>> GetAll([FromQuery] int page, [FromQuery] int pageSize,
             [FromQuery] string orderByDate)
         {
             return await Paging(_db.Set<T>().AsQueryable(), page, pageSize, orderByDate);
         }
 
         [HttpGet("recommended")]
-        public async Task<IActionResult> GetRecommended([FromQuery] int page, [FromQuery] int pageSize,
+        public async Task<ActionResult<List<T>>> GetRecommended([FromQuery] int page, [FromQuery] int pageSize,
             [FromQuery] string orderByDate)
         {
             var queryable = GetRecommendedQueryable();
@@ -53,7 +53,7 @@ namespace ExtremeInsiders.Areas.Api.Models
         protected virtual IQueryable<T> GetRecommendedQueryable() => null;
 
         [HttpPost]
-        public async Task<IActionResult> GetByIds(int[] ids, [FromQuery] int page, [FromQuery] int pageSize,
+        public async Task<ActionResult<List<T>>> GetByIds(int[] ids, [FromQuery] int page, [FromQuery] int pageSize,
             [FromQuery] string orderByDate = null)
         {
             var list = _db.Set<T>().Where(x => ids.Contains(x.Id));
@@ -82,7 +82,7 @@ namespace ExtremeInsiders.Areas.Api.Models
             return await Task.Run(NotFound);
         }
 
-        protected async Task<IActionResult> Paging(IQueryable<T> q, int page, int pageSize, string orderByDate=null)
+        protected async Task<ActionResult<List<T>>> Paging(IQueryable<T> q, int page, int pageSize, string orderByDate=null)
         {
             q = orderByDate switch
             {
@@ -91,9 +91,9 @@ namespace ExtremeInsiders.Areas.Api.Models
                 _ => q
             };
 
-            return Ok((page == 0
+            return (page == 0
                 ? await q.ToListAsync()
-                : await q.Page(page, pageSize == 0 ? PAGE_SIZE : pageSize).ToListAsync()).OfFormat(_userService));
+                : await q.Page(page, pageSize == 0 ? PAGE_SIZE : pageSize).ToListAsync()).OfFormat(_userService);
         }
     }
 }

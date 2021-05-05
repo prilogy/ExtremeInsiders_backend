@@ -21,7 +21,7 @@ namespace ExtremeInsiders.Areas.Api.Controllers
     }
 
     [HttpGet("popular")]
-    public async Task<IActionResult> GetPopular([FromQuery] int page, [FromQuery] int pageSize)
+    public async Task<ActionResult<List<Playlist>>> GetPopular([FromQuery] int page, [FromQuery] int pageSize)
     {
       var list = _db.Set<Playlist>()
         .OrderByDescending(x => (from y in _db.Videos where y.PlaylistId == x.Id select y.Likes).Count());
