@@ -19,6 +19,7 @@ namespace ExtremeInsiders.Helpers
     public string EmailSenderPassword { get; set; }
     public string KassaShopId { get; set; }
     public string KassaSecret { get; set; }
+    public bool ApplePurchaseSandboxMode { get; set; } = false;
   }
   
   public static class AppSettingsExtensions {

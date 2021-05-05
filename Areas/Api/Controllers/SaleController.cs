@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using ExtremeInsiders.Data;
 using ExtremeInsiders.Entities;
+using ExtremeInsiders.Enums;
 using ExtremeInsiders.Helpers;
 using ExtremeInsiders.Models;
 using ExtremeInsiders.Services;
@@ -18,13 +19,13 @@ namespace ExtremeInsiders.Areas.Api.Controllers
   {
     private readonly ApplicationContext _db;
     private readonly UserService _userService;
-    private readonly PaymentService _paymentService;
+    private readonly KassaPaymentService _kassaPaymentService;
 
-    public SaleController(ApplicationContext db, UserService userService, PaymentService paymentService)
+    public SaleController(ApplicationContext db, UserService userService, KassaPaymentService kassaPaymentService)
     {
       _db = db;
       _userService = userService;
-      _paymentService = paymentService;
+      _kassaPaymentService = kassaPaymentService;
     }
     
     [HttpGet("{id}")]
@@ -39,10 +40,10 @@ namespace ExtremeInsiders.Areas.Api.Controllers
         {"entityId", entity.Id.ToString()}
       };
       
-      var url = await _paymentService.CreatePayment(
+      var url = await _kassaPaymentService.CreateAsync(
         user: _userService.User, 
         currency: entity.Price.Currency, 
-        type: Payment.Types.SaleableEntityBuy, 
+        type: PaymentTypes.SaleableEntityBuy, 
         metadata: metadata, 
         value: entity.Price.Value);
 

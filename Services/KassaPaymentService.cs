@@ -4,7 +4,9 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using ExtremeInsiders.Data;
 using ExtremeInsiders.Entities;
+using ExtremeInsiders.Enums;
 using ExtremeInsiders.Helpers;
+using ExtremeInsiders.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -13,30 +15,27 @@ using Payment = ExtremeInsiders.Entities.Payment;
 
 namespace ExtremeInsiders.Services
 {
-    public class PaymentService
+    public class KassaPaymentService
     {
         private readonly ApplicationContext _db;
         private readonly AsyncClient _client;
-        private readonly UserService _userService;
 
 
-        public PaymentService(ApplicationContext db, IOptions<AppSettings> appSettings, UserService userService)
+        public KassaPaymentService(ApplicationContext db, IOptions<AppSettings> appSettings)
         {
             _db = db;
-            _userService = userService;
             _client = new Client(
                 appSettings.Value.KassaShopId,
                 appSettings.Value.KassaSecret).MakeAsync();
         }
 
-        public async Task<string> CreatePayment(
+        public async Task<string> CreateAsync(
             decimal value,
-            Payment.Types type,
-            Dictionary<string, string> metadata = null,
-            User user = null,
+            PaymentTypes type,
+            User user,
+            Dictionary<string, string> metadata,
             Currency currency = null)
         {
-            user ??= _userService.User;
             currency ??= user.Currency;
 
             metadata[Payment.TypeMetadataName] = type.ToString();
@@ -67,12 +66,12 @@ namespace ExtremeInsiders.Services
             };
 
             var payment = await _client.CreatePaymentAsync(newPayment);
-            await SavePaymentToDb(payment, user, currency, type);
+            await SaveAsync(payment, user, currency, type);
 
             return payment.Confirmation.ConfirmationUrl;
         }
 
-        public async Task<Payment> CapturePayment(Yandex.Checkout.V3.Payment payment)
+        public async Task<Payment> CaptureAsync(Yandex.Checkout.V3.Payment payment)
         {
             var dbPayment = await _db.Payments.FirstOrDefaultAsync(x => x.Key == payment.Id);
             if (dbPayment == null) return null;
@@ -85,8 +84,8 @@ namespace ExtremeInsiders.Services
             return dbPayment;
         }
 
-        private async Task<Payment> SavePaymentToDb(Yandex.Checkout.V3.Payment payment, User user, Currency currency,
-            Payment.Types type)
+        private async Task<Payment> SaveAsync(Yandex.Checkout.V3.Payment payment, User user, Currency currency,
+            PaymentTypes type)
         {
             var dbPayment = new Payment
             {
@@ -95,30 +94,14 @@ namespace ExtremeInsiders.Services
                 Status = payment.Status,
                 UserId = user.Id,
                 CurrencyId = currency.Id,
-                Type = type
+                Type = type,
+                ProviderType = PaymentProviderTypes.Kassa
             };
 
             await _db.Payments.AddAsync(dbPayment);
             await _db.SaveChangesAsync();
 
             return dbPayment;
-        }
-
-        private class CurrenciesRate
-        {
-            public CurrencyRate Valute { get; set; }
-        }
-
-        private class CurrencyRate
-        {
-            public CurrencyObject USD { get; set; }
-            public CurrencyObject EUR { get; set; }
-
-            public class CurrencyObject
-            {
-                public double Value { get; set; }
-                public string CharCode { get; set; }
-            }
         }
     }
 }

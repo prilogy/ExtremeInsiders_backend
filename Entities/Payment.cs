@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using ExtremeInsiders.Enums;
 using Newtonsoft.Json;
 using Yandex.Checkout.V3;
 
@@ -14,7 +15,8 @@ namespace ExtremeInsiders.Entities
     public decimal Value { get; set; }
     public PaymentStatus Status { get; set; }
     public DateTime DateCreated { get; set; }
-    public Types Type { get; set; }
+    public PaymentTypes Type { get; set; }
+    public PaymentProviderTypes ProviderType { get; set; }
     public int UserId { get; set; }
     public virtual User User { get; set; }
     
@@ -25,12 +27,6 @@ namespace ExtremeInsiders.Entities
 
     [NotMapped] public const string TypeMetadataName = "type";
 
-    public enum Types
-    {
-      SubscriptionContinuation,
-      SaleableEntityBuy
-    }
-    
     public Payment()
     {
       DateCreated = DateTime.UtcNow;

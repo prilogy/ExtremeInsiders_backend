@@ -30,6 +30,9 @@ namespace ExtremeInsiders.Models
     [JsonIgnore]
     public virtual List<EntitySaleablePrice> Prices { get; set; }
     
+    public string AppleInAppPurchaseKey { get; set; }
+    public string GoogleInAppPurchaseKey { get; set; }
+    
     [NotMapped]
     public EntitySaleablePrice Price { get; set; }
 

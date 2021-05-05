@@ -5,6 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="AppleReceiptVerifierCore" Version="1.0.0" />
       <PackageReference Include="Google.Apis.Auth" Version="1.46.0" />
       <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="7.21.1" />
       <PackageReference Include="MailKit" Version="2.7.0" />

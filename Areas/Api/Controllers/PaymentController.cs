@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using ExtremeInsiders.Data;
 using ExtremeInsiders.Entities;
+using ExtremeInsiders.Enums;
 using ExtremeInsiders.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,17 +14,15 @@ namespace ExtremeInsiders.Areas.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]/[action]")]
-    public class PaymentController : Controller
+    public class PaymentController : ControllerBase
     {
-        private readonly ApplicationContext _db;
-        private readonly UserService _userService;
-        private readonly PaymentService _paymentService;
+        private readonly SaleService _saleService;
+        private readonly KassaPaymentService _kassaPaymentService;
 
-        public PaymentController(ApplicationContext db, UserService userService, PaymentService paymentService)
+        public PaymentController(KassaPaymentService kassaPaymentService, SaleService saleService)
         {
-            _db = db;
-            _userService = userService;
-            _paymentService = paymentService;
+            _kassaPaymentService = kassaPaymentService;
+            _saleService = saleService;
         }
 
         [HttpPost]
@@ -33,56 +32,28 @@ namespace ExtremeInsiders.Areas.Api.Controllers
                 await new StreamReader(HttpContext.Request.Body).ReadToEndAsync());
             if (message == null) return BadRequest();
 
-            var payment = message?.Object;
+            var payment = message.Object;
 
+            var r = true;
             if (message.Event == Event.PaymentWaitingForCapture && payment.Paid)
             {
-                var dbPayment = await _paymentService.CapturePayment(payment);
-
-                if (!Enum.TryParse(dbPayment.Metadata[Payment.TypeMetadataName], out Payment.Types type)) return Ok();
-
-                switch (type)
+                var type = PaymentTypesExtensions.FromString(payment.Metadata[Payment.TypeMetadataName]);
+                if (type == null) return BadRequest();
+                
+                var dbPayment = await _kassaPaymentService.CaptureAsync(payment);
+                
+                r = type switch
                 {
-                    case Payment.Types.SubscriptionContinuation:
-                        await SubscriptionContinuationHandle(dbPayment);
-                        break;
-                    case Payment.Types.SaleableEntityBuy:
-                        await SaleableEntityBuyHandle(dbPayment);
-                        break;
-                    default:
-                        return BadRequest();
-                }
+                    PaymentTypes.SubscriptionContinuation => await _saleService.SubscriptionContinuationHandle(dbPayment.User,
+                        int.TryParse(payment.Metadata["planId"], out var x) ? (int?) x : null, dbPayment.Id),
+                    PaymentTypes.SaleableEntityBuy => await _saleService.SaleableEntityBuyHandle(dbPayment.User,
+                        int.TryParse(payment.Metadata["entityId"], out var x) ? (int?) x : null, dbPayment.Id),
+                    _ => false
+                };
             }
 
-            return Ok();
-        }
-
-        private async Task SaleableEntityBuyHandle(Entities.Payment payment)
-        {
-            var user = payment.User;
-            var entityId = int.Parse(payment.Metadata["entityId"]);
-
-            var sale = new Sale
-            {
-                EntityId = entityId,
-                UserId = user.Id
-            };
-
-            await _db.Sales.AddAsync(sale);
-            await _db.SaveChangesAsync();
-        }
-
-        private async Task SubscriptionContinuationHandle(Entities.Payment payment)
-        {
-            var user = payment.User;
-            var planId = int.Parse(payment.Metadata["planId"]);
-            var plan = await _db.SubscriptionsPlans.FirstOrDefaultAsync(x => x.Id == planId);
-            if (plan == null) return;
-
-            var subscription = Subscription.Create(plan, user, payment);
-
-            await _db.Subscriptions.AddAsync(subscription);
-            await _db.SaveChangesAsync();
+            if (r) return Ok();
+            return BadRequest();
         }
     }
 }

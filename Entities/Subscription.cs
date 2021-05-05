@@ -37,14 +37,14 @@ namespace ExtremeInsiders.Entities
       };
     }
 
-    public static Subscription Create(SubscriptionPlan plan, User user, Payment payment=null)
+    public static Subscription Create(SubscriptionPlan plan, User user, int? paymentId=null)
     {
       var subscription = new Subscription
       {
         PlanId = plan.Id,
         UserId = user.Id,
         DateStart = DateTime.UtcNow,
-        PaymentId = payment?.Id ?? null
+        PaymentId = paymentId
       };
       
       if (user.Subscription == null)

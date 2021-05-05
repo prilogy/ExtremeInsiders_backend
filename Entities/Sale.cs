@@ -13,6 +13,9 @@ namespace ExtremeInsiders.Entities
     [JsonIgnore]
     public virtual User User { get; set; }
     
+    public int? PaymentId { get; set; }
+    public virtual Payment Payment { get; set; }
+    
     public int EntityId { get; set; }
     public virtual EntitySaleable Entity { get; set; }
   }
