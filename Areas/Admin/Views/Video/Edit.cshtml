@@ -32,6 +32,19 @@
                 </div>
                 <select asp-for="PlaylistId" class="form-control" asp-items="ViewBag.PlaylistId"></select>
             </div>
+
+            <div class="form-group">
+                <label lass="control-label">Ключ товара Apple</label>
+                <input asp-for="AppleInAppPurchaseKey" class="form-control"/>
+                <span asp-validation-for="AppleInAppPurchaseKey" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label lass="control-label">Ключ товара Google</label>
+                <input asp-for="GoogleInAppPurchaseKey" class="form-control"/>
+                <span asp-validation-for="GoogleInAppPurchaseKey" class="text-danger"></span>
+            </div>
+
             <div class="form-group">
                 <input type="submit" value="Сохранить" class="btn btn-primary"/>
             </div>
@@ -173,7 +186,6 @@
                 </table>
                 <p style="font-style: italic; color: darkgrey">* Сущность является платной если задана хотя-бы одна цена в любой валюте</p>
                 <p style="font-style: italic; color: darkgrey">** Для корректной работы во всех регионах нужно обязательно указывать цены во всех доступных валютах</p>
-
             }
         </div>
     </div>
