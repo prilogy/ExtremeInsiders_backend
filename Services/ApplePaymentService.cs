@@ -28,10 +28,12 @@ namespace ExtremeInsiders.Services
 
         public async Task<bool> HandleAsync(ApplePayment payment, User user)
         {
+            Console.WriteLine(payment.Dump("Apple payment for userId=" + user.Id));
             if (payment.TransactionReceipt == null || payment.EntityId == null || payment.PlanId == null)
                 return false;
 
             var receipt = await GetReceiptAsync(payment.TransactionReceipt);
+            Console.WriteLine(receipt.Dump("Apple receipt"));
             if (receipt == null || receipt.status != 0) return false;
 
             PaymentTypes? type = payment switch

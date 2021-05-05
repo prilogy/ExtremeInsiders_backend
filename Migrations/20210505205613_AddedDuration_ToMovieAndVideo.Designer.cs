@@ -3,15 +3,17 @@ using System;
 using ExtremeInsiders.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace ExtremeInsiders.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20210505205613_AddedDuration_ToMovieAndVideo")]
+    partial class AddedDuration_ToMovieAndVideo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -235,9 +237,6 @@ namespace ExtremeInsiders.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Duration")
                         .HasColumnType("text");
 
                     b.Property<int?>("ImageId")
@@ -722,9 +721,6 @@ namespace ExtremeInsiders.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<string>("Duration")
-                        .HasColumnType("text");
-
                     b.Property<int?>("ImageId")
                         .HasColumnType("integer");
 
@@ -803,7 +799,7 @@ namespace ExtremeInsiders.Migrations
                         new
                         {
                             Id = 1,
-                            DateCreated = new DateTime(2021, 5, 5, 20, 59, 34, 638, DateTimeKind.Utc).AddTicks(8043)
+                            DateCreated = new DateTime(2021, 5, 5, 20, 56, 13, 248, DateTimeKind.Utc).AddTicks(823)
                         });
                 });
 
@@ -836,7 +832,7 @@ namespace ExtremeInsiders.Migrations
                         new
                         {
                             Id = 2,
-                            DateCreated = new DateTime(2021, 5, 5, 20, 59, 34, 638, DateTimeKind.Utc).AddTicks(8616),
+                            DateCreated = new DateTime(2021, 5, 5, 20, 56, 13, 248, DateTimeKind.Utc).AddTicks(1398),
                             SportId = 1
                         });
                 });
@@ -852,6 +848,9 @@ namespace ExtremeInsiders.Migrations
                 {
                     b.HasBaseType("ExtremeInsiders.Models.EntityLikeable");
 
+                    b.Property<string>("Duration")
+                        .HasColumnType("text");
+
                     b.Property<int>("SportId")
                         .HasColumnType("integer");
 
@@ -863,7 +862,7 @@ namespace ExtremeInsiders.Migrations
                         new
                         {
                             Id = 4,
-                            DateCreated = new DateTime(2021, 5, 5, 20, 59, 34, 638, DateTimeKind.Utc).AddTicks(9483),
+                            DateCreated = new DateTime(2021, 5, 5, 20, 56, 13, 248, DateTimeKind.Utc).AddTicks(2220),
                             SportId = 1
                         });
                 });
@@ -871,6 +870,10 @@ namespace ExtremeInsiders.Migrations
             modelBuilder.Entity("ExtremeInsiders.Entities.Video", b =>
                 {
                     b.HasBaseType("ExtremeInsiders.Models.EntityLikeable");
+
+                    b.Property<string>("Duration")
+                        .HasColumnName("Video_Duration")
+                        .HasColumnType("text");
 
                     b.Property<int>("PlaylistId")
                         .HasColumnType("integer");
@@ -883,7 +886,7 @@ namespace ExtremeInsiders.Migrations
                         new
                         {
                             Id = 3,
-                            DateCreated = new DateTime(2021, 5, 5, 20, 59, 34, 638, DateTimeKind.Utc).AddTicks(9230),
+                            DateCreated = new DateTime(2021, 5, 5, 20, 56, 13, 248, DateTimeKind.Utc).AddTicks(1960),
                             PlaylistId = 2
                         });
                 });

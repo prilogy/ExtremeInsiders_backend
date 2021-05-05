@@ -12,7 +12,7 @@ namespace ExtremeInsiders.Entities
     public int SportId { get; set; }
     [JsonIgnore]
     public virtual Sport Sport { get; set; }
-
+    
     [JsonIgnore]
     [ForeignKey("BaseEntityId")]
     public virtual List<MovieTranslation> Translations { get; set; }
@@ -29,6 +29,7 @@ namespace ExtremeInsiders.Entities
     public int? ImageId { get; set; }
     public virtual Image Image { get; set; }
     
+    public string Duration { get; set; }
     public string Url { get; set; }
   }
 }
