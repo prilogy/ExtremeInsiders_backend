@@ -20,10 +20,12 @@ namespace ExtremeInsiders.Areas.Admin.Controllers
     public class BannerEntityTranslationController : Controller
     {
         private readonly ApplicationContext _context;
-
-        public BannerEntityTranslationController(ApplicationContext context)
+        private readonly ImageService _imageService;
+        
+        public BannerEntityTranslationController(ApplicationContext context, ImageService imageService)
         {
             _context = context;
+            _imageService = imageService;
         }
 
         public IActionResult RedirectToBaseEntity(int id) => RedirectToAction("Edit", "BannerEntity", new { Id = id });
@@ -96,6 +98,12 @@ namespace ExtremeInsiders.Areas.Admin.Controllers
             {
                 try
                 {
+                    if (imageSrc != null)
+                    {
+                        var image = await _imageService.AddImage(imageSrc);
+                        translation.ImageId = image.Id;
+                    }
+
                     _context.Add(translation);
                     await _context.SaveChangesAsync();
                     return RedirectToBaseEntity(translation.BaseEntityId);
@@ -149,6 +157,14 @@ namespace ExtremeInsiders.Areas.Admin.Controllers
                 try
                 {
                     _context.Update(translation);
+                    await _context.SaveChangesAsync();
+                    
+                    if (imageSrc != null)
+                    {
+                        var image = await _imageService.AddImage(imageSrc);
+                        translation.ImageId = image.Id;
+                    }           
+                    
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
