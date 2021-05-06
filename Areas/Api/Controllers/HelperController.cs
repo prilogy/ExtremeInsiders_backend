@@ -25,7 +25,7 @@ namespace ExtremeInsiders.Areas.Api.Controllers
     }
 
     [HttpGet]
-    public async Task<IActionResult> Banner()
+    public async Task<ActionResult<BannerEntity>> Banner()
     {
       var list = (await _db.BannerEntities.ToListAsync()).OfCulture(_userService.Culture);
       foreach (var item in list)
