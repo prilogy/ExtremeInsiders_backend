@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using ExtremeInsiders.Data;
@@ -102,6 +103,16 @@ namespace ExtremeInsiders.Services
             await _db.SaveChangesAsync();
 
             return dbPayment;
+        }
+
+        public async Task<PaymentStatus?> CheckStatusAsync(string url)
+        {
+            var id = url.Contains("orderId=") ? url.Split("orderId=").LastOrDefault() : null;
+            if (id == null) return null;
+            
+            var p = await _db.Payments.FirstOrDefaultAsync(x => x.Key == id);
+
+            return p?.Status;
         }
     }
 }

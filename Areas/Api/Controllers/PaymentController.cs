@@ -5,6 +5,8 @@ using ExtremeInsiders.Data;
 using ExtremeInsiders.Entities;
 using ExtremeInsiders.Enums;
 using ExtremeInsiders.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Yandex.Checkout.V3;
@@ -55,5 +57,17 @@ namespace ExtremeInsiders.Areas.Api.Controllers
             if (r) return Ok();
             return BadRequest();
         }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> CheckStatus([FromBody] string url)
+            => await _kassaPaymentService.CheckStatusAsync(url) switch
+            {
+                PaymentStatus.Succeeded => Ok(),
+                PaymentStatus.Canceled => BadRequest(),
+                PaymentStatus.WaitingForCapture => StatusCode(StatusCodes.Status426UpgradeRequired),
+                PaymentStatus.Pending => StatusCode(StatusCodes.Status426UpgradeRequired),
+                _ => NotFound()
+            };
     }
 }
