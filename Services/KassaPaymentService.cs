@@ -60,7 +60,7 @@ namespace ExtremeInsiders.Services
                 Confirmation = new Confirmation
                 {
                     Type = ConfirmationType.Redirect,
-                    ReturnUrl = "success",
+                    // ReturnUrl = "localhost",
                     Locale = user.Culture.Key == Culture.Russian.Key ? "ru_RU" : "en_US"
                 },
             };
