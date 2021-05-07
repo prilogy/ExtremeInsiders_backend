@@ -33,7 +33,7 @@ namespace ExtremeInsiders.Services
                 return false;
 
             var receipt = await GetReceiptAsync(payment.TransactionReceipt);
-            Console.WriteLine(receipt.Dump("Apple receipt"));
+            Console.WriteLine(receipt == null ? "NO APPLE RECEIPT GOT;" : receipt.Dump("Apple receipt"));
             if (receipt == null || receipt.status != 0) return false;
 
             PaymentTypes? type = payment switch
@@ -43,6 +43,7 @@ namespace ExtremeInsiders.Services
                 _ => null
             };
 
+            Console.WriteLine("payment type: " + type);
             if (type == null) return false;
 
             var dbPayment = CreateAsync(payment, user, type.Value);
@@ -76,6 +77,9 @@ namespace ExtremeInsiders.Services
         private async Task<AppleReceiptResponse> GetReceiptAsync(string receipt)
         {
             var manager = new ReceiptManager();
+            
+            Console.WriteLine("Sandbox mode: " + _appSettings.ApplePurchaseSandboxMode);
+            
             return await manager.ValidateReceipt(
                 _appSettings.ApplePurchaseSandboxMode ? Environments.Sandbox : Environments.Production, receipt);
         }
