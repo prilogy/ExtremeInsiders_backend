@@ -10,6 +10,8 @@ using ExtremeInsiders.Entities;
 using ExtremeInsiders.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Newtonsoft.Json;
 
 namespace ExtremeInsiders.Areas.Admin.Models
 {
@@ -79,7 +81,6 @@ namespace ExtremeInsiders.Areas.Admin.Models
             {
                 return NotFound();
             }
-
             
             var entity = await _context.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
             if (entity == null)

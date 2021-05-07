@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using ExtremeInsiders.Interfaces;
 using Newtonsoft.Json;
 using ExtremeInsiders.Models;
 
@@ -23,7 +24,7 @@ namespace ExtremeInsiders.Entities
     }
 
     public class VideoTranslation : TranslatableEntityTranslation<Video>, IDefaultTranslatableContent,
-        ITranslationWithUrl, ITranslationWithImage
+        IWithUrlAndDuration, ITranslationWithImage
     {
         public string Name { get; set; }
         public string Description { get; set; }
