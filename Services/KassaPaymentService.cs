@@ -112,6 +112,8 @@ namespace ExtremeInsiders.Services
             
             var p = await _db.Payments.FirstOrDefaultAsync(x => x.Key == id);
 
+            Console.WriteLine(p?.Dump("Kassa payment check") ?? "KASSA PAYMENY NULL");
+            
             return p?.Status;
         }
     }
