@@ -41,7 +41,7 @@ namespace ExtremeInsiders.Services
 
             metadata[Payment.TypeMetadataName] = type.ToString();
 
-            if (currency.Key != "RUB")
+            if (currency.Key != Currency.RUB.Key)
             {
                 using var client = new HttpClient();
                 const string url = "https://www.cbr-xml-daily.ru/daily_json.js";

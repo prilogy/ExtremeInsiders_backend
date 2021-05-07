@@ -65,6 +65,7 @@ namespace ExtremeInsiders.Services
                 Key = payment.TransactionReceipt,
                 UserId = user.Id,
                 Type = type,
+                CurrencyId = user.CurrencyId,
                 ProviderType = PaymentProviderTypes.Apple
             };
 

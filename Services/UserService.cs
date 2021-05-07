@@ -190,7 +190,7 @@ namespace ExtremeInsiders.Services
       if (user.Currency == null || (CurrencyFromHeader != null && user.Currency?.Key != CurrencyFromHeader))
       {
         var currency = await _db.Currencies.FirstOrDefaultAsync(x => x.Key == CurrencyFromHeader) ??
-                       await _db.Currencies.FirstOrDefaultAsync(x => x.Key == Entities.Currency.Default.Key);
+                       Currency.USD;
 
         _db.Entry(user).Entity.CurrencyId = currency.Id;
       }
@@ -198,7 +198,7 @@ namespace ExtremeInsiders.Services
       if (user.Culture == null || (CultureFromHeader != null && user.Culture?.Key != CultureFromHeader))
       {
         var culture = await _db.Cultures.FirstOrDefaultAsync(x => x.Key == CultureFromHeader) ??
-                      await _db.Cultures.FirstOrDefaultAsync(x => x.Key == Entities.Culture.Default.Key);
+                      await _db.Cultures.FirstOrDefaultAsync(x => x.Key == Culture.Default.Key);
 
         _db.Entry(user).Entity.CultureId = culture.Id;
       }
