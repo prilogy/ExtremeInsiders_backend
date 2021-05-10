@@ -46,7 +46,7 @@ namespace ExtremeInsiders.Services
             Console.WriteLine("payment type: " + type);
             if (type == null) return false;
 
-            var dbPayment = CreateAsync(payment, user, type.Value);
+            var dbPayment = await CreateAsync(payment, user, type.Value);
 
             return type switch
             {
