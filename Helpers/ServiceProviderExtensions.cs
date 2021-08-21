@@ -1,5 +1,8 @@
-﻿using ExtremeInsiders.Entities;
+﻿using System;
+using ExtremeInsiders.Entities;
 using ExtremeInsiders.Services;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -65,6 +68,14 @@ namespace ExtremeInsiders.Helpers
       
       services.AddScoped<KassaPaymentService>();
       services.AddScoped<ApplePaymentService>();
+      
+      FirebaseApp.Create(new AppOptions
+      {
+        Credential = GoogleCredential.FromFile("./service-acc-exi.json")
+      });
+      Console.WriteLine("FCM - " + FirebaseApp.DefaultInstance.Name);
+      services.AddScoped<FcmService>();
+      services.AddHostedService<ScheduledService>();
     }
   }
 }

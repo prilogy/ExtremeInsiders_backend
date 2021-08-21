@@ -20,6 +20,8 @@ namespace ExtremeInsiders.Entities
     {
       Id = 2, Key = "en"
     };
+
+    public static Culture Fallback => English;
     
     public static readonly List<Culture> All = new List<Culture>
     {

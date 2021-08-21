@@ -5,16 +5,21 @@ using ExtremeInsiders.Entities;
 
 namespace ExtremeInsiders.Models
 {
-  public class EntityBase
-  {
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; set; }
-    public DateTime DateCreated {get;set;}
-    [NotMapped] public string EntityType => this.GetType().Name.Replace("Proxy", "").ToLower();
-
-    public EntityBase()
+    public interface IWithId
     {
-      DateCreated = DateTime.UtcNow;
+        public int Id { get; set; }
     }
-  }
+    public class EntityBase : IWithId
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+
+        public DateTime DateCreated { get; set; }
+        [NotMapped] public string EntityType => GetType().Name.Replace("Proxy", "").ToLower();
+
+        public EntityBase()
+        {
+            DateCreated = DateTime.UtcNow;
+        }
+    }
 }

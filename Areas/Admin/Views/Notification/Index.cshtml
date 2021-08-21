@@ -1,0 +1,65 @@
+@using ExtremeInsiders.Entities
+@using ExtremeInsiders.Data
+@using Microsoft.EntityFrameworkCore
+@model IEnumerable<UserNotification>
+@inject ApplicationContext DbContext;
+
+@{
+    ViewData["Title"] = "Оповещения";
+    var utcNow = DateTime.UtcNow;
+    var receivers = $"ru - {await DbContext.FcmTokens.CountAsync(x => x.User.CultureId == Culture.Russian.Id)}, " +
+                    $"en - {await DbContext.FcmTokens.CountAsync(x => x.User.CultureId == Culture.English.Id)}";
+}
+
+<h1>Оповещения</h1>
+<h6>Потенциальных получателей оповещения сейчас: @receivers</h6>
+
+<p>
+    <a asp-action="Create">Создать</a>
+</p>
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            Заголовок
+        </th>
+        <th>
+            Дата отправки
+        </th>
+        <th>
+            Для культуры
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateCreated)
+            </td>
+            <td>
+                @(item.Culture?.Key ?? "Для всех")
+            </td>
+            <td>
+                @if (utcNow < item.DateCreated)
+                {
+                    <span><a asp-action="Edit" asp-route-id="@item.Id">Изменить</a> |</span>
+                }
+                <a asp-action="Details" asp-route-id="@item.Id">Подробнее</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

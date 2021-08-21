@@ -35,7 +35,7 @@ namespace ExtremeInsiders.Areas.Api.Models
         public async Task<ActionResult<List<T>>> GetAll([FromQuery] int page, [FromQuery] int pageSize,
             [FromQuery] string orderByDate)
         {
-            return await Paging(_db.Set<T>().AsQueryable(), page, pageSize, orderByDate);
+            return await Paging(_db.Set<T>().OrderByDescending(x => x.Id).AsQueryable(), page, pageSize, orderByDate);
         }
 
         [HttpGet("recommended")]
@@ -56,7 +56,7 @@ namespace ExtremeInsiders.Areas.Api.Models
         public async Task<ActionResult<List<T>>> GetByIds(int[] ids, [FromQuery] int page, [FromQuery] int pageSize,
             [FromQuery] string orderByDate = null)
         {
-            var list = _db.Set<T>().Where(x => ids.Contains(x.Id));
+            var list = _db.Set<T>().OrderByDescending(x => x.Id).Where(x => ids.Contains(x.Id));
             var r = await Paging(list, page, pageSize, orderByDate);
             return r;
         }

@@ -53,13 +53,14 @@ namespace ExtremeInsiders.Entities
 
     [NotMapped]
     public bool EmailVerified =>
-      ConfirmationCodes.Any(x => x.Type == ConfirmationCode.Types.EmailConfirmation && x.IsConfirmed == true);
+      ConfirmationCodes.Any(x => x.Type == ConfirmationCode.Types.EmailConfirmation && x.IsConfirmed);
 
     [NotMapped] public EntityIdLists LikeIds { get; set; }
     [NotMapped] public EntityIdLists FavoriteIds { get; set; }
     [NotMapped] public EntityIdLists SaleIds { get; set; }
     [NotMapped] public string Token { get; set; }
 
+    [JsonIgnore] public virtual List<FcmToken> FcmTokens { get; set; }
 
     public User()
     {

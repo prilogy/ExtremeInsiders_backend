@@ -1,0 +1,69 @@
+@using ExtremeInsiders.Data
+@using ExtremeInsiders.Entities
+@model ExtremeInsiders.Entities.UserNotification
+@inject ApplicationContext DbContext
+
+@{
+    var cultureSelectList = new SelectList(DbContext.Cultures, "Id", "Key");
+}
+
+<h1>Создание</h1>
+
+<h4>Оповещение</h4>
+<hr/>
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+
+            <div class="form-group">
+                <label lass="control-label">Заголовок</label>
+                <input asp-for="Title" class="form-control"/>
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label lass="control-label">Тело</label>
+                <textarea asp-for="Body" class="form-control"></textarea>
+                <span asp-validation-for="Body" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">(UTC) Дата отправки (не указывать чтобы отправить сейчас)</label>
+                <input asp-for="DateCreated" class="form-control"/>
+                <span asp-validation-for="DateCreated" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label lass="control-label">Открыть Id по нажатию на оповещение</label>
+                <input asp-for="OpenId" class="form-control"/>
+                <span asp-validation-for="OpenId" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="OpenType" class="control-label">Раздел в котором находится Id</label>
+                <select asp-for="OpenType" class="form-control" asp-items="Html.GetEnumSelectList<UserNotificationOpenTypes>()">
+                    <option selected value="">Выберите если указан Id</option>
+                </select>
+                <span asp-validation-for="OpenType" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="CultureId" class="control-label">Для культуры</label>
+                <select asp-for="CultureId" class="form-control" asp-items="cultureSelectList">
+                    <option value="" selected>Для всех</option>
+                </select>
+                <span asp-validation-for="CultureId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Создать" class="btn btn-primary"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Назад к списку</a>
+</div>

@@ -98,7 +98,7 @@ namespace ExtremeInsiders.Areas.Admin.Models
         // POST: SportTranslation/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(TR translation, [FromForm] IFormFile imageSrc)
+        public virtual async Task<IActionResult> Create(TR translation, [FromForm] IFormFile imageSrc)
         {
             if (ModelState.IsValid)
             {

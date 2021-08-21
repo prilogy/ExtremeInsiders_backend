@@ -14,6 +14,9 @@ namespace ExtremeInsiders.Data
     public DbSet<Image> Images { get; set; }
     public DbSet<Culture> Cultures { get; set; }
     
+    public DbSet<FcmToken> FcmTokens { get; set; }
+    public DbSet<UserNotification> UserNotifications { get; set; }
+    
     /* Entities */
     public DbSet<EntityBase> EntitiesBase { get; set; }
     public DbSet<EntityLikeable> EntitiesLikeable { get; set; }

@@ -433,5 +433,6 @@ $RECYCLE.BIN/
 !.vscode/launch.json
 !.vscode/extensions.json
 /config.json
+/service-acc-exi.json
 
 /wwwroot/static/*

@@ -16,10 +16,10 @@ using Newtonsoft.Json;
 namespace ExtremeInsiders.Areas.Admin.Models
 {
     [ApiExplorerSettings(IgnoreApi = true)]
-[Area("Admin")]
+    [Area("Admin")]
     [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = Role.AdminRole)]
     public abstract class ControllerBase<T> : Controller
-    where T : EntityBase
+        where T : class, IWithId
     {
         protected readonly ApplicationContext _context;
 
@@ -31,7 +31,7 @@ namespace ExtremeInsiders.Areas.Admin.Models
         // GET: <Entity>
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Set<T>().ToListAsync());
+            return View(await _context.Set<T>().OrderByDescending(x => x.Id).ToListAsync());
         }
 
         // GET: <Entity>/Details/5
@@ -53,24 +53,25 @@ namespace ExtremeInsiders.Areas.Admin.Models
         }
 
         // GET: <Entity>/Create
-        public virtual IActionResult Create(int baseId=default)
+        public virtual IActionResult Create(int baseId = default)
         {
             if (baseId != default)
-                ViewData["BaseIdIsReadOnly"] = true; 
+                ViewData["BaseIdIsReadOnly"] = true;
             return View();
         }
 
         // POST: <Entity>/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(T entity)
+        public virtual async Task<IActionResult> Create(T entity)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(entity);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Edit).ToString(), new {id = entity.Id });
+                return RedirectToAction(nameof(Edit).ToString(), new { id = entity.Id });
             }
+
             return View(entity);
         }
 
@@ -81,12 +82,13 @@ namespace ExtremeInsiders.Areas.Admin.Models
             {
                 return NotFound();
             }
-            
+
             var entity = await _context.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
             if (entity == null)
             {
                 return NotFound();
             }
+
             return View(entity);
         }
 
@@ -95,7 +97,6 @@ namespace ExtremeInsiders.Areas.Admin.Models
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, T entity)
         {
-
             if (id != entity.Id)
             {
                 return NotFound();
@@ -120,11 +121,12 @@ namespace ExtremeInsiders.Areas.Admin.Models
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(Index).ToString());
             }
 
             entity = await _context.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
-            
+
             return View(entity);
         }
 
