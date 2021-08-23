@@ -173,7 +173,7 @@ namespace ExtremeInsiders.Services
       {
         using var client = new HttpClient();
         
-        var url = $"https://api.vk.com/method/users.get?access_token={code}&v=5.110";
+        var url = $"https://api.vk.com/method/users.get?access_token={code}&v=5.131";
         var result = await client.GetAsync(url);
         var str = await result.Content.ReadAsStringAsync();
         
