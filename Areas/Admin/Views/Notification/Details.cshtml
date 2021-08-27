@@ -1,4 +1,4 @@
-@model ExtremeInsiders.Entities.Movie
+@model ExtremeInsiders.Entities.UserNotification
 
 @{
     ViewData["Title"] = "Подробнее";
@@ -8,17 +8,38 @@
 
 <div>
     <h4>Оповещение</h4>
-    <hr />
+    <hr/>
+
     <dl class="row">
-        <dt class = "col-sm-2">
-            Дата создания
+        <dt class="col-sm-2">
+            Заголовок
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+    </dl>
+
+    <dl class="row">
+        <dt class="col-sm-2">
+            Тело
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Body)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-2">
+            Дата отправки
+        </dt>
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.DateCreated)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Изменить</a> |
+    @if (DateTime.UtcNow < Model.DateCreated)
+    {
+        <a asp-action="Edit" asp-route-id="@Model.Id">Изменить</a>
+    }
     <a asp-action="Index">Назад к списку</a>
 </div>
