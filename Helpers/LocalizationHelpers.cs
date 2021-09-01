@@ -50,7 +50,7 @@ namespace ExtremeInsiders.Helpers
 
         public virtual T Localize(Culture culture)
         {
-            if (!Translations.Any()) return this as T;
+            if (!Translations.Any() || culture == null) return this as T;
             Content = Translations[culture];
             return this as T;
         }
