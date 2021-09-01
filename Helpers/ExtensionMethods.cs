@@ -34,8 +34,8 @@ namespace ExtremeInsiders.Helpers
         {
             if (entity.Translations.Count > 0)
             {
-                entity.Content = entity.Translations.FirstOrDefault(tr => tr.Culture.Key == culture.Key) ??
-                                 entity.Translations.FirstOrDefault(x => x.Culture.Key == Culture.Default.Key) ??
+                entity.Content = entity.Translations.FirstOrDefault(tr => tr.Culture?.Key == culture.Key || tr.CultureId == culture.Id) ??
+                                 entity.Translations.FirstOrDefault(x => x.Culture?.Key == Culture.Default.Key || x.CultureId == Culture.Default.Id) ??
                                  entity.Translations.FirstOrDefault();
             }
 

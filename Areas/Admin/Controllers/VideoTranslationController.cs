@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using ExtremeInsiders.Areas.Admin.Models;
 using ExtremeInsiders.Data;
 using ExtremeInsiders.Entities;
@@ -35,7 +36,7 @@ namespace ExtremeInsiders.Areas.Admin.Controllers
             var video = await _dbContext.Videos.FindAsync(translation.BaseEntityId);
             if (video == null) return r;
 
-            var n = DefaultNotification.NewVideo(video.OfCulture(translation.Culture));
+            var n = DefaultNotification.NewVideo(video.OfCulture(Culture.All.FirstOrDefault(x => x.Id == translation.CultureId)));
             await _fcmService.SendNotificationAsync(n, translation.CultureId);
 
             return r;
