@@ -131,8 +131,11 @@ namespace ExtremeInsiders.Areas.Api.Controllers
       await _db.SaveChangesAsync();
 
       await _confirmationService.SendEmailConfirmationAsync(user);
-      var subscription = Subscription.Demo(user);
-      await _db.Subscriptions.AddAsync(subscription);
+      
+      // used previously to add demo period
+      // var subscription = Subscription.Demo(user);
+      // await _db.Subscriptions.AddAsync(subscription);
+      
       await _db.SaveChangesAsync();
       return user;
     }
